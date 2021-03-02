@@ -5,7 +5,7 @@ class User < ApplicationRecord
 	has_many :booking, dependent: :delete_all
 	has_many :credit_card, dependent: :delete_all
 	
-	validates :Fname, :Lname, :Address, :Postcode, :City, :Country, :Phone, presence: true
+	validates :Fname, :Lname, presence: true
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 	validates :Email, presence: true, length: { maximum: 75 },
                     format: { with: VALID_EMAIL_REGEX },
