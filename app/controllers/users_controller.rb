@@ -15,14 +15,6 @@ class UsersController < ApplicationController
 	if !logged_in? || (!admin? && !(current_user == @user))
 		naughty_user
 	end
-	@activity = Hash.new
-	cd = DateTime.now.to_date
-	pd = 1.year.ago(cd)
-	pd.upto(cd) { |date| 
-	no = Booking.where(created_at: date.midnight..date.end_of_day).where(user_id: @user.id).count
-	@activity[date] = no
-	}
-	
   end
 
   # GET /users/new
