@@ -1,0 +1,36 @@
+<% provide(:title, 'Reset password') %>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-12">
+		<div class="col-12" style="text-align: center;">
+			<h1>Reset password</h1>
+		</div>
+
+    <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+      <%= hidden_field_tag :email, @user.Email %>
+		<div class="row">
+			<div class="col-6">
+				<div class="float-right">
+					<%= f.label :password %>
+				</div>
+			</div>
+			<div class="col-6">
+			  <%= f.password_field :password, class: 'form-control' %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<div class="float-right">
+					<%= f.label :password_confirmation, "Confirmation" %>
+				</div>
+			</div>
+			<div class="col-6">
+			  <%= f.password_field :password_confirmation, class: 'form-control' %>
+			</div>
+		</div>
+		<br>
+		<div class="row justify-content-center">	
+			<%= f.submit "Update password", class: "btn btn-primary" %>
+			<% end %>
+		</div>
+	</div>
+</div>

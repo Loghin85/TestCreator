@@ -20,10 +20,10 @@
 	</head>
 
   <body>
-	<%#= render :partial=> "layouts/menu" %>
-	<%# flash.each do |message_type, message| %>
-         <div class="alert alert-<%#= message_type %>"><%#= message %></div>
-    <%# end %>
+	<%= render :partial=> "layouts/menu" %>
+	<% flash.each do |message_type, message| %>
+         <div class="alert alert-<%= message_type %>"><%#= message %></div>
+    <% end %>
 		<%= yield %>
   </body>
 </html>

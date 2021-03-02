@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', platforms: :ruby
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -34,6 +34,10 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'bootstrap'
 gem 'bootstrap-sass'
+gem 'activerecord-session_store'
+gem "recaptcha"
+gem 'faker'
+gem 'geocoder'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

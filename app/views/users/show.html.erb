@@ -1,0 +1,169 @@
+<p id="notice"><%= notice %>	</div>
+		</div>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-6">
+		<div class="col-12" style="text-align: center;">
+			<%if admin?%>
+				<h1>User No. <%=@user.id%></h1>
+			<%else%>
+				<h1>Hi, <%=@user.Lname%>!</h1>
+			<%end%>
+		</div>
+		<%if admin?%>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Fname:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Fname %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Lname:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Lname %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Privilege:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Privilege %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Cardregistered:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.CardRegistered %>
+			</div>
+		</div>
+		<%end%>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Email:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Email %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Address:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Address %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Postcode:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Postcode %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>City:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.City %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Country:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Country %>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Phone:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.Phone %>
+			</div>
+		</div>
+		<br>
+		<div class="row justify-content-center">
+			<%= button_to 'Edit', edit_user_path(@user), class: "btn btn-primary", method: "get", style: "margin-left: 10px;"%>
+			<%= button_to 'Delete', user_path, class: "btn btn-primary", method: "delete", data: { confirm: 'Are you sure?' }, style: "margin-left: 10px;"%>
+		</div>
+	</div>
+	<div class="col-6">
+		<div id="container" class=" " style="width: 100%; height: 400px; float: right; margin: 0 auto"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var pointStart = new Date();
+var pastYear = pointStart.getFullYear() - 1;
+pointStart.setFullYear(pastYear);
+Date.parse(pointStart);
+console.log(pointStart);
+chart = Highcharts.chart('container', {
+    chart       : { type    : 'area' },
+        title       : { text: "<%=raw @user.Fname%>'s last year activity"},
+        legend      : { enabled : true },
+		tooltip: {
+			pointFormat: '{point.y:,.0f} trips booked'
+		},
+        plotOptions : {
+            series  : {
+                pointStart      : pointStart,
+                pointInterval   : 24 * 3600 * 1000*30
+            },
+			area: {
+				marker: {
+					enabled: false
+				}
+			}
+        },
+        xAxis      : { 
+            min:Date.UTC((new Date()).getFullYear(), (new Date()).getMonth()-2, (new Date()).getDate()),
+            max:Date.UTC((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate()),
+            //allowDecimals: false,
+            type           : 'datetime',
+            tickInterval   : 24 * 3600 * 1000*30, //one day
+            labels         : {
+                rotation : 0
+            },
+            
+        },
+        yAxis      : { 
+			title: {
+				text: 'Bookings'
+			},
+		}
+    });	
+
+        
+var jsonString = <%= raw Booking.where(user_id: @user.id).to_json %>;
+
+var myData = <%= raw @activity.to_json%>;
+var dataArray = []
+
+$.each(myData, function(i, obj) {
+   dataArray.push([Date.parse(i), obj])
+});
+    
+    chart.addSeries({
+		showInLegend: false,
+        data: dataArray    
+    });
+   
+    console.log('data is '+dataArray)
+</script>

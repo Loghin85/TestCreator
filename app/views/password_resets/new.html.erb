@@ -1,0 +1,26 @@
+<% provide(:title, "Forgot password") %>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-12">
+		<div class="col-12" style="text-align: center;">
+			<h1>Forgot password</h1>
+		</div>
+
+
+    <%= form_for(:password_reset, url: password_resets_path) do |f| %>
+		<div class="row">
+			<div class="col-6">
+				<div class="float-right">
+					<%= f.label :email %>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= f.email_field :email, {:required => true} %>
+			</div>
+		</div>
+		<br>
+		<div class="row justify-content-center">	
+			<%= f.submit "Submit", class: "btn btn-primary" %>
+			<% end %>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,90 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <% if user.errors.any? %>
+  <div class="row justify-content-center">
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  </div>
+  <% end %>
+
+		  <div class="row">
+			<div class="col-6">
+				<div class="float-right">
+					<%= form.label :Fname , "First Name"%>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= form.text_field :Fname %>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col-6">
+				<div class="float-right"> 
+					<%= form.label :Lname , "Last Name"%>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= form.text_field :Lname %>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col-6">
+				<div class="float-right"> 
+					<%= form.label :Email %>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= form.text_field :Email %>
+			</div>
+		  </div>
+  
+  <%if admin?%>
+		<div class="row">
+			<div class="col-6">
+				<div class="float-right"> 
+					<%= form.label :Privilege %>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= form.radio_button :Privilege, "User"%>
+				<%= label :Privilege_User, 'User' %>
+				<%= form.radio_button :Privilege, "Admin"%>
+				<%= label :Privilege_Admin, 'Admin' %>
+			</div>
+		</div>
+  <%else%>
+	<%if !logged_in?%>
+		<div class="row">
+			<div class="col-6">
+				<div class="float-right"> 
+					<%= form.label :password %>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= form.password_field :password %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<div class="float-right"> 
+					<%= form.label :password_confirmation %>
+				</div>
+			</div>
+			<div class="col-6">
+				<%= form.password_field :password_confirmation %>
+			</div>
+		</div>
+	<%end%>
+  <%end%>
+		<br>
+		<div class="row justify-content-center">
+			<%= invisible_recaptcha_tags text: 'Submit',  class: "btn btn-primary" , style: "margin-left: 10px;" %>
+			<% end %>
+			<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px;" %>
+		</div>

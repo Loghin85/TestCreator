@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Users</h1>
+
+<table  id="Users" class="container-fluid display responsive no-wrap" width="100%">
+  <thead>
+    <tr>
+      <th>Fname</th>
+      <th>Lname</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>Postcode</th>
+      <th>City</th>
+      <th>Country</th>
+      <th>Phone</th>
+      <th>Privilege</th>
+      <th>Cardregistered</th>
+	  <th>Activated</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.Fname %></td>
+        <td><%= user.Lname %></td>
+        <td><%= user.Email %></td>
+        <td><%= user.Address %></td>
+        <td><%= user.Postcode %></td>
+        <td><%= user.City %></td>
+        <td><%= user.Country %></td>
+        <td><%= user.Phone %></td>
+        <td><%= user.Privilege %></td>
+        <td><%= user.CardRegistered %></td>
+		<td><%= user.activated %></td>
+		<td>
+			<div class="btn-group" role="group" aria-label="Basic example">
+			  <%= link_to 'Show', user ,class: "btn btn-outline-secondary"%>
+			  <%= link_to 'Edit', edit_user_path(user) ,class: "btn btn-outline-secondary"%>
+			  <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } ,class: "btn btn-outline-secondary"%>
+			</div>
+		</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= button_to 'New User', new_user_path ,class: "btn btn-primary", method: "get" %>
