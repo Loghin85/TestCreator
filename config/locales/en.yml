@@ -30,4 +30,25 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  errors:
+      format: "%{message}"
+      messages:
+        taken: "%{attribute} has already been taken"
+  activerecord:
+    attributes:
+      user:
+        Email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+    errors:
+      models:
+        user:
+          attributes:
+            Email:
+              blank: "Please enter a valid Email address"
+              invalid: "Please enter a valid Email address"
+            password:
+              blank: "The password must be at least 8 characters long and contain at least: one lowercase character, one uppercase character and one number"
+              invalid: "The password must be at least 8 characters long and contain at least: one lowercase character, one uppercase character and one number"
+            password_confirmation:
+              confirmation: "Confirmed password and Password must match."

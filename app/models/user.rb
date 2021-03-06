@@ -2,17 +2,17 @@ class User < ApplicationRecord
 	attr_accessor :remember_token, :activation_token, :reset_token
 	before_save   :downcase_email
 	before_create :create_activation_digest
-	has_many :booking, dependent: :delete_all
-	has_many :credit_card, dependent: :delete_all
+	#has_many :booking, dependent: :delete_all
+	#has_many :credit_card, dependent: :delete_all
 	
 	validates :Fname, :Lname, presence: true
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-	validates :Email, presence: true, length: { maximum: 75 },
+	validates :Email, length: { maximum: 75 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
 	has_secure_password
-	validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
-	validates :password_confirmation, presence: true, length: { minimum: 6 }
+	VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\Z/
+	validates :password, presence: true, format: { with: VALID_PASSWORD_REGEX }, allow_nil: true
 
 	# Returns the hash digest of the given string.
   def User.digest(string)

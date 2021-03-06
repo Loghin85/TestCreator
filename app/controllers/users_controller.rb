@@ -79,10 +79,10 @@ class UsersController < ApplicationController
 		respond_to do |format|
 		  if admin?
 			format.html { redirect_to users_url
-						flash[:info] =  'User was successfully destroyed.' }
+						flash[:info] =  'User was successfully deleted.' }
 		  else
 			format.html { redirect_to root_url
-						flash[:info] = 'User was successfully destroyed.' }
+						flash[:info] = 'User was successfully deleted.' }
 		  end
 		  format.json { head :no_content }
 		end
@@ -100,11 +100,11 @@ class UsersController < ApplicationController
     end
 	
 	def update_params
-		params.require(:user).permit(:Fname, :Lname, :Email, :Address, :Postcode, :City, :Country, :Phone, :Privilege)
+		params.require(:user).permit(:Fname, :Lname, :Email, :Privilege)
 	end
 	
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:Fname, :Lname, :Email, :Address, :Postcode, :City, :Country, :Phone, :Privilege, :CardRegistered, :password, :password_confirmation)
+      params.require(:user).permit(:Fname, :Lname, :Email, :Privilege, :password, :password_confirmation)
     end
 end

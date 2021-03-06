@@ -1,5 +1,5 @@
-Hi <%= @user.Lname %>,
+Hi <%= @user.Fname %>,
 
-Welcome to Lake Tours! Get ready for your next adventure. Click on the link below to activate your account:
+Welcome to Test Creator! Get ready for your next adventure. Click on the link below to activate your account:
 
 <%= edit_account_activation_url(@user.activation_token, email: @user.Email) %>

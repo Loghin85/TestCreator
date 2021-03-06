@@ -4,6 +4,7 @@ class PasswordResetsController < ApplicationController
   before_action :get_user,   only: [:edit, :update]
   before_action :valid_user, only: [:edit, :update]
   before_action :check_expiration, only: [:edit, :update]
+	VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\Z/
   
   def new
   end
@@ -25,10 +26,17 @@ class PasswordResetsController < ApplicationController
   end
   
   def update
-    if params[:user][:password].empty?                  
-      flash.now[:warning] = "can't be empty"
+		p !!!params[:user][:password_confirmation].match(params[:user][:password])
+		if params[:user][:password].empty?             
+      flash.now[:warning] = "Password can't be empty"
       render 'edit'
-    elsif @user.update_attributes(user_params)          
+		elsif !!!params[:user][:password].match(VALID_PASSWORD_REGEX)
+			flash.now[:warning] = "The password must be at least 8 characters long and contain at least: one lowercase character, one uppercase character and one number"
+      render 'edit'
+	  elsif !!!params[:user][:password_confirmation].match(params[:user][:password])
+			flash.now[:warning] = "The password confirmation and password must match"
+      render 'edit'
+    elsif @user.update(user_params)          
       log_in @user
       flash[:success] = "Password has been reset."
       redirect_to @user
