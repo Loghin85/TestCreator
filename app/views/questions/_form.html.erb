@@ -1,0 +1,185 @@
+<%= form_with(model: question) do |form| %>
+  <% if question.errors.any? %>
+    <% flash.now[:warning] = question.errors.full_messages[0] %>
+  <% end %>
+	<div class="form-group">
+			<%= form.label :Title , "Question title"%>
+			<%= form.text_field :Title, class: "form-control", placeholder: "Question 1"%>
+	</div>
+	
+	<div class="form-group">
+		<%= form.label :Type , "Question type"%>
+		<select name="Type" id="Type" class="form-control">
+			<option selected>Please choose a question type</option>
+			<option value="MCQ">Multiple choice</option>
+			<option value="MA">Multiple answer</option>
+			<option value="FTB">Fill in the blank</option>
+			<option value="TF">True / False</option>
+		</select>
+	</div>
+	
+	<div class="form-group">
+			<%= form.label :Text , "Question Text"%>
+			<%= form.text_area :Text, class: "form-control", placeholder: "What is..."%>
+	</div>
+	
+	<div id="MCQ" style="display: none;">
+		<div class="form-group">
+			<%= form.label "Options"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" name="options" id="negative" value="negative">
+				<label class="form-check-label" for="options">Negative marking: </label>
+				<%= form.text_field :markngValue, class: "form-control", value: 5, for: "options", type: "number"%>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= form.label "Answers"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="radio" name="Radios" id="Radio1" value="option1" checked style="top: 7px">
+				<%= form.text_field :Radio1, class: "form-control", placeholder: "Answer 1", for: "Radios"%>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="radio" name="Radios" id="Radio2" value="option2" style="top: 7px">
+				<%= form.text_field :Radio2, class: "form-control", placeholder: "Answer 2", for: "Radios"%>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="radio" name="Radios" id="Radio3" value="option3" style="top: 7px">
+				<%= form.text_field :Radio3, class: "form-control", placeholder: "Answer 3", for: "Radios"%>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="radio" name="Radios" id="Radio4" value="option4" style="top: 7px">
+				<%= form.text_field :Radio4, class: "form-control", placeholder: "Answer 4", for: "Radios"%>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="MA" style="display: none;">
+		<div class="form-group">
+			<%= form.label "Options"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="partial" value="partial">
+				<label class="form-check-label" for="partial">Allow partial credit</label>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="negative" value="negative">
+				<label class="form-check-label" for="negative">Negative marking: (When only wrong answers were chosen)</label>
+				<%= form.text_field :markingValue, class: "form-control", value: 5, for: "negative", type: "number"%>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= form.label "Answers"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="checkbox1" value="option1" style="top: 7px">
+				<%= form.text_field :checkbox1, class: "form-control", placeholder: "Answer 1", for: "checkbox1"%>
+				<div id="partialValue1" style="display: none;">
+				<%= form.label "Partial credit %"%>
+				<%= form.text_field :checkbox1Credit, class: "form-control", for: "checkboxes", type: "number"%>
+				</div>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="checkbox2" value="option2" style="top: 7px">
+				<%= form.text_field :checkbox2, class: "form-control", placeholder: "Answer 2", for: "checkbox2"%>
+				<div id="partialValue2" style="display: none;">
+				<%= form.label "Partial credit %"%>
+				<%= form.text_field :checkbox1Credit, class: "form-control", for: "checkboxes", type: "number"%>
+				</div>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="checkbox3" value="option3" style="top: 7px">
+				<%= form.text_field :checkbox3, class: "form-control", placeholder: "Answer 3", for: "checkbox3"%>
+				<div id="partialValue3" style="display: none;">
+				<%= form.label "Partial credit %"%>
+				<%= form.text_field :checkbox1Credit, class: "form-control", for: "checkboxes", type: "number"%>
+				</div>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="checkbox4" value="option4" style="top: 7px">
+				<%= form.text_field :checkbox4, class: "form-control", placeholder: "Answer 4", for: "checkbox4"%>
+				<div id="partialValue4" style="display: none;">
+				<%= form.label "Partial credit %"%>
+				<%= form.text_field :checkbox1Credit, class: "form-control", for: "checkboxes", type: "number"%>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="FTB" style="display: none;">
+		<div class="form-group">
+			<%= form.label "Options"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" name="options" id="negative" value="negative">
+				<label class="form-check-label" for="options">Negative marking: </label>
+				<%= form.text_field :markngValue, class: "form-control", value: 5, for: "options", type: "number"%>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="contains" value="contains">
+				<label class="form-check-label" for="contains">Allow answers that contain the correct answer</label>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" id="caseSensitive" value="caseSensitive">
+				<label class="form-check-label" for="caseSensitive">Case sensitive</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= form.label "Answer"%>
+			<%= form.text_field :answer, class: "form-control", for: "answer", placeholder: "Answer"%>
+		</div>
+	</div>
+	
+	
+	<div id="TF" style="display: none;">
+		<div class="form-group">
+			<%= form.label "Options"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="checkbox" name="options" id="negative" value="negative">
+				<label class="form-check-label" for="options">Negative marking: </label>
+				<%= form.text_field :markngValue, class: "form-control", value: 5, for: "options", type: "number"%>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= form.label "Answer"%>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="radio" name="Radios" id="Radio1" value="option1" checked>
+				<label class="form-check-label" for="negative">True</label>
+			</div>
+			<div class="form-check" style="margin-top: 5px">
+				<input class="form-check-input" type="radio" name="Radios" id="Radio2" value="option2">
+				<label class="form-check-label" for="negative">False</label>
+			</div>
+		</div>
+	</div>	
+	
+	<div class="form-group">
+			<%= form.label :Points , "Points"%>
+			<%= form.text_field :Points, class: "form-control", value: 10, type: "number"%>
+	</div>
+	
+	<div class="form-group">
+			<%= form.label :Feedback , "Feedback to learner"%>
+			<%= form.text_area :Feedback, class: "form-control", placeholder: "For this question..."%>
+	</div>
+
+		<br>
+		<div class="row justify-content-right">
+			<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px;" %>
+			<% end %>
+			<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px;" %>
+		</div>
+<script>
+$(document).ready(function(){
+    $('#Type').change(function() {
+        $('#MCQ').toggle($(this).val()=="MCQ");
+				$('#MA').toggle($(this).val()=="MA");
+				$('#FTB').toggle($(this).val()=="FTB");
+				$('#TF').toggle($(this).val()=="TF");
+    });
+		$('#partial').change(function() {
+        $('#partialValue1').toggle();
+        $('#partialValue2').toggle();
+        $('#partialValue3').toggle();
+        $('#partialValue4').toggle();
+    });
+});
+</script>

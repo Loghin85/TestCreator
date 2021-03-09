@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  AssessmentId: 1
+  Title: MyString
+  Text: MyString
+  Feedback: MyString
+  Type: MyString
+
+two:
+  AssessmentId: 1
+  Title: MyString
+  Text: MyString
+  Feedback: MyString
+  Type: MyString

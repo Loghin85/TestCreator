@@ -1,6 +1,6 @@
 <%= form_with(model: user, local: true) do |form| %>
   <% if user.errors.any? %>
-					<% flash.now[:warning] = user.errors.full_messages[0] %>
+		<% flash.now[:warning] = user.errors.full_messages[0] %>
   <% end %>
 
 		  <div class="row">

@@ -13,15 +13,17 @@
 	  <li class="nav-item">
         <a class="nav-link" href="/about_us">Contact</a>
       </li>
+		<li class="nav-item">
+				<a class="nav-link" href="/assessments">Assessments</a>
+		  </li>
+		
+		<li class="nav-item">
+				<a class="nav-link" href="/questions">Questions</a>
+		  </li>
+			
 	  <%if admin?%>
 		  <li class="nav-item">
 			<a class="nav-link" href="/users">Users</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="/questions">Questions</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="/assessments">Assessments</a>
 		  </li>
 	  <%end%>
     </ul>
@@ -34,7 +36,6 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/users/<%=current_user.id%>">My Profile</a>
-          <a class="dropdown-item" href="/assessments">My Assessments</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/logout">Logout</a>
         </div>
