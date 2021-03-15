@@ -18,21 +18,22 @@
 	<script src="https://www.google.com/recaptcha/api.js"></script>
 	<script src="https://cdn.tiny.cloud/1/op614chgukw71v2cw77yd3o8vvn8jojxh8qyd1yzyktf20ve/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
-    tinymce.init({
-      selector: '.tinymce',
-      height: 250,
-      menubar: false,
-			external_plugins: { tiny_mce_wiris: 'https://www.wiris.net/demo/plugins/tiny_mce/plugin.js' },
-      plugins: [
-        'advlist autolink lists link image charmap print preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table paste code help wordcount '
-      ],
-        toolbar: 'undo redo | formatselect | ' +
-        ' bold italic backcolor | alignleft aligncenter ' +
-        ' alignright alignjustify | bullist numlist outdent indent | ' +
-        ' removeformat | charmap tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry | help'
-    });
+			tinymce.remove();
+			tinymce.init({
+				selector: '.tinymce',
+				height: 250,
+				menubar: false,
+				external_plugins: { tiny_mce_wiris: 'https://www.wiris.net/demo/plugins/tiny_mce/plugin.js' },
+				plugins: [
+					'advlist autolink lists link image charmap print preview anchor',
+					'searchreplace visualblocks code fullscreen',
+					'insertdatetime media table paste code help wordcount '
+				],
+					toolbar: 'undo redo | formatselect | ' +
+					' bold italic backcolor | alignleft aligncenter ' +
+					' alignright alignjustify | bullist numlist outdent indent | ' +
+					' removeformat | charmap tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry | help'
+			});
   </script>
 
 	
