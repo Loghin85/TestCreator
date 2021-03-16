@@ -21,7 +21,27 @@
   <script>
 		document.addEventListener('turbolinks:load', function() {
 			tinymce.init({
-				selector: '.tinymce',
+				selector: '.tinymceF',
+				height: 250,
+				menubar: false,
+				external_plugins: { tiny_mce_wiris: 'https://www.wiris.net/demo/plugins/tiny_mce/plugin.js' },
+				plugins: [
+					'advlist autolink lists link image charmap print preview anchor',
+					'searchreplace visualblocks code fullscreen',
+					'insertdatetime media table paste code help wordcount '
+				],
+					toolbar: 'undo redo | formatselect | ' +
+					' bold italic backcolor | alignleft aligncenter ' +
+					' alignright alignjustify | bullist numlist outdent indent | ' +
+					' removeformat | charmap tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry | help'
+				});
+				tinymce.init({
+				selector: '.tinymceT',   setup : function(ed) {
+                  ed.on('keydown', function(e) {
+                     cambios = true;
+                     console.log(cambios);
+                  });
+            },
 				height: 250,
 				menubar: false,
 				external_plugins: { tiny_mce_wiris: 'https://www.wiris.net/demo/plugins/tiny_mce/plugin.js' },

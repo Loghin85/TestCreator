@@ -21,7 +21,7 @@
 	
 	<div class="form-group">
 			<%= form.label :Text , "Question Text"%>
-			<%= form.text_area :Text, class: "form-control tinymce", placeholder: "What is..."%>
+			<%= form.text_area :Text, class: "form-control tinymceT", placeholder: "What is..."%>
 	</div>
 	
 	
@@ -135,6 +135,74 @@
 	</div>
 	
 	<div class="FRM" style="display: none;">
+		<div class="form-group">
+			<%= form.label "Formula"%>
+			<%= form.text_field :Answer, class: "form-control", for: "answer", placeholder: "Formula"%>
+		</div>
+		<div class="form-group X" style="display: none;">
+			<%= form.label "X"%><br>
+			<div style="margin-left: 5px">
+				<%= form.label "Range:"%>
+					<div class="form-inline" style="margin-left: 10px">
+						Minimum:
+						<%= form.text_field :XMin, class: "form-control", for: "minimum", value: "0", type: "number", style: "margin-left: 10px; margin-right: 10px"%>
+						Maximum:
+						<%= form.text_field :XMax, class: "form-control", for: "maximum", value: "0", type: "number", style: "margin-left: 10px"%>
+					</div>
+				<%= form.label "Relations:", id: "YZ", style:"display: none"%>
+					<div class="form-inline Y" style="display: none; margin-left: 10px; margin-bottom: 5px">
+						Relation to Y:
+						<%= form.text_field :XRelY, class: "form-control", for: "minimum", placeholder: "example: X>=Y", style: "margin-left: 10px"%>
+					</div>
+					<div class="form-inline Z" style="display: none; margin-left: 10px">
+						Relation to Z:
+						<%= form.text_field :XrelZ, class: "form-control", for: "maximum", placeholder: "example: X<=Z", style: "margin-left: 10px"%>
+					</div>
+			</div>
+		</div>
+		<div class="form-group Y" style="display: none;">
+			<%= form.label "Y"%><br>
+			<div style="margin-left: 5px">
+				<%= form.label "Range:"%>
+					<div class="form-inline" style="margin-left: 10px">
+						Minimum:
+						<%= form.text_field :YMin, class: "form-control", for: "minimum", value: "0", type: "number", style: "margin-left: 10px; margin-right: 10px"%>
+						Maximum:
+						<%= form.text_field :YMax, class: "form-control", for: "maximum", value: "0", type: "number", style: "margin-left: 10px"%>
+					</div>
+				<%= form.label "Relations:", id: "XZ", style:"display: none"%>
+					<div class="form-inline X" style="display: none; margin-left: 10px; margin-bottom: 5px">
+						Relation to X:
+						<%= form.text_field :YRelX, class: "form-control", for: "minimum", placeholder: "example: Y=2*X", style: "margin-left: 10px"%>
+					</div>
+					<div class="form-inline Z" style="display: none; margin-left: 10px">
+						Relation to Z:
+						<%= form.text_field :YrelZ, class: "form-control", for: "maximum", placeholder: "example: Y=Z/2", style: "margin-left: 10px"%>
+					</div>
+			</div>
+		</div>
+		<div class="form-group Z" style="display: none;">
+			<%= form.label "Z"%><br>
+			<div style="margin-left: 5px">
+				<%= form.label "Range:"%>
+					<div class="form-inline" style="margin-left: 10px">
+						Minimum:
+						<%= form.text_field :ZMin, class: "form-control", for: "minimum", value: "0", type: "number", style: "margin-left: 10px; margin-right: 10px"%>
+						Maximum:
+						<%= form.text_field :ZMax, class: "form-control", for: "maximum", value: "0", type: "number", style: "margin-left: 10px"%>
+					</div>
+				<%= form.label "Relations:", id: "XY", style:"display: none"%>
+					<div class="form-inline X" style="display: none; margin-left: 10px; margin-bottom: 5px">
+						Relation to X:
+						<%= form.text_field :ZRelX, class: "form-control", for: "minimum", placeholder: "example: Z>X", style: "margin-left: 10px"%>
+					</div>
+					<div class="form-inline Y" style="display: none; margin-left: 10px">
+						Relation to Y:
+						<%= form.text_field :ZrelY, class: "form-control", for: "maximum", placeholder: "example: Z<Y", style: "margin-left: 10px"%>
+					</div>
+			</div>
+		</div>
+		
 	</div>
 	
 	<div class="form-group">
@@ -144,7 +212,7 @@
 	
 	<div class="form-group">
 			<%= form.label :Feedback , "Feedback to learner"%>
-			<%= form.text_area :Feedback, class: "form-control tinymce", placeholder: "For this question..."%>
+			<%= form.text_area :Feedback, class: "form-control tinymceF", placeholder: "For this question..."%>
 	</div>
 
 	<br>
@@ -168,6 +236,54 @@ $(document).ready(function(){
         $('#partialValue2').toggle();
         $('#partialValue3').toggle();
         $('#partialValue4').toggle();
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $("#question_Answer").keyup(function(){
+        // Getting the current value of textarea
+        var currentText = $(this).val();
+				var xs = document.getElementsByClassName("X");
+				var ys = document.getElementsByClassName("Y");
+				var zs = document.getElementsByClassName("Z");
+				var X=false;
+				var Y=false;
+				var Z=false;
+				
+        for (var i = 0; i < xs.length; i++)
+					if (currentText.includes("x") || currentText.includes("X"))
+							{xs[i].style.display = "block";
+							X=true;}
+					else
+							{xs[i].style.display = "none";
+							X=false;}
+        for (var i = 0; i < xs.length; i++)
+					if (currentText.includes("y") || currentText.includes("Y"))
+							{ys[i].style.display = "block";
+							Y=true;}
+					else
+							{ys[i].style.display = "none";
+							Y=false;}
+        for (var i = 0; i < xs.length; i++)
+					if (currentText.includes("z") || currentText.includes("Z"))
+							{zs[i].style.display = "block";
+							Z=true;}
+					else
+							{zs[i].style.display = "none";
+							Z=false;}
+				if (Y || Z)
+					document.getElementById('YZ').style.display = "block";
+				else
+					document.getElementById('YZ').style.display = "none";
+				if (X || Z)
+					document.getElementById('XZ').style.display = "block";
+				else
+					document.getElementById('XZ').style.display = "none";
+				if (X || Y)
+					document.getElementById('XY').style.display = "block";
+				else
+					document.getElementById('XY').style.display = "none";
     });
 });
 </script>
