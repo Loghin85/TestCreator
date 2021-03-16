@@ -9,10 +9,9 @@
 				<h1>Hi, <%=@user.Fname%>!</h1>
 			<%end%>
 		</div>
-		<%if admin?%>
 		<div class="row">
 			<div class="col-6" style="text-align: right;">
-				<strong>Fname:</strong>
+				<strong>First name:</strong>
 			</div>
 			<div class="col-6">
 				<%= @user.Fname %>
@@ -21,12 +20,13 @@
 
 		<div class="row">
 			<div class="col-6" style="text-align: right;">
-				<strong>Lname:</strong>
+				<strong>Last name:</strong>
 			</div>
 			<div class="col-6">
 				<%= @user.Lname %>
 			</div>
 		</div>
+		<%if admin?%>
 		<div class="row">
 			<div class="col-6" style="text-align: right;">
 				<strong>Privilege:</strong>
@@ -42,6 +42,14 @@
 			</div>
 			<div class="col-6">
 				<%= @user.Email %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Member since:</strong>
+			</div>
+			<div class="col-6">
+				<%= @user.created_at %>
 			</div>
 		</div>
 		<br>

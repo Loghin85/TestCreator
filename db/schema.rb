@@ -16,11 +16,15 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
   enable_extension "plpgsql"
 
   create_table "questions", force: :cascade do |t|
-    t.integer "AssessmentId"
+    t.string "question_id"
+		t.integer "AssessmentId"
     t.string "Title"
     t.string "Text"
     t.string "Feedback"
     t.string "Type"
+		t.integer "Points"
+		t.string "Options"
+		t.index ["question_id"], name: "index_questions_on_question_id", unique: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -50,5 +54,13 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
     t.datetime "reset_sent_at"
     t.index ["Email"], name: "index_users_on_email", unique: true
   end
-
+	
+  create_table "answers", force: :cascade do |t|
+    t.string "answer_id"
+		t.string "Text"
+    t.string "Value"
+    t.index ["answer_id"], name: "index_answers_on_answer_id", unique: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 end

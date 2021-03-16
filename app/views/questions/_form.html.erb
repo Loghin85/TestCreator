@@ -4,17 +4,18 @@
   <% end %>
 	<div class="form-group">
 			<%= form.label :Title , "Question title"%>
-			<%= form.text_field :Title, class: "form-control", placeholder: "Question 1"%>
+			<%= form.text_field :Title, class: "form-control", value: "Question 1"%>
 	</div>
 	
 	<div class="form-group">
 		<%= form.label :Type , "Question type"%>
-		<select name="Type" id="Type" class="form-control">
+		<select name="question[Type]" id="question_Type" class="form-control">
 			<option selected>Please choose a question type</option>
 			<option value="MCQ">Multiple choice</option>
 			<option value="MA">Multiple answer</option>
 			<option value="FTB">Fill in the blank</option>
 			<option value="TF">True / False</option>
+			<option value="FRM">Random variable question</option>
 		</select>
 	</div>
 	
@@ -23,15 +24,33 @@
 			<%= form.text_area :Text, class: "form-control tinymce", placeholder: "What is..."%>
 	</div>
 	
-	<div id="MCQ" style="display: none;">
-		<div class="form-group">
-			<%= form.label "Options"%>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" name="options" id="negative" value="negative">
-				<label class="form-check-label" for="options">Negative marking: </label>
-				<%= form.text_field :markngValue, class: "form-control", value: 5, for: "options", type: "number"%>
-			</div>
+	
+	<div class="form-group">
+		<%= form.label "Options"%>
+		<div class="form-check" style="margin-top: 5px">
+			<%= check_box 'Negative', 'result', {class: "form-check-input"}, 1, 0%>
+			<label class="form-check-label" for="options">Negative marking: (Applicable when only no correct answer was chosen)</label>
+			<%= form.text_field :negValue, class: "form-control", value: 5, for: "options", type: "number"%>
 		</div>
+		<div style="display: none;" class="form-check MA" style="margin-top: 5px">
+			<%= check_box 'Partial', 'result', {class: "form-check-input"}, 1, 0%>
+			<label class="form-check-label" for="partial">Allow partial credit</label>
+		</div>
+		<div style="display: none;" class="form-check FTB" style="margin-top: 5px">
+			<%= check_box 'Contains', 'result', {class: "form-check-input"}, 1, 0%>
+			<label class="form-check-label" for="contains">Allow answers that contain the correct answer</label>
+		</div>
+		<div style="display: none;" class="form-check FTB" style="margin-top: 5px">
+			<%= check_box 'CaseSensitive', 'result', {class: "form-check-input"}, 1, 0%>
+			<label class="form-check-label" for="caseSensitive">Case sensitive</label>
+		</div>
+		<div style="display: none;" class="form-check FTB" style="margin-top: 5px">
+			<%= check_box 'MultiSpaces', 'result', {class: "form-check-input"}, 1, 0%>
+			<label class="form-check-label" for="multiSpaces">Allow multiple spaces</label>
+		</div>
+	</div>
+	
+	<div class="MCQ" style="display: none;">
 		<div class="form-group">
 			<%= form.label "Answers"%>
 			<div class="form-check" style="margin-top: 5px">
@@ -54,19 +73,7 @@
 	</div>
 	
 	
-	<div id="MA" style="display: none;">
-		<div class="form-group">
-			<%= form.label "Options"%>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" id="partial" value="partial">
-				<label class="form-check-label" for="partial">Allow partial credit</label>
-			</div>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" id="negative" value="negative">
-				<label class="form-check-label" for="negative">Negative marking: (When only wrong answers were chosen)</label>
-				<%= form.text_field :markingValue, class: "form-control", value: 5, for: "negative", type: "number"%>
-			</div>
-		</div>
+	<div class="MA" style="display: none;">
 		<div class="form-group">
 			<%= form.label "Answers"%>
 			<div class="form-check" style="margin-top: 5px">
@@ -105,27 +112,7 @@
 	</div>
 	
 	
-	<div id="FTB" style="display: none;">
-		<div class="form-group">
-			<%= form.label "Options"%>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" name="options" id="negative" value="negative">
-				<label class="form-check-label" for="options">Negative marking: </label>
-				<%= form.text_field :markngValue, class: "form-control", value: 5, for: "options", type: "number"%>
-			</div>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" id="contains" value="contains">
-				<label class="form-check-label" for="contains">Allow answers that contain the correct answer</label>
-			</div>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" id="caseSensitive" value="caseSensitive">
-				<label class="form-check-label" for="caseSensitive">Case sensitive</label>
-			</div>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" id="multiSpaces" value="multiSpaces">
-				<label class="form-check-label" for="multiSpaces">Asslow multiple spaces</label>
-			</div>
-		</div>
+	<div class="FTB" style="display: none;">
 		<div class="form-group">
 			<%= form.label "Answer"%>
 			<%= form.text_field :answer, class: "form-control", for: "answer", placeholder: "Answer"%>
@@ -133,15 +120,7 @@
 	</div>
 	
 	
-	<div id="TF" style="display: none;">
-		<div class="form-group">
-			<%= form.label "Options"%>
-			<div class="form-check" style="margin-top: 5px">
-				<input class="form-check-input" type="checkbox" name="options" id="negative" value="negative">
-				<label class="form-check-label" for="options">Negative marking: </label>
-				<%= form.text_field :markngValue, class: "form-control", value: 5, for: "options", type: "number"%>
-			</div>
-		</div>
+	<div class="TF" style="display: none;">
 		<div class="form-group">
 			<%= form.label "Answer"%>
 			<div class="form-check" style="margin-top: 5px">
@@ -153,7 +132,10 @@
 				<label class="form-check-label" for="negative">False</label>
 			</div>
 		</div>
-	</div>	
+	</div>
+	
+	<div class="FRM" style="display: none;">
+	</div>
 	
 	<div class="form-group">
 			<%= form.label :Points , "Points"%>
@@ -165,19 +147,21 @@
 			<%= form.text_area :Feedback, class: "form-control tinymce", placeholder: "For this question..."%>
 	</div>
 
-		<br>
-		<div class="row justify-content-right">
-			<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px;" %>
-			<% end %>
-			<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px;" %>
-		</div>
+	<br>
+	<div class="row justify-content-right">
+		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px;" %>
+		<% end %>
+		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px;" %>
+	</div>
+		
 <script>
 $(document).ready(function(){
-    $('#Type').change(function() {
-        $('#MCQ').toggle($(this).val()=="MCQ");
-				$('#MA').toggle($(this).val()=="MA");
-				$('#FTB').toggle($(this).val()=="FTB");
-				$('#TF').toggle($(this).val()=="TF");
+    $('#question_Type').change(function() {
+        $('.MCQ').toggle($(this).val()=="MCQ");
+				$('.MA').toggle($(this).val()=="MA");
+				$('.FTB').toggle($(this).val()=="FTB");
+				$('.TF').toggle($(this).val()=="TF");
+				$('.FRM').toggle($(this).val()=="FRM");
     });
 		$('#partial').change(function() {
         $('#partialValue1').toggle();

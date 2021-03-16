@@ -25,5 +25,15 @@
   <%= @question.Type %>
 </p>
 
+<p>
+  <strong>Points:</strong>
+  <%= @question.Points %>
+</p>
+
+<p>
+  <strong>Options:</strong>
+  <%= @question.Options %>
+</p>
+
 <%= link_to 'Edit', edit_question_path(@question) %> |
 <%= link_to 'Back', questions_path %>

@@ -23,24 +23,56 @@ class QuestionsController < ApplicationController
 
   # POST /questions or /questions.json
   def create
-    @question = Question.new(question_params)
-
-    respond_to do |format|
-      if @question.save
-        format.html { redirect_to @question, notice: "Question was successfully created." }
-        format.json { render :show, status: :created, location: @question }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
-      end
-    end
+    options=""
+		p params[:question][:negValue]
+		if params[:Negative][:result]=="1"
+			options=options+"NEG1P"+params[:question][:negValue]
+		else
+			options=options+"NEG0"
+		end
+		if params[:question][:Type]=="MA"
+			if params[:Partial][:result]=="1"
+				options+="PAR1"
+			else
+				options+="PAR0"
+			end
+		end
+		if params[:question][:Type]=="FTB"
+			if params[:Contains][:result]=="1"
+				options+="CON1"
+			else
+				options+="CON0"
+			end
+			if params[:CaseSensitive][:result]=="1"
+				options+="CAS1"
+			else
+				options+="CAS0"
+			end
+			if params[:MultiSpaces][:result]=="1"
+				options+="MUL1"
+			else
+				options+="MUL0"
+			end
+		end
+		@question = Question.new(question_params.merge(:Options => options))
+			respond_to do |format|
+				if @question.save
+					format.html { redirect_to @question 
+											flash[:info] = 'Question was successfully created.' }
+					format.json { render :show, status: :created, location: @question }
+				else
+					format.html { render :new, status: :unprocessable_entity }
+					format.json { render json: @question.errors, status: :unprocessable_entity }
+				end
+			end
   end
 
   # PATCH/PUT /questions/1 or /questions/1.json
   def update
     respond_to do |format|
       if @question.update(question_params)
-        format.html { redirect_to @question, notice: "Question was successfully updated." }
+        format.html { redirect_to @question 
+										flash[:info] = 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +85,8 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to questions_url, notice: "Question was successfully destroyed." }
+      format.html { redirect_to questions_url 
+									flash[:info] = 'Question was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -66,6 +99,6 @@ class QuestionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def question_params
-      params.require(:question).permit(:AssessmentId, :Title, :Text, :Feedback, :Type)
+      params.require(:question).permit(:AssessmentId, :Title, :Text, :Feedback, :Type, :Points)
     end
 end
