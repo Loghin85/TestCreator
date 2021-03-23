@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'password_resets/edit'
   get 'sessions/new'
   resources :users
+  resources :questions
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
   get 'index' => "test#index"

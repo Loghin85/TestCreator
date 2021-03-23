@@ -1,39 +1,82 @@
-<p id="notice"><%= notice %></p>
+<p id="notice"><%= notice %>	</div>
+		</div>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-6">
+		<div class="col-12" style="text-align: center;">
+			<h1><%= @question.Title %></h1>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Assessmentid:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.AssessmentId %>
+			</div>
+		</div>
 
-<p>
-  <strong>Assessmentid:</strong>
-  <%= @question.AssessmentId %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @question.Title %>
-</p>
-
-<p>
-  <strong>Text:</strong>
-  <%= @question.Text %>
-</p>
-
-<p>
-  <strong>Feedback:</strong>
-  <%= @question.Feedback %>
-</p>
-
-<p>
-  <strong>Type:</strong>
-  <%= @question.Type %>
-</p>
-
-<p>
-  <strong>Points:</strong>
-  <%= @question.Points %>
-</p>
-
-<p>
-  <strong>Options:</strong>
-  <%= @question.Options %>
-</p>
-
-<%= link_to 'Edit', edit_question_path(@question) %> |
-<%= link_to 'Back', questions_path %>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Title:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Title %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Text:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Text %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Feedback:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Feedback %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Type:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Type %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Points:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Points %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Options:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Options %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Answer:</strong>
+			</div>
+			<div class="col-6">
+				<%= @question.Answer %>
+			</div>
+		</div>
+		<br>
+		<div class="row justify-content-center">
+			<%= button_to 'Edit', edit_question_path(@question), class: "btn btn-primary", method: "get", style: "margin-left: 10px;"%>
+			<%= button_to 'Delete', question_path, class: "btn btn-primary", method: "delete", data: { confirm: 'Are you sure?' }, style: "margin-left: 10px;"%>
+		</div>
+	</div>
+	<div class="col-6">
+		<div id="container" class=" " style="width: 100%; height: 400px; float: right; margin: 0 auto"></div>
+	</div>
+</div>
