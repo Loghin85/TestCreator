@@ -112,43 +112,43 @@
 				else %>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio1" value="A" checked style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer 
 					form.text_field :MCQRadio1, class: "form-control", name: "MCQRadio1", placeholder: "Answer 1", for: "MCQRadios", value: @question.Answer[@positions1[0]+1..@positions2[0]-1]
 				else
 					form.text_field :MCQRadio1, class: "form-control", name: "MCQRadio1", placeholder: "Answer 1", for: "MCQRadios"
 				end%>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
-				<% if @question.Answer && @question.Answer[@positions2[1]+1] != "0" %>
+				<% if @question.Answer && @question.Answer[@positions2[1]+1] != "0"  && @question.Answer[@positions2[1]+1] != "["%>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio2" value="B" checked style="top: 7px">
 				<% else %>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio2" value="B" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer && @positions1[1] != -1
 					form.text_field :MCQRadio2, class: "form-control", name: "MCQRadio2", placeholder: "Answer 2", for: "MCQRadios", value: @question.Answer[@positions1[1]+1..@positions2[1]-1]
 				else
 					form.text_field :MCQRadio2, class: "form-control", name: "MCQRadio2", placeholder: "Answer 2", for: "MCQRadios"
 				end%>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
-				<% if @question.Answer && @question.Answer[@positions2[2]+1] != "0" %>
+				<% if @question.Answer && @question.Answer[@positions2[2]+1] != "0"  && @question.Answer[@positions2[2]+1] != "["%>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio3" value="C" checked style="top: 7px">
 				<% else %>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio3" value="C" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer && @positions1[2] != -1
 					form.text_field :MCQRadio3, class: "form-control", name: "MCQRadio3", placeholder: "Answer 3", for: "MCQRadios", value: @question.Answer[@positions1[2]+1..@positions2[2]-1]
 				else
 					form.text_field :MCQRadio3, class: "form-control", name: "MCQRadio3", placeholder: "Answer 3", for: "MCQRadios"
 				end%>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
-				<% if @question.Answer && @question.Answer[@positions2[3]+1] != "0" %>
+				<% if @question.Answer && @question.Answer[@positions2[3]+1] != "0"  && @question.Answer[@positions2[3]+1] != "["%>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio4" value="D" checked style="top: 7px">
 				<% else %>
 					<input class="form-check-input" type="radio" name="MCQRadios" id="Radio4" value="D" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer && @positions1[3] != -1
 					form.text_field :MCQRadio4, class: "form-control", name: "MCQRadio4", placeholder: "Answer 4", for: "MCQRadios", value: @question.Answer[@positions1[3]+1..@positions2[3]-1]
 				else
 					form.text_field :MCQRadio4, class: "form-control", name: "MCQRadio4", placeholder: "Answer 4", for: "MCQRadios"
@@ -171,7 +171,7 @@
 				<% else %>
 					<input class="form-check-input" type="checkbox" id="MACheckbox1" name="MACheckboxes[]" value="A" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer 
 					form.text_field :MACheckbox1, class: "form-control", name: "MACheckbox1", placeholder: "Answer 1", for: "checkbox1", value: @question.Answer[@positions1[0]+1..@positions2[0]-1]
 				else
 					form.text_field :MACheckbox1, class: "form-control", name: "MACheckbox1", placeholder: "Answer 1", for: "checkbox1"
@@ -182,12 +182,12 @@
 				</div>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
-				<% if @question.Answer && @question.Answer[@positions2[1]+1] != "0" %>
+				<% if @question.Answer && @question.Answer[@positions2[1]+1] != "0"  && @question.Answer[@positions2[1]+1] != "["%>
 					<input class="form-check-input" type="checkbox" id="MACheckbox2" name="MACheckboxes[]" value="B" style="top: 7px" checked>
 				<% else %>
 					<input class="form-check-input" type="checkbox" id="MACheckbox2" name="MACheckboxes[]" value="B" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer  && @positions1[1] != -1
 					form.text_field :MACheckbox2, class: "form-control", name: "MACheckbox2", placeholder: "Answer 2", for: "checkbox2", value: @question.Answer[@positions1[1]+1..@positions2[1]-1]
 				else
 					form.text_field :MACheckbox2, class: "form-control", name: "MACheckbox2", placeholder: "Answer 2", for: "checkbox2"
@@ -198,12 +198,12 @@
 				</div>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
-				<% if @question.Answer && @question.Answer[@positions2[2]+1] != "0" %>
+				<% if @question.Answer && @question.Answer[@positions2[2]+1] != "0"  && @question.Answer[@positions2[2]+1] != "["%>
 					<input class="form-check-input" type="checkbox" id="MACheckbox3" name="MACheckboxes[]" value="C" style="top: 7px" checked>
 				<% else %>
 					<input class="form-check-input" type="checkbox" id="MACheckbox3" name="MACheckboxes[]" value="C" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer && @positions1[2] != -1
 					form.text_field :MACheckbox3, class: "form-control", name: "MACheckbox3", placeholder: "Answer 3", for: "checkbox3", value: @question.Answer[@positions1[2]+1..@positions2[2]-1]
 				else
 					form.text_field :MACheckbox3, class: "form-control", name: "MACheckbox3", placeholder: "Answer 3", for: "checkbox3"
@@ -214,12 +214,12 @@
 				</div>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
-				<% if @question.Answer && @question.Answer[@positions2[3]+1] != "0" %>
+				<% if @question.Answer && @question.Answer[@positions2[3]+1] != "0" && @question.Answer[@positions2[3]+1] != "["%>
 					<input class="form-check-input" type="checkbox" id="MACheckbox4" name="MACheckboxes[]" value="D" style="top: 7px" checked>
 				<% else %>
 					<input class="form-check-input" type="checkbox" id="MACheckbox4" name="MACheckboxes[]" value="D" style="top: 7px">
 				<% end %>
-				<%= if @question.Answer
+				<%= if @question.Answer && @positions1[3] != -1
 					form.text_field :MACheckbox4, class: "form-control", name: "MACheckbox4", placeholder: "Answer 4", for: "checkbox4", value: @question.Answer[@positions1[3]+1..@positions2[3]-1]
 				else
 					form.text_field :MACheckbox4, class: "form-control", name: "MACheckbox4", placeholder: "Answer 4", for: "checkbox4"
@@ -259,8 +259,12 @@
 				<input class="form-check-input" type="radio" name="TFRadio" id="TFRadio1" value="True" 
 				<% if @question.Answer 
 					if @question.Answer.include?('True') %> 
-						checked 
-					<% end
+						checked
+					<% else
+						if !@question.Answer.include?('False') %>
+						checked
+						<% end 
+					end
 				else %>
 					checked
 				<% end %> >

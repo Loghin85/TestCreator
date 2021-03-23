@@ -27,12 +27,19 @@ class QuestionsController < ApplicationController
 		while (pos = @question.Answer.index("[", pos + 1))
 		@positions1 << pos
 		end
-		
+
 		pos = -1
+		
 		while (pos = @question.Answer.index("]", pos + 1))
 		@positions2 << pos
 		end
-		p @positions1
+		
+		while (@positions1.length < 4)
+			@positions1 << -1
+			@positions2 << -1
+		
+		end
+		
   end
 
   # POST /questions or /questions.json
