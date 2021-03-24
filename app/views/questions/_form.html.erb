@@ -176,9 +176,19 @@
 				else
 					form.text_field :MACheckbox1, class: "form-control", name: "MACheckbox1", placeholder: "Answer 1", for: "checkbox1"
 				end%>
-				<div id="partialValue1" style="display: none;">
-				<%= form.label "Partial credit %"%>
-				<%= form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"%>
+				<% if @question.Options
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[0]+1] != "0" %>
+						<div id="partialValue1">
+					<% else %>
+						<div id="partialValue1" style="display: none;">
+					<% end 
+				end%>
+					<%= form.label "Partial credit %"%>
+					<%= if @question.Answer
+						form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[0]+1..@positions1[1]-2], step:".01", min: "0", max: "100"
+					else
+						form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
+					end%>
 				</div>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
@@ -192,9 +202,19 @@
 				else
 					form.text_field :MACheckbox2, class: "form-control", name: "MACheckbox2", placeholder: "Answer 2", for: "checkbox2"
 				end%>
-				<div id="partialValue2" style="display: none;">
-				<%= form.label "Partial credit %"%>
-				<%= form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"%>
+				<% if @question.Options
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[1]+1] != "0"  && @question.Answer[@positions2[1]+1] != "["%>
+						<div id="partialValue2">
+					<% else %>
+						<div id="partialValue2" style="display: none;">
+					<% end 
+				end%>
+					<%= form.label "Partial credit %"%>
+					<%= if @question.Answer
+						form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[1]+1..@positions1[2]-2], step:".01", min: "0", max: "100"
+					else
+						form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
+					end%>
 				</div>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
@@ -208,9 +228,19 @@
 				else
 					form.text_field :MACheckbox3, class: "form-control", name: "MACheckbox3", placeholder: "Answer 3", for: "checkbox3"
 				end%>
-				<div id="partialValue3" style="display: none;">
-				<%= form.label "Partial credit %"%>
-				<%= form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"%>
+				<% if @question.Options
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[2]+1] != "0"  && @question.Answer[@positions2[2]+1] != "["%>
+						<div id="partialValue3">
+					<% else %>
+						<div id="partialValue3" style="display: none;">
+					<% end 
+				end%>
+					<%= form.label "Partial credit %"%>
+					<%= if @question.Answer
+						form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[2]+1..@positions1[3]-2], step:".01", min: "0", max: "100"
+					else
+						form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
+					end%>
 				</div>
 			</div>
 			<div class="form-check" style="margin-top: 5px">
@@ -224,9 +254,19 @@
 				else
 					form.text_field :MACheckbox4, class: "form-control", name: "MACheckbox4", placeholder: "Answer 4", for: "checkbox4"
 				end%>
-				<div id="partialValue4" style="display: none;">
-				<%= form.label "Partial credit %"%>
-				<%= form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"%>
+				<% if @question.Options
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[3]+1] != "0" && @question.Answer[@positions2[3]+1] != "["%>
+						<div id="partialValue4">
+					<% else %>
+						<div id="partialValue4" style="display: none;">
+					<% end 
+				end%>
+					<%= form.label "Partial credit %"%>
+					<%= if @question.Answer
+						form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[3]+1..@question.Answer.length-2], step:".01", min: "0", max: "100"
+					else
+						form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
+					end%>
 				</div>
 			</div>
 		</div>
