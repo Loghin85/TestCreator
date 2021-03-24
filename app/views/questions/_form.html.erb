@@ -187,7 +187,15 @@
 				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
-						form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[0]+1..@positions1[1]-2], step:".01", min: "0", max: "100"
+						if @question.Answer[@positions2[0]+1..@positions1[1]-2] != "100"
+							form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[0]+1..@positions1[1]-2], step:".01", min: "0", max: "100"
+						else
+							if @question.Answer.scan(/(?=#{"100"})/).count == 1
+								form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value: 100, step:".01", min: "0", max: "100"
+							else
+								form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value: 100/@question.Answer.scan(/(?=#{"100"})/).count, step:".01", min: "0", max: "100"
+							end
+						end
 					else
 						form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
 					end%>
@@ -215,7 +223,15 @@
 				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
-						form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[1]+1..@positions1[2]-2], step:".01", min: "0", max: "100"
+						if @question.Answer[@positions2[1]+1..@positions1[2]-2] != "100"
+							form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[1]+1..@positions1[2]-2], step:".01", min: "0", max: "100"
+						else
+							if @question.Answer.scan(/(?=#{"100"})/).count == 1
+								form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value: 100, step:".01", min: "0", max: "100"
+							else
+								form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value: 100/@question.Answer.scan(/(?=#{"100"})/).count, step:".01", min: "0", max: "100"
+							end
+						end
 					else
 						form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
 					end%>
@@ -243,7 +259,15 @@
 				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
-						form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[2]+1..@positions1[3]-2], step:".01", min: "0", max: "100"
+						if @question.Answer[@positions2[2]+1..@positions1[3]-2] != "100"
+							form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[2]+1..@positions1[3]-2], step:".01", min: "0", max: "100"
+						else
+							if @question.Answer.scan(/(?=#{"100"})/).count == 1
+								form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value: 100, step:".01", min: "0", max: "100"
+							else
+								form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value: 100/@question.Answer.scan(/(?=#{"100"})/).count, step:".01", min: "0", max: "100"
+							end
+						end
 					else
 						form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
 					end%>
@@ -271,7 +295,15 @@
 				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
-						form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[3]+1..@question.Answer.length-2], step:".01", min: "0", max: "100"
+						if @question.Answer[@positions2[3]+1..@question.Answer.length-2] != "100"
+							form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[3]+1..@question.Answer.length-2], step:".01", min: "0", max: "100"
+						else
+							if @question.Answer.scan(/(?=#{"100"})/).count == 1
+								form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value: 100, step:".01", min: "0", max: "100"
+							else
+								form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value: 100/@question.Answer.scan(/(?=#{"100"})/).count, step:".01", min: "0", max: "100"
+							end
+						end
 					else
 						form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value: "0", step:".01", min: "0", max: "100"
 					end%>
@@ -457,7 +489,6 @@ $(document).ready(function(){
 			sum = 0;
 			for (i=1;i<5;i++)
 				sum += parseFloat(document.getElementById("question_MACheckbox"+i+"Credit").value);
-			console.log(sum);
 			if (!(sum == 100 || sum == 99.99))
 				alert("The sum of all partial credits is not equal to 100%. Please adjust accordingly.")
 		});
@@ -469,7 +500,6 @@ $(document).ready(function(){
 			sum = 0;
 			for (i=1;i<5;i++)
 				sum += parseFloat(document.getElementById("question_MACheckbox"+i+"Credit").value);
-			console.log(sum);
 			if (sum != 100)
 				alert("The sum of all partial credits is not equal to 100%. Please adjust accordingly.")
 		});
@@ -481,7 +511,6 @@ $(document).ready(function(){
 			sum = 0;
 			for (i=1;i<5;i++)
 				sum += parseFloat(document.getElementById("question_MACheckbox"+i+"Credit").value);
-			console.log(sum);
 			if (sum != 100)
 				alert("The sum of all partial credits is not equal to 100%. Please adjust accordingly.")
 		});
@@ -493,7 +522,6 @@ $(document).ready(function(){
 			sum = 0;
 			for (i=1;i<5;i++)
 				sum += parseFloat(document.getElementById("question_MACheckbox"+i+"Credit").value);
-			console.log(sum);
 			if (sum != 100)
 				alert("The sum of all partial credits is not equal to 100%. Please adjust accordingly.")
 		});
@@ -504,9 +532,15 @@ $(document).ready(function(){
     $("#question_FRMAnswer").keyup(function(){
         // Getting the current value of textarea
         var currentText = $(this).val();
-				let regexp = /([\[][a-zA-Z][\]])/g;
+				let regexp = /([\[][a-zA-Z]+[\]])/g;
 				var result = Array.from(currentText.matchAll(regexp));
-				
+				console.clear();
+				//for (var i = 0; i<result.length; i++)
+					//console.log(result[i][0]);
+				for (var i = 0; i<result.length-1; i++)
+					for (var j = i+1; j<result.length; j++)
+						if (result[i][0].normalize() === result[j][0].normalize())
+							result.splice(j, 1);
 				var xs = document.getElementsByClassName("X");
 				var ys = document.getElementsByClassName("Y");
 				var zs = document.getElementsByClassName("Z");
@@ -515,7 +549,7 @@ $(document).ready(function(){
 				if (result.length>0)
 					{var html = '<label for="question_Variables">Variables</label>';
 					for (var i = 0; i<result.length; i++)
-						{var currentVar = result[i][0][1].toUpperCase();
+						{let currentVar = result[i][0].substring(1, result[i][0].length-1).toUpperCase();
 						html = html+'<div class="form-group">';
 						html = html+'<div class="form-inline" style="margin-left: 10px">';
 						html = html+'<label for="question_'+currentVar+' range:">'+currentVar+' range:</label>';
@@ -526,7 +560,7 @@ $(document).ready(function(){
 						html = html+'</div>';
 						}
 					html+= '<label for="question_Relations">Relations</label>';
-					html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y], [x]+[y]=2, [x]+[t]=3[3]" style="margin-left: 10px" type="text" name="question[Relations]" id="question_Relations">';
+					html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y], [x]+[y]=2, [x]+[y]=3[z]" style="margin-left: 10px" type="text" name="question[Relations]" id="question_Relations">';
 					}
 				else
 					html = '';
