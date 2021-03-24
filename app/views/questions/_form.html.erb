@@ -182,7 +182,9 @@
 					<% else %>
 						<div id="partialValue1" style="display: none;">
 					<% end 
-				end%>
+				else %>
+						<div id="partialValue1" style="display: none;">
+				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
 						form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[0]+1..@positions1[1]-2], step:".01", min: "0", max: "100"
@@ -208,7 +210,9 @@
 					<% else %>
 						<div id="partialValue2" style="display: none;">
 					<% end 
-				end%>
+				else %>
+						<div id="partialValue2" style="display: none;">
+				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
 						form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[1]+1..@positions1[2]-2], step:".01", min: "0", max: "100"
@@ -234,7 +238,9 @@
 					<% else %>
 						<div id="partialValue3" style="display: none;">
 					<% end 
-				end%>
+				else %>
+						<div id="partialValue3" style="display: none;">
+				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
 						form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[2]+1..@positions1[3]-2], step:".01", min: "0", max: "100"
@@ -260,7 +266,9 @@
 					<% else %>
 						<div id="partialValue4" style="display: none;">
 					<% end 
-				end%>
+				else %>
+						<div id="partialValue4" style="display: none;">
+				<%end%>
 					<%= form.label "Partial credit %"%>
 					<%= if @question.Answer
 						form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[3]+1..@question.Answer.length-2], step:".01", min: "0", max: "100"
@@ -518,7 +526,7 @@ $(document).ready(function(){
 						html = html+'</div>';
 						}
 					html+= '<label for="question_Relations">Relations</label>';
-					html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y]" style="margin-left: 10px" type="text" name="question[Relations]" id="question_Relations">';
+					html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y], [x]+[y]=2, [x]+[t]=3[3]" style="margin-left: 10px" type="text" name="question[Relations]" id="question_Relations">';
 					}
 				else
 					html = '';
