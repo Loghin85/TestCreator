@@ -249,7 +249,6 @@ DEPENDENCIES
   bootstrap-sass
   byebug
   capybara (>= 3.26)
-  cbc-wrapper (~> 2.9.9.3)
   coffee-rails (~> 4.2)
   faker
   geocoder
