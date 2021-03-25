@@ -551,15 +551,16 @@ $(document).ready(function(){
 				
 				if (result.length>0)
 					{var html = '<label for="question_Variables">Variables</label>';
+					var values = <%= @values %>;
 					for (var i = 0; i<result.length; i++)
 						{let currentVar = result[i][0].substring(1, result[i][0].length-1).toUpperCase();
 						html = html+'<div class="form-group">';
 						html = html+'<div class="form-inline" style="margin-left: 10px">';
 						html = html+'<label for="question_'+currentVar+' range:">'+currentVar+' range:</label>';
 						<% if @question.Answer && @question.Answer != ""  && @question.Answer["〘"]  %>
-							html = html+'<input class="form-control" for="minimum" value="'+ <%= @values[0][0]%> + '" type="number" style="margin-left: 10px; margin-right: 10px" name="'+currentVar+'Min" id="'+currentVar+'Min">';
+							html = html+'<input class="form-control" for="minimum" value="'+ values[i][0] +'" type="number" style="margin-left: 10px; margin-right: 10px" name="'+currentVar+'Min" id="'+currentVar+'Min">';
 							html = html+'to ';
-							html = html+'<input class="form-control" for="maximum" value="'+ <%= @values[0][1]%> + '" type="number" style="margin-left: 10px" name="'+currentVar+'Max" id="'+currentVar+'Max">';
+							html = html+'<input class="form-control" for="maximum" value="'+ values[i][1] +'" type="number" style="margin-left: 10px" name="'+currentVar+'Max" id="'+currentVar+'Max">';
 						<% else %>
 							html = html+'<input class="form-control" for="minimum" value="0" type="number" style="margin-left: 10px; margin-right: 10px" name="'+currentVar+'Min" id="'+currentVar+'Min">';
 							html = html+'to ';
@@ -569,7 +570,11 @@ $(document).ready(function(){
 						html = html+'</div>';
 						}
 					html+= '<label for="question_Relations">Relations</label>';
-					html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y], [x]+[y]=2, [x]+[y]=3[z]" style="margin-left: 10px" type="text" name="question[Relations]" id="question_Relations">';
+					<% if @question.Answer && @question.Answer != ""  && @question.Answer["〚"]  %>
+						html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y], [x]+[y]=2, [x]+[y]=3[z]" value="<%= @question.Answer[@question.Answer.index("〚")+1..@question.Answer.index("〛")-1]%>" style="margin-left: 10px" type="text" name="FRMRelations" id="FRMRelations">';
+					<% else %>
+						html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2[Y], [x]+[y]=2, [x]+[y]=3[z]" style="margin-left: 10px" type="text" name="FRMRelations" id="FRMRelations">';
+					<% end %>
 					}
 				else
 					html = '';

@@ -162,6 +162,7 @@ class QuestionsController < ApplicationController
 				vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 				answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 			end
+			answer = answer + "〚" + params[:FRMRelations] + "〛"
 		end
 		
 		@question = Question.new(question_params.merge(:Options => options, :Answer => answer))
@@ -288,6 +289,7 @@ class QuestionsController < ApplicationController
 				vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 				answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 			end
+			answer = answer + "〚" + params[:FRMRelations] + "〛"
 			p answer
 			m = Cbc::Model.new
 			#left here
