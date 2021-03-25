@@ -40,7 +40,7 @@ gem 'faker'
 gem 'geocoder'
 gem 'ruby-cbc'
 gem 'rexml'
-gem 'cbc-wrapper', '~>2.9.9.4'
+gem 'cbc-wrapper', '~>2.9.9.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
