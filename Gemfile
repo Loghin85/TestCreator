@@ -38,6 +38,7 @@ gem 'activerecord-session_store'
 gem "recaptcha"
 gem 'faker'
 gem 'geocoder'
+gem 'ruby-cbc'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

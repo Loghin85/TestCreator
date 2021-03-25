@@ -52,3 +52,17 @@ en:
               invalid: "The password must be at least 8 characters long and contain at least: one lowercase character, one uppercase character and one number"
             password_confirmation:
               confirmation: "Confirmed password and Password must match."
+        question:
+          attributes:
+            Title: 
+              blank: "Please input a title"
+            Type:  
+              blank: "Please select a question type"
+            Text:  
+              blank: "Please enter the question text"
+            Points:  
+              blank: "Please select how many points the question is worth"
+            Feedback:  
+              blank: "Please enter the feedback text"
+            Answer:  
+              blank: "Please enter the complete question answer."
