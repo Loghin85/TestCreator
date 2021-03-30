@@ -551,13 +551,13 @@ $(document).ready(function(){
 				
 				if (result.length>0)
 					{var html = '<label for="question_Variables">Variables</label>';
-					var values = <%= @values %>;
+					var values = <%= @values ? @values : [] %>;
 					for (var i = 0; i<result.length; i++)
 						{let currentVar = result[i][0].substring(1, result[i][0].length-1).toUpperCase();
 						html = html+'<div class="form-group">';
 						html = html+'<div class="form-inline" style="margin-left: 10px">';
 						html = html+'<label for="question_'+currentVar+' range:">'+currentVar+' range:</label>';
-						<% if @question.Answer && @question.Answer != ""  && @question.Answer["〘"]  %>
+						<% if @question.Answer && @question.Answer != ""  && @question.Answer["〘"]  && @values %>
 							html = html+'<input class="form-control" for="minimum" value="'+ values[i][0] +'" type="number" style="margin-left: 10px; margin-right: 10px" name="'+currentVar+'Min" id="'+currentVar+'Min">';
 							html = html+'to ';
 							html = html+'<input class="form-control" for="maximum" value="'+ values[i][1] +'" type="number" style="margin-left: 10px" name="'+currentVar+'Max" id="'+currentVar+'Max">';

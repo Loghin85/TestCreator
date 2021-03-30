@@ -19,79 +19,79 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/edit
   def edit
-		@positions1 = []
-		@positions2 = []
-		@values = []
+	@positions1 = []
+	@positions2 = []
+	@values = []
 
-		indx= -1
-		while (indx= @question.Answer.index("〔", indx+ 1))
+	indx= -1
+	while (indx= @question.Answer.index("〔", indx+ 1))
 		@positions1 << indx
-		end
+	end
 
+	indx= -1
+	while (indx= @question.Answer.index("〕", indx+ 1))
+		@positions2 << indx
+	end
+		
+	while (@positions1.length < 4)
+		@positions1 << -1
+		@positions2 << -1
+	end
+		
+	if @question.Type == "FRM"
+		text= @question.Answer[@question.Answer.index("〘")..-1]
+		positionsComma = []
+		positionsEB = []
 		indx= -1
-		while (indx= @question.Answer.index("〕", indx+ 1))
-			@positions2 << indx
+		while (indx= text.index(",", indx+ 1))
+			positionsComma << indx
 		end
-		
-		while (@positions1.length < 4)
-			@positions1 << -1
-			@positions2 << -1
+		indx= -1
+		while (indx= text.index("〙", indx+ 1))
+			positionsEB << indx
 		end
-		
-		if @question.Type == "FRM"
-			text= @question.Answer[@question.Answer.index("〘")..-1]
-			positionsComma = []
-			positionsEB = []
-			indx= -1
-			while (indx= text.index(",", indx+ 1))
-				positionsComma << indx
-			end
-			indx= -1
-			while (indx= text.index("〙", indx+ 1))
-				positionsEB << indx
-			end
-			for i in 0..positionsComma.length/2-1
-				var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
-				@values << var
-			end
+		for i in 0..positionsComma.length/2-1
+			var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
+			@values << var
 		end
+	end
   end
 
   # POST /questions or /questions.json
   def create
     options=""
-		answer=""
+	answer=""
 		
-		#form the options string
-		if params[:Negative][:result]=="1"
-			options=options+"NEG1P"+params[:negValue]
+	#form the options string
+	if params[:Negative][:result]=="1"
+		options=options+"NEG1P"+params[:negValue]
+	else
+		options=options+"NEG0"
+	end
+	if params[:question][:Type]=="MA"
+		if params[:Partial][:result]=="1"
+			options+="PAR1"
 		else
-			options=options+"NEG0"
+			options+="PAR0"
 		end
-		if params[:question][:Type]=="MA"
-			if params[:Partial][:result]=="1"
-				options+="PAR1"
-			else
-				options+="PAR0"
-			end
+	end
+	if params[:question][:Type]=="FTB"
+		if params[:Contains][:result]=="1"
+			options+="CON1"
+		else
+			options+="CON0"
 		end
-		if params[:question][:Type]=="FTB"
-			if params[:Contains][:result]=="1"
-				options+="CON1"
-			else
-				options+="CON0"
-			end
-			if params[:CaseSensitive][:result]=="1"
-				options+="CAS1"
-			else
-				options+="CAS0"
-			end
-			if params[:MultiSpaces][:result]=="1"
-				options+="MUL1"
-			else
-				options+="MUL0"
-			end
+		if params[:CaseSensitive][:result]=="1"
+			options+="CAS1"
+		else
+			options+="CAS0"
 		end
+		if params[:MultiSpaces][:result]=="1"
+			options+="MUL1"
+		else
+			options+="MUL0"
+		end
+	end
 		
 		#form the answer string
 		case params[:question][:Type]
@@ -174,6 +174,7 @@ class QuestionsController < ApplicationController
 				else
 					@positions1 = []
 					@positions2 = []
+					@values = []
 
 					indx= -1
 					while (indx= @question.Answer.index("〔", indx+ 1))
@@ -188,6 +189,23 @@ class QuestionsController < ApplicationController
 					while (@positions1.length < 4)
 						@positions1 << -1
 						@positions2 << -1
+					end
+					if @question.Type == "FRM"
+						text= @question.Answer[@question.Answer.index("〘")..-1]
+						positionsComma = []
+						positionsEB = []
+						indx= -1
+						while (indx= text.index(",", indx+ 1))
+							positionsComma << indx
+						end
+						indx= -1
+						while (indx= text.index("〙", indx+ 1))
+							positionsEB << indx
+						end
+						for i in 0..positionsComma.length/2-1
+							var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
+							@values << var
+						end
 					end
 					format.html { render :new, status: :unprocessable_entity }
 					format.json { render json: @question.errors, status: :unprocessable_entity }
@@ -289,17 +307,23 @@ class QuestionsController < ApplicationController
 				vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 				answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 			end
-			answer = answer + "〚" + params[:FRMRelations] + "〛"
-			p answer
+			relationsRegex= /((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)((,| ,|, | , )((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*))*/
+			relations = params[:FRMRelations]
+			test = relations.scan(relationsRegex)
+			if test.length == 0
+				answer=""
+			else
+				answer = answer + "〚" + relations + "〛"
+			end
 			m = Cbc::Model.new
 			#left here
-			x1 = m.int_var(-10..11)
+			x1 = m.int_var(-20..-11)
 			x2 = m.int_var(-10..11)
 			x3 = m.int_var(-10..11)
 
 			m.maximize(5* x2 -5*x1+3*x3)
 
-			m.enforce(x1 + x2 + x3 <= 3)
+			m.enforce(x2 <= x1)
 			m.enforce(10 * x1 + 4 * x2 + 5 * x3 <= 4)
 			m.enforce(2 * x1 + 2 * x2 + 6 * x3 >= 10)
 
@@ -324,6 +348,7 @@ class QuestionsController < ApplicationController
       else
 				@positions1 = []
 				@positions2 = []
+				@values = []
 
 				indx= -1
 				while (indx= @question.Answer.index("〔", indx+ 1))
@@ -338,6 +363,23 @@ class QuestionsController < ApplicationController
 				while (@positions1.length < 4)
 					@positions1 << -1
 					@positions2 << -1
+				end
+				if @question.Type == "FRM"
+					text= @question.Answer[@question.Answer.index("〘")..-1]
+					positionsComma = []
+					positionsEB = []
+					indx= -1
+					while (indx= text.index(",", indx+ 1))
+						positionsComma << indx
+					end
+					indx= -1
+					while (indx= text.index("〙", indx+ 1))
+						positionsEB << indx
+					end
+					for i in 0..positionsComma.length/2-1
+						var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
+						@values << var
+					end
 				end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @question.errors, status: :unprocessable_entity }
