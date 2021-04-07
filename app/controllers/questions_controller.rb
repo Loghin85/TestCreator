@@ -152,6 +152,11 @@ class QuestionsController < ApplicationController
 			end
 		when "TF"
 			answer = "〔" + params[:TFRadio] + "〕100%"
+		when "REG"
+			answer = "〔" + params[:REGAnswer] + "〕100%"
+			if answer.length == 6
+				answer=nil
+			end
 		when "FRM"
 			formula = params[:FRMAnswer]
 			answer = "〔" + params[:FRMAnswer] + "〕100%"
@@ -172,39 +177,41 @@ class QuestionsController < ApplicationController
 											flash[:info] = 'Question was successfully created.' }
 					format.json { render :show, status: :created, location: @question }
 				else
-					@positions1 = []
-					@positions2 = []
-					@values = []
+					if answer!=nil
+						@positions1 = []
+						@positions2 = []
+						@values = []
 
-					indx= -1
-					while (indx= @question.Answer.index("〔", indx+ 1))
-					@positions1 << indx
-					end
+						indx= -1
+						while (indx= @question.Answer.index("〔", indx+ 1))
+						@positions1 << indx
+						end
 
-					indx= -1
-					while (indx= @question.Answer.index("〕", indx+ 1))
-						@positions2 << indx
-					end
-					
-					while (@positions1.length < 4)
-						@positions1 << -1
-						@positions2 << -1
-					end
-					if @question.Type == "FRM"
-						text= @question.Answer[@question.Answer.index("〘")..-1]
-						positionsComma = []
-						positionsEB = []
 						indx= -1
-						while (indx= text.index(",", indx+ 1))
-							positionsComma << indx
+						while (indx= @question.Answer.index("〕", indx+ 1))
+							@positions2 << indx
 						end
-						indx= -1
-						while (indx= text.index("〙", indx+ 1))
-							positionsEB << indx
+						
+						while (@positions1.length < 4)
+							@positions1 << -1
+							@positions2 << -1
 						end
-						for i in 0..positionsComma.length/2-1
-							var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
-							@values << var
+						if @question.Type == "FRM"
+							text= @question.Answer[@question.Answer.index("〘")..-1]
+							positionsComma = []
+							positionsEB = []
+							indx= -1
+							while (indx= text.index(",", indx+ 1))
+								positionsComma << indx
+							end
+							indx= -1
+							while (indx= text.index("〙", indx+ 1))
+								positionsEB << indx
+							end
+							for i in 0..positionsComma.length/2-1
+								var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
+								@values << var
+							end
 						end
 					end
 					format.html { render :new, status: :unprocessable_entity }
@@ -262,6 +269,9 @@ class QuestionsController < ApplicationController
 			when "D"
 				answer = "〔" + params[:MCQRadio1] + "〕0%" + "〔" + params[:MCQRadio2] + "〕0%" + "〔" + params[:MCQRadio3] + "〕0%" + "〔" + params[:MCQRadio4] + "〕100%"
 			end
+			if answer.length == 18
+				answer=nil
+			end
 		when "MA"
 			correct = params[:MACheckboxes].clone
 			if params[:Partial][:result]=="1"
@@ -270,7 +280,7 @@ class QuestionsController < ApplicationController
 					answer = answer + "〔" +  params[:MACheckbox3]+ "〕" + params[:MACheckbox3Credit] + "%"
 					answer = answer + "〔" +  params[:MACheckbox4]+ "〕" + params[:MACheckbox4Credit] + "%"
 			else
-				if correct 
+				if !correct.nil?
 					if correct.include?("A")
 						answer = answer + "〔" +  params[:MACheckbox1]+ "〕100%"
 					else
@@ -291,12 +301,25 @@ class QuestionsController < ApplicationController
 					else
 						answer = answer + "〔" +  params[:MACheckbox4]+ "〕0%"
 					end
+					if answer.length == 18
+						answer=nil
+					end
+				else
+					answer=nil
 				end
 			end
 		when "FTB"
 			answer = "〔" + params[:FTBAnswer] + "〕100%"
+			if answer.length == 6
+				answer=nil
+			end
 		when "TF"
 			answer = "〔" + params[:TFRadio] + "〕100%"
+		when "REG"
+			answer = "〔" + params[:REGAnswer] + "〕100%"
+			if answer.length == 6
+				answer=nil
+			end
 		when "FRM"
 			formula = params[:FRMAnswer]
 			answer = "〔" + params[:FRMAnswer] + "〕100%"
@@ -346,39 +369,41 @@ class QuestionsController < ApplicationController
 										flash[:info] = 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
-				@positions1 = []
-				@positions2 = []
-				@values = []
+				if answer!=nil
+					@positions1 = []
+					@positions2 = []
+					@values = []
 
-				indx= -1
-				while (indx= @question.Answer.index("〔", indx+ 1))
-				@positions1 << indx
-				end
+					indx= -1
+					while (indx= @question.Answer.index("〔", indx+ 1))
+					@positions1 << indx
+					end
 
-				indx= -1
-				while (indx= @question.Answer.index("〕", indx+ 1))
-					@positions2 << indx
-				end
-				
-				while (@positions1.length < 4)
-					@positions1 << -1
-					@positions2 << -1
-				end
-				if @question.Type == "FRM"
-					text= @question.Answer[@question.Answer.index("〘")..-1]
-					positionsComma = []
-					positionsEB = []
 					indx= -1
-					while (indx= text.index(",", indx+ 1))
-						positionsComma << indx
+					while (indx= @question.Answer.index("〕", indx+ 1))
+						@positions2 << indx
 					end
-					indx= -1
-					while (indx= text.index("〙", indx+ 1))
-						positionsEB << indx
+					
+					while (@positions1.length < 4)
+						@positions1 << -1
+						@positions2 << -1
 					end
-					for i in 0..positionsComma.length/2-1
-						var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
-						@values << var
+					if @question.Type == "FRM"
+						text= @question.Answer[@question.Answer.index("〘")..-1]
+						positionsComma = []
+						positionsEB = []
+						indx= -1
+						while (indx= text.index(",", indx+ 1))
+							positionsComma << indx
+						end
+						indx= -1
+						while (indx= text.index("〙", indx+ 1))
+							positionsEB << indx
+						end
+						for i in 0..positionsComma.length/2-1
+							var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
+							@values << var
+						end
 					end
 				end
         format.html { render :edit, status: :unprocessable_entity }

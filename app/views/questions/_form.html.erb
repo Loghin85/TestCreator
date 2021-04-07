@@ -10,7 +10,7 @@
 	
 	<div class="form-group">
 		<%= form.label :Type , "Question type"%>
-		<%= form.select(:Type, options_for_select({ "Multiple choice" => "MCQ", "Multiple answer" => "MA", "Fill in the blank" => "FTB", "Random variable" => "FRM", "True / False" => "TF" }, selected: @question.Type), {prompt: "Please choose a question type"}, {class: "form-control"} ) %>
+		<%= form.select(:Type, options_for_select({ "Multiple choice" => "MCQ", "Multiple answer" => "MA", "Fill in the blank" => "FTB", "Random variable" => "FRM", "True / False" => "TF" , "Regular expression" => "REG" }, selected: @question.Type), {prompt: "Please choose a question type"}, {class: "form-control"} ) %>
 	</div>
 	
 	<div class="form-group">
@@ -380,6 +380,62 @@
 		</div>
 	</div>
 	
+	<% if @question.Type=="REG" %>
+	<div class="REG">
+	<% else %>
+	<div class="REG" style="display: none;">
+	<% end %>
+		<div class="form-group">
+			<%= form.label "Expression"%>
+			<div class="input-group">
+				<%= if @question.Answer && @question.Answer != ""
+					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Cc]orrect$", value: @question.Answer[1..@question.Answer.index("〕")-1]
+				else
+					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Cc]orrect$"
+				end%>
+				<div class="input-group-append">
+					<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#expressionModal">
+						Check expression
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="expressionModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ModalLabel">Expression checker</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Expression</label>
+							<% if @question.Answer && @question.Answer != "" %>
+								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Cc]orrect$" value= <%= @question.Answer[1..@question.Answer.index("〕")-1] %> >
+							<% else %>
+								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Cc]orrect$">
+							<% end %>
+						</div>
+						<div class="form-group" id="TestCases">
+							<label>Test cases</label>
+							<input type="text" class="form-control" id="test_case1" placeholder="Correct">
+						</div>
+						<div class="form-group">
+							<button type="button" id="btAdd" class="btn btn-primary w-25">Add</button>
+							<button type="button" id="btRemove" class="btn btn-primary w-25">Remove</button>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="btCheck" >Check</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="form-group">
 			<%= form.label :Points , "Points"%>
 			<%= if @question.Points
@@ -409,6 +465,7 @@ $(document).ready(function(){
 				$('.FTB').toggle($(this).val()=="FTB");
 				$('.TF').toggle($(this).val()=="TF");
 				$('.FRM').toggle($(this).val()=="FRM");
+				$('.REG').toggle($(this).val()=="REG");
     });
 		$('#Partial_result').change(function() {
       if (!($('#Partial_result').is(":checked")))
@@ -580,7 +637,66 @@ $(document).ready(function(){
 					html = '';
 				document.getElementById("varsHtml").innerHTML = html;
     });
+		$("#question_REGAnswer").change(function(){
+			document.getElementById("expression").value = $(this).val();
+    });
+		$("#expression").change(function(){
+			document.getElementById("question_REGAnswer").value = $(this).val();
+    });
 });
+</script>    
+<script>
+    $(document).ready(function() {
+        var len = 1;
+				$('#btRemove').attr('class', 'btn btn-primary w-25 disabled'); 
+        $('#btRemove').attr('disabled', 'disabled');
+
+        $('#btAdd').click(function() {
+            $('#btRemove').attr('class', 'btn btn-primary w-25'); 
+            $('#btRemove').removeAttr('disabled');
+            len = len + 1;
+
+            // ADD TEXTBOX.
+            $("#TestCases").append('<input type="text" class="form-control" id="test_case' + len + '" placeholder="Correct' + (len-1) + '" style="margin-top: 5px;"/>');
+								
+            // AFTER REACHING THE SPECIFIED LIMIT, DISABLE THE "ADD" BUTTON.
+            if(len==10) {
+                $('#btAdd').attr('class', 'btn btn-primary w-25 disabled'); 
+                $('#btAdd').attr('disabled', 'disabled');
+            }
+						
+        });
+
+        // REMOVE ONE ELEMENT PER CLICK.
+        $('#btRemove').click(function() {
+            $('#btAdd').attr('class', 'btn btn-primary w-25'); 
+            $('#btAdd').removeAttr('disabled');
+						
+            if (len != 1) { $('#test_case' + len).remove(); len = len - 1; }
+        
+            if (len == 1) { 
+								$('#btRemove').attr('class', 'btn btn-primary w-25 disabled'); 
+								$('#btRemove').attr('disabled', 'disabled');
+            }
+        });
+				// "check" BUTTON IS CLICKED.
+				$('#btCheck').click(function() {
+						values = '';
+						let regex = new RegExp($('#expression').val());
+						console.log(regex);
+						for (i=1;i<=len;i++)
+							if (regex.test($('#test_case' + i).val()))
+								{if ( document.getElementById("test_case"+i).classList.contains('border-danger') )
+									document.getElementById("test_case"+i).classList.remove('border-danger');
+								document.getElementById("test_case"+i).classList.add('border-success');}
+							else
+								{if ( document.getElementById("test_case"+i).classList.contains('border-success') )
+									document.getElementById("test_case"+i).classList.remove('border-success');
+								document.getElementById("test_case"+i).classList.add('border-danger');}
+							console.log($('#test_case' + i).val());
+				});
+    });
+
 </script>
 <script>
 $(document).ready(function(){
