@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
+	
+	create_table :assessments do |t|
+    t.integer :UserId
+    t.string :Name
+    t.string :Description
+    t.integer :Duration
+    t.datetime :ScheduledAt
+		t.integer :AvailableFor
+		t.timestamps
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false

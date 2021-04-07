@@ -66,3 +66,15 @@ en:
               blank: "Please enter the feedback text"
             Answer:  
               blank: "Please enter the complete question answer."
+        assessment:
+          attributes:
+            Name:
+              blank: "Please input a title"
+            Description:
+              blank: "Please enter an assessment description"
+            Duration:
+              blank: "Please choose an assessment duration"
+            AvailableFor:
+              blank: "Please choose the assessment availability"
+            ScheduledAt:
+              blank: "Please choose the assessment start time"

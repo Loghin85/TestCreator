@@ -1,0 +1,71 @@
+<p id="notice"><%= notice %>	</div>
+		</div>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-6">
+		<div class="col-12" style="text-align: center;">
+			<h1><%= @assessment.Name %></h1>
+		</div>
+		
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>User id:</strong>
+			</div>
+			<div class="col-6">
+				<%= @assessment.UserId %>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Description:</strong>
+			</div>
+			<div class="col-6">
+				<%= @assessment.Description %>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Duration:</strong>
+			</div>
+			<div class="col-6">
+				<%= @assessment.Duration %>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Availability:</strong>
+			</div>
+			<div class="col-6">
+				<%= @assessment.AvailableFor %>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Scheduled at:</strong>
+			</div>
+			<div class="col-6">
+				<%= @assessment.ScheduledAt %>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-6" style="text-align: right;">
+				<strong>Duration:</strong>
+			</div>
+			<div class="col-6">
+				<%= @assessment.Duration %>
+			</div>
+		</div>
+		<br>
+		<div class="row justify-content-center">
+			<%= button_to 'Edit', edit_assessment_path(@assessment), class: "btn btn-primary", method: "get", style: "margin-left: 10px;"%>
+			<%= button_to 'Delete', assessment_path, class: "btn btn-primary", method: "delete", data: { confirm: 'Are you sure?' }, style: "margin-left: 10px;"%>
+		</div>
+	</div>
+	<div class="col-6">
+		<div id="container" class=" " style="width: 100%; height: 400px; float: right; margin: 0 auto"></div>
+	</div>
+</div>

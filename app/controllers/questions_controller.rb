@@ -333,12 +333,13 @@ class QuestionsController < ApplicationController
 			relationsRegex= /((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)((,| ,|, | , )((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*))*/
 			relations = params[:FRMRelations]
 			test = relations.scan(relationsRegex)
-			if test.length == 0
+			if test.length == 0 && relations.length != 0
 				answer=""
-			else
+			elsif relations.length != 0
 				answer = answer + "〚" + relations + "〛"
 			end
 			m = Cbc::Model.new
+			
 			#left here
 			x1 = m.int_var(-20..-11)
 			x2 = m.int_var(-10..11)
@@ -349,6 +350,8 @@ class QuestionsController < ApplicationController
 			m.enforce(x2 <= x1)
 			m.enforce(10 * x1 + 4 * x2 + 5 * x3 <= 4)
 			m.enforce(2 * x1 + 2 * x2 + 6 * x3 >= 10)
+		
+			p m.constraints
 
 			p = m.to_problem
 

@@ -1,0 +1,60 @@
+<%= form_with(model: assessment) do |form| %>
+  <% if assessment.errors.any? %>
+    <% flash.now[:warning] = assessment.errors.full_messages[0] %>
+  <% end %>
+	
+	<div class="form-group">
+			<%= form.label :Name , "Assessment title"%>
+			<%= form.text_field :Name, class: "form-control", value: "Assessment 1"%>
+  </div>
+
+	<div class="form-group">
+			<%= form.label :Description , "Assessment Desctiption"%>
+			<%= form.text_area :Description, class: "form-control tinymceT", placeholder: "This assessment is..."%>
+	</div>
+	
+	<div class="form-group">
+			<%= form.label :Duration , "Duration (min)"%>
+			<%= if @assessment.Duration
+			form.text_field :Duration, class: "form-control", value: @assessment.Duration, for: "options", type: "number"
+			else
+			form.text_field :Duration, class: "form-control", value: 60, for: "options", type: "number"
+			end%>
+	</div>
+	
+	<div class="form-group">
+			<%= form.label :AvailableFor , "Availability (min)"%>
+			<%= if @assessment.AvailableFor
+			form.text_field :AvailableFor, class: "form-control", value: @assessment.AvailableFor, for: "options", type: "number"
+			else
+			form.text_field :AvailableFor, class: "form-control", value: 60, for: "options", type: "number"
+			end%>
+	</div>
+
+	<div class="form-group">
+		<%= form.label :ScheduledAt , "Scheduled date and time"%>
+		<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+      <% if @assessment.ScheduledAt %>
+				<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[ScheduledAt]" id="assessment_ScheduledAt" value="<%=@assessment.ScheduledAt.day %>/<%=@assessment.ScheduledAt.month %>/<%=@assessment.ScheduledAt.year %> <%=@assessment.ScheduledAt.hour %>:<%=@assessment.ScheduledAt.min %>"/>
+			<% else %>
+				<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[ScheduledAt]" id="assessment_ScheduledAt"/>
+			<% end %>
+      <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+      </div>
+    </div>
+	</div>
+	
+	<br>
+	<div class="row justify-content-right">
+		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px;" %>
+		<% end %>
+		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px;" %>
+	</div>
+	<script type="text/javascript">
+    $(function () {
+      $('#datetimepicker1').datetimepicker({
+                    locale: 'en-gb'
+                });
+    });
+  </script>
