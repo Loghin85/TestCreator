@@ -341,17 +341,24 @@ class QuestionsController < ApplicationController
 			m = Cbc::Model.new
 			
 			#left here
-			x1 = m.int_var(-20..-11)
-			x2 = m.int_var(-10..11)
-			x3 = m.int_var(-10..11)
+			varsILP={}
+			for var in vars
+				p var
+				varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
+			end
+			p varsILP.values[0]
+			m.maximize(5* varsILP.values[0] -5*varsILP.values[1])
 
-			m.maximize(5* x2 -5*x1+3*x3)
+			
+			
+			
+			
+			# [x1] <= [x2]
+			m.enforce(varsILP.values[0] <= varsILP.values[1])
+			m.enforce(2 * varsILP.values[0] + 4 * varsILP.values[1] <= 50)
 
-			m.enforce(x2 <= x1)
-			m.enforce(10 * x1 + 4 * x2 + 5 * x3 <= 4)
-			m.enforce(2 * x1 + 2 * x2 + 6 * x3 >= 10)
-		
-			p m.constraints
+
+
 
 			p = m.to_problem
 
