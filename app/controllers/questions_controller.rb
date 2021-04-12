@@ -15,6 +15,11 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
+		if params[:assessment_id]
+			@question.assessment_id = params[:assessment_id]
+		elsif params[:question][:assessment_id]
+			@question.assessment_id = params[:question][:assessment_id]
+		end 
   end
 
   # GET /questions/1/edit
@@ -22,6 +27,11 @@ class QuestionsController < ApplicationController
 	@positions1 = []
 	@positions2 = []
 	@values = []
+		if params[:assessment_id]
+			@question.assessment_id = params[:assessment_id]
+		elsif params[:question][:assessment_id]
+			@question.assessment_id = params[:question][:assessment_id]
+		end 
 
 	indx= -1
 	while (indx= @question.Answer.index("〔", indx+ 1))
@@ -214,6 +224,7 @@ class QuestionsController < ApplicationController
 							end
 						end
 					end
+					p params[:question][:assessment_id]
 					format.html { render :new, status: :unprocessable_entity }
 					format.json { render json: @question.errors, status: :unprocessable_entity }
 				end
@@ -376,7 +387,7 @@ class QuestionsController < ApplicationController
 		
     respond_to do |format|
       if @question.update(question_params.merge(:Options => options, :Answer => answer))
-        format.html { redirect_to @question 
+        format.html { redirect_to @question
 										flash[:info] = 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
@@ -427,7 +438,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to questions_url 
+      format.html { redirect_back(fallback_location: assessments_url)
 									flash[:info] = 'Question was successfully deleted.' }
       format.json { head :no_content }
     end
@@ -441,6 +452,6 @@ class QuestionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def question_params
-      params.require(:question).permit(:AssessmentId, :Title, :Text, :Feedback, :Type, :Points, :Answer, :Options)
+      params.require(:question).permit(:assessment_id, :Title, :Text, :Feedback, :Type, :Points, :Answer, :Options)
     end
 end

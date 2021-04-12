@@ -1,81 +1,78 @@
 <p id="notice"><%= notice %>	</div>
 		</div>
 <div class="row" style="width: 100%; padding: 10px;">
-	<div class="col-6">
-		<div class="col-12" style="text-align: center;">
-			<h1><%= @question.Title %></h1>
-		</div>
+	<div class="col-1">
+	</div>
+	<div class="col-10">
+		<h1><%= @question.Title %></h1>
+	</div>
+	<div class="col-1">
+	</div>
+</div>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-1"></div>
+	<div class="col-10">
+		<h3>Details</h3>
+	</div>
+	<div class="col-1"></div>
+	<div class="col-1"></div>
+	<div class="col-10">
 		<div class="row">
-			<div class="col-6" style="text-align: right;">
-				<strong>Assessmentid:</strong>
-			</div>
-			<div class="col-6">
-				<%= @question.AssessmentId %>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-6" style="text-align: right;">
-				<strong>Title:</strong>
-			</div>
-			<div class="col-6">
-				<%= @question.Title %>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-6" style="text-align: right;">
+			<div class="col-3" style="text-align: right;">
 				<strong>Text:</strong>
 			</div>
-			<div class="col-6">
-				<%= @question.Text %>
+			<div class="col-9">
+				<%= @question.Text.html_safe %>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-6" style="text-align: right;">
+			<div class="col-3" style="text-align: right;">
 				<strong>Feedback:</strong>
 			</div>
-			<div class="col-6">
-				<%= @question.Feedback %>
+			<div class="col-9">
+				<%= @question.Feedback.html_safe %>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-6" style="text-align: right;">
+			<div class="col-3" style="text-align: right;">
 				<strong>Type:</strong>
 			</div>
-			<div class="col-6">
+			<div class="col-9">
 				<%= @question.Type %>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-6" style="text-align: right;">
+			<div class="col-3" style="text-align: right;">
 				<strong>Points:</strong>
 			</div>
-			<div class="col-6">
+			<div class="col-9">
 				<%= @question.Points %>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-6" style="text-align: right;">
+			<div class="col-3" style="text-align: right;">
 				<strong>Options:</strong>
 			</div>
-			<div class="col-6">
+			<div class="col-9">
 				<%= @question.Options %>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-6" style="text-align: right;">
+			<div class="col-3" style="text-align: right;">
 				<strong>Answer:</strong>
 			</div>
-			<div class="col-6">
+			<div class="col-9">
 				<%= @question.Answer %>
 			</div>
 		</div>
 		<br>
-		<div class="row justify-content-center">
-			<%= button_to 'Edit', edit_question_path(@question), class: "btn btn-primary", method: "get", style: "margin-left: 10px;"%>
-			<%= button_to 'Delete', question_path, class: "btn btn-primary", method: "delete", data: { confirm: 'Are you sure?' }, style: "margin-left: 10px;"%>
+		<div class="row">
+			<%= link_to 'Back to assessment', '/assessments/'+@question.assessment_id.to_s , class: "btn btn-primary", style: "margin-left: 25px; margin-top: 10px;"%>
+			<%= button_to 'Edit', edit_question_path(@question), class: "btn btn-primary", method: "get", style: "margin-left: 10px; margin-top: 10px;"%>
+			<%= button_to 'Delete', question_path, class: "btn btn-primary", method: "delete", data: { confirm: 'Are you sure?' }, style: "margin-left: 10px; margin-top: 10px;"%>
 		</div>
 	</div>
+	<div class="col-1"></div>
 	<div class="col-6">
 		<div id="container" class=" " style="width: 100%; height: 400px; float: right; margin: 0 auto"></div>
 	</div>

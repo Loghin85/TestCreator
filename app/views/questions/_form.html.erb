@@ -2,6 +2,8 @@
   <% if question.errors.any? %>
     <% flash.now[:warning] = question.errors.full_messages[0] %>
   <% end %>
+
+	<%= form.hidden_field :assessment_id, :value => @question.assessment_id %>
 	
 	<div class="form-group">
 			<%= form.label :Title , "Question title"%>
@@ -452,9 +454,9 @@
 
 	<br>
 	<div class="row justify-content-right">
-		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px;" %>
+		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
 		<% end %>
-		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px;" %>
+		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
 	</div>
 		
 <script>

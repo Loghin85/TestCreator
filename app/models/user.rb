@@ -3,7 +3,6 @@ class User < ApplicationRecord
 	before_save   :downcase_email
 	before_create :create_activation_digest
 	has_many :assessment, dependent: :delete_all
-	#has_many :credit_card, dependent: :delete_all
 	
 	validates :Fname, :Lname, presence: true
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

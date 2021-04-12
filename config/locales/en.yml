@@ -68,8 +68,8 @@ en:
               blank: "Please enter the complete question answer."
         assessment:
           attributes:
-            UserId:
-              
+            user_id:
+              blank: "Please log in"
             Name:
               blank: "Please input a title"
             Description:
@@ -78,5 +78,7 @@ en:
               blank: "Please choose an assessment duration"
             AvailableFor:
               blank: "Please choose the assessment availability"
-            ScheduledAt:
-              blank: "Please choose the assessment start time"
+            BeginAt:
+              blank: "Please choose the assessment start date and time"
+            EndAt:
+              blank: "Please choose the assessment end date and time"
