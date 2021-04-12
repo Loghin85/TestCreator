@@ -9,7 +9,8 @@
       <th>Name</th>
       <th>Description</th>
       <th>Duration</th>
-      <th>Scheduledat</th>
+      <th>Available from</th>
+      <th>Available until</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,11 +18,12 @@
   <tbody>
     <% @assessments.each do |assessment| %>
       <tr>
-        <td><%= assessment.UserId %></td>
+        <td><%= assessment.user_id %></td>
         <td><%= assessment.Name %></td>
         <td><%= assessment.Description %></td>
         <td><%= assessment.Duration %></td>
-        <td><%= assessment.ScheduledAt %></td>
+        <td><%= assessment.BeginAt %></td>
+        <td><%= assessment.EndAt %></td>
         <td><%= link_to 'Show', assessment %></td>
         <td><%= link_to 'Edit', edit_assessment_path(assessment) %></td>
         <td><%= link_to 'Destroy', assessment, method: :delete, data: { confirm: 'Are you sure?' } %></td>

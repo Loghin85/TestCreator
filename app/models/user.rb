@@ -2,7 +2,7 @@ class User < ApplicationRecord
 	attr_accessor :remember_token, :activation_token, :reset_token
 	before_save   :downcase_email
 	before_create :create_activation_digest
-	#has_many :booking, dependent: :delete_all
+	has_many :assessment, dependent: :delete_all
 	#has_many :credit_card, dependent: :delete_all
 	
 	validates :Fname, :Lname, presence: true

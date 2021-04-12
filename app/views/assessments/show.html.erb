@@ -11,7 +11,7 @@
 				<strong>User id:</strong>
 			</div>
 			<div class="col-6">
-				<%= @assessment.UserId %>
+				<%= @assessment.user_id %>
 			</div>
 		</div>
 		
@@ -35,19 +35,19 @@
 		
 		<div class="row">
 			<div class="col-6" style="text-align: right;">
-				<strong>Availability:</strong>
+				<strong>Available from:</strong>
 			</div>
 			<div class="col-6">
-				<%= @assessment.AvailableFor %>
+				<%= @assessment.BeginAt %>
 			</div>
 		</div>
 		
 		<div class="row">
 			<div class="col-6" style="text-align: right;">
-				<strong>Scheduled at:</strong>
+				<strong>Available until:</strong>
 			</div>
 			<div class="col-6">
-				<%= @assessment.ScheduledAt %>
+				<%= @assessment.EndAt %>
 			</div>
 		</div>
 		

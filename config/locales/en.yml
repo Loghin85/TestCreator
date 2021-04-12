@@ -68,6 +68,8 @@ en:
               blank: "Please enter the complete question answer."
         assessment:
           attributes:
+            UserId:
+              
             Name:
               blank: "Please input a title"
             Description:

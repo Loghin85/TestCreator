@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
   enable_extension "plpgsql"
 
   create_table "questions", force: :cascade do |t|
-		t.integer "AssessmentId"
+		t.integer "assessment_id"
     t.string "Title"
     t.string "Text"
     t.string "Feedback"
@@ -28,14 +28,15 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
     t.datetime "updated_at", precision: 6, null: false
   end
 	
-	create_table :assessments do |t|
-    t.integer :UserId
-    t.string :Name
-    t.string :Description
-    t.integer :Duration
-    t.datetime :ScheduledAt
-		t.integer :AvailableFor
+	create_table "assessments", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "Name"
+    t.string "Description"
+    t.integer "Duration"
+    t.datetime "BeginAt"
+		t.datetime "EndAt"
 		t.timestamps
+    t.index ["user_id"], name: "index_assessments_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|

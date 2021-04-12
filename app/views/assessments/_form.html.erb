@@ -3,6 +3,8 @@
     <% flash.now[:warning] = assessment.errors.full_messages[0] %>
   <% end %>
 	
+	<%= form.hidden_field :user_id, :value => current_user.id %>
+	
 	<div class="form-group">
 			<%= form.label :Name , "Assessment title"%>
 			<%= form.text_field :Name, class: "form-control", value: "Assessment 1"%>
@@ -21,28 +23,38 @@
 			form.text_field :Duration, class: "form-control", value: 60, for: "options", type: "number"
 			end%>
 	</div>
-	
-	<div class="form-group">
-			<%= form.label :AvailableFor , "Availability (min)"%>
-			<%= if @assessment.AvailableFor
-			form.text_field :AvailableFor, class: "form-control", value: @assessment.AvailableFor, for: "options", type: "number"
-			else
-			form.text_field :AvailableFor, class: "form-control", value: 60, for: "options", type: "number"
-			end%>
-	</div>
 
-	<div class="form-group">
-		<%= form.label :ScheduledAt , "Scheduled date and time"%>
-		<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-      <% if @assessment.ScheduledAt %>
-				<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[ScheduledAt]" id="assessment_ScheduledAt" value="<%=@assessment.ScheduledAt.day %>/<%=@assessment.ScheduledAt.month %>/<%=@assessment.ScheduledAt.year %> <%=@assessment.ScheduledAt.hour %>:<%=@assessment.ScheduledAt.min %>"/>
-			<% else %>
-				<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[ScheduledAt]" id="assessment_ScheduledAt"/>
-			<% end %>
-      <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-      </div>
-    </div>
+	<div>
+		<label>Availability window</label>
+		<div style="padding-left: 15px">
+			<div class="form-group">
+				<%= form.label :BeginAt , "Start date and time"%>
+				<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+					<% if @assessment.BeginAt %>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>"/>
+					<% else %>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt"/>
+					<% end %>
+					<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<%= form.label :EndAt , "End date and time"%>
+				<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+					<% if @assessment.EndAt %>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>"/>
+					<% else %>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt"/>
+					<% end %>
+					<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<br>
@@ -53,8 +65,26 @@
 	</div>
 	<script type="text/javascript">
     $(function () {
-      $('#datetimepicker1').datetimepicker({
-                    locale: 'en-gb'
+      Ndate = new Date()
+			Ndate2 = new Date ( Ndate );
+			Ndate2.setMinutes ( Ndate.getMinutes() + 1 );
+			 $('#datetimepicker1').datetimepicker({
+                    minDate: Ndate,
+										locale: 'en-gb'
                 });
+       $('#datetimepicker2').datetimepicker({
+                    minDate: Ndate2,
+										locale: 'en-gb',
+										useCurrent: false
+                });
+       $("#datetimepicker1").on("change.datetimepicker", function (e) {
+					$('#datetimepicker2').datetimepicker('minDate', e.date);
+					if($('#datetimepicker1').datetimepicker('date').isSameOrAfter($('#datetimepicker2').datetimepicker('date')))
+						$('#datetimepicker2').datetimepicker('date', e.date.add(1, 'minutes'));
+			});
+       $("#datetimepicker2").on("change.datetimepicker", function (e) {
+					if($('#datetimepicker1').datetimepicker('date').isSameOrAfter($('#datetimepicker2').datetimepicker('date')))
+						$('#datetimepicker2').datetimepicker('date', $('#datetimepicker1').date.add(1, 'minutes'));
+			});
     });
   </script>

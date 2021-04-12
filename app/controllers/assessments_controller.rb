@@ -1,6 +1,5 @@
 class AssessmentsController < ApplicationController
   before_action :set_assessment, only: %i[ show edit update destroy ]
-	skip_before_action :logged_in_user
 	skip_before_action :admin_user
 
   # GET /assessments or /assessments.json
@@ -24,29 +23,58 @@ class AssessmentsController < ApplicationController
   # POST /assessments or /assessments.json
   def create
     @assessment = Assessment.new(assessment_params)
-
-    respond_to do |format|
-      if @assessment.save
-        format.html { redirect_to @assessment
+		yearB = params[:assessment][:BeginAt][6..9]
+		monthB = params[:assessment][:BeginAt][3..4]
+		dayB = params[:assessment][:BeginAt][0..1]
+		hourB = params[:assessment][:BeginAt][11..12]
+		minuteB = params[:assessment][:BeginAt][14..15]
+		beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
+		yearE = params[:assessment][:EndAt][6..9]
+		monthE = params[:assessment][:EndAt][3..4]
+		dayE = params[:assessment][:EndAt][0..1]
+		hourE = params[:assessment][:EndAt][11..12]
+		minuteE = params[:assessment][:EndAt][14..15]
+		endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
+		respond_to do |format|
+			if @assessment.save && endAt > beginAt
+				format.html { redirect_to @assessment
 										flash[:info] = "Assessment was successfully created." }
-        format.json { render :show, status: :created, location: @assessment }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @assessment.errors, status: :unprocessable_entity }
-      end
-    end
+				format.json { render :show, status: :created, location: @assessment }
+			else
+				format.html { render :new, status: :unprocessable_entity }
+				format.json { render json: @assessment.errors, status: :unprocessable_entity }
+				if endAt <= beginAt
+					flash[:warning] = "Please choose an end date and time at least 1 minute later than the start date and time."
+				end
+			end
+		end
   end
 
   # PATCH/PUT /assessments/1 or /assessments/1.json
   def update
+		yearB = params[:assessment][:BeginAt][6..9]
+		monthB = params[:assessment][:BeginAt][3..4]
+		dayB = params[:assessment][:BeginAt][0..1]
+		hourB = params[:assessment][:BeginAt][11..12]
+		minuteB = params[:assessment][:BeginAt][14..15]
+		beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
+		yearE = params[:assessment][:EndAt][6..9]
+		monthE = params[:assessment][:EndAt][3..4]
+		dayE = params[:assessment][:EndAt][0..1]
+		hourE = params[:assessment][:EndAt][11..12]
+		minuteE = params[:assessment][:EndAt][14..15]
+		endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
     respond_to do |format|
-      if @assessment.update(assessment_params)
+      if @assessment.update(assessment_params) && endAt > beginAt
         format.html { redirect_to @assessment 
 										flash[:info] = "Assessment was successfully updated." }
         format.json { render :show, status: :ok, location: @assessment }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @assessment.errors, status: :unprocessable_entity }
+				if endAt <= beginAt
+					flash[:warning] = "Please choose an end date and time at least 1 minute later than the start date and time."
+				end
       end
     end
   end
@@ -68,6 +96,6 @@ class AssessmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def assessment_params
-      params.require(:assessment).permit(:UserId, :Name, :Description, :Duration, :ScheduledAt, :AvailableFor)
+      params.require(:assessment).permit(:user_id, :Name, :Description, :Duration, :BeginAt, :EndAt)
     end
 end

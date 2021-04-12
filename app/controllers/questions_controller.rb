@@ -346,7 +346,7 @@ class QuestionsController < ApplicationController
 				p var
 				varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
 			end
-			p varsILP.values[0]
+			p varsILP.keys[0]
 			m.maximize(5* varsILP.values[0] -5*varsILP.values[1])
 
 			
@@ -354,7 +354,9 @@ class QuestionsController < ApplicationController
 			
 			
 			# [x1] <= [x2]
-			m.enforce(varsILP.values[0] <= varsILP.values[1])
+			t= '2'.to_i.send('*',varsILP.values[0])
+			t = t <= varsILP.values[1]
+			m.enforce(t)
 			m.enforce(2 * varsILP.values[0] + 4 * varsILP.values[1] <= 50)
 
 
@@ -367,9 +369,8 @@ class QuestionsController < ApplicationController
 			if p.proven_infeasible?
 				p "infeasible"
 			else
-				puts "x1 = #{p.value_of(x1)}"
-				puts "x2 = #{p.value_of(x2)}"
-				puts "x3 = #{p.value_of(x3)}"
+				puts "x1 = #{p.value_of(varsILP.values[0])}"
+				puts "x2 = #{p.value_of(varsILP.values[1])}"
 			end
 		end
 		
