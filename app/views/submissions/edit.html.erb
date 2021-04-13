@@ -1,8 +1,62 @@
 <div class="row" style="width: 100%; padding: 10px;">
 	<div class="col-12" style="padding: 20%; padding-top: 20px; padding-bottom: 20px;">
 		<div class="col-12">
-			<h1>Edit Submission</h1>
+			<h1>Attempt
+			<%if @assessment && @creator%>
+				for <%=@assessment.Name%>
+			</h1>
+			<%end%>
+			<h3 id="timer">Time left:</h3>
 		</div>
-		<%= render 'form', submission: @submission %>
+		<%= form_with(model: @submission) do |form| %>
+		<% if @submission.errors.any? %>
+			<% flash.now[:warning] = @submission.errors.full_messages[0] %>
+		<% end %>
+		
+		<br>
+		<div class="row justify-content-right">
+			<%= form.submit 'Submit', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
+			<% end %>
+			<%= button_to 'Cancel', root_path, class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
+		</div>
 	</div>
 </div>
+<script> //adapred from https://www.w3schools.com/howto/howto_js_countdown.asp
+var EndTime = new Date();
+EndTime.setMinutes(EndTime.getMinutes() + parseInt("<%=@assessment.Duration%>"));
+var countDown = EndTime.getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDown - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="timer"
+  var time = "";
+	if (days!=0)
+		time = time + days + "d ";
+  if (hours!=0)
+		time = time + hours + "h ";
+  if (minutes!=0)
+		time = time + minutes + "m ";
+  if (seconds!=0)
+		time = time + seconds + "s ";
+	document.getElementById("timer").innerHTML = "Time left: <b>" + time + "</b>";
+	
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("timer").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>

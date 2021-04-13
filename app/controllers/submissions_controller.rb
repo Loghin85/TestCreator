@@ -31,6 +31,18 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/1/edit
   def edit
+		if params[:assessment_id]
+			@submission.assessment_id = params[:assessment_id]
+		elsif params[:submission]
+			@submission.assessment_id = params[:submission][:assessment_id]
+		end
+		if @submission.assessment_id
+			@assessment = Assessment.find(@submission.assessment_id)
+			if @assessment
+				user = User.find(@assessment.user_id)
+				@creator = user.Fname + " " + user.Lname
+			end
+		end
   end
 
   # POST /submissions or /submissions.json
