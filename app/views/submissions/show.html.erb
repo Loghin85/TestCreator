@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Assessment:</strong>
+  <%= @submission.assessment_id %>
+</p>
+
+<p>
+  <strong>Userid:</strong>
+  <%= @submission.userId %>
+</p>
+
+<p>
+  <strong>Useremail:</strong>
+  <%= @submission.userEmail %>
+</p>
+
+<p>
+  <strong>Scores:</strong>
+  <%= @submission.Scores %>
+</p>
+
+<p>
+  <strong>Answers:</strong>
+  <%= @submission.Answers %>
+</p>
+
+<p>
+  <strong>Submittedat:</strong>
+  <%= @submission.SubmittedAt %>
+</p>
+
+<%= link_to 'Edit', edit_submission_path(@submission) %> |
+<%= link_to 'Back', submissions_path %>

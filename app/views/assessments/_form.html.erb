@@ -28,7 +28,7 @@
 		<label>Availability window</label>
 		<div style="padding-left: 15px">
 			<div class="form-group">
-				<%= form.label :BeginAt , "Start date and time"%>
+				<%= form.label :BeginAt , "Start date and time GMT"%>
 				<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
 					<% if @assessment.BeginAt %>
 						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>"/>
@@ -42,7 +42,7 @@
 			</div>
 			
 			<div class="form-group">
-				<%= form.label :EndAt , "End date and time"%>
+				<%= form.label :EndAt , "End date and time GMT"%>
 				<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
 					<% if @assessment.EndAt %>
 						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>"/>

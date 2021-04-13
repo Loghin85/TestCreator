@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: %i[ show edit update destroy ]
-	skip_before_action :logged_in_user
 	skip_before_action :admin_user
 
   # GET /questions or /questions.json
@@ -17,7 +16,7 @@ class QuestionsController < ApplicationController
     @question = Question.new
 		if params[:assessment_id]
 			@question.assessment_id = params[:assessment_id]
-		elsif params[:question][:assessment_id]
+		elsif params[:question]
 			@question.assessment_id = params[:question][:assessment_id]
 		end 
   end
@@ -29,7 +28,7 @@ class QuestionsController < ApplicationController
 	@values = []
 		if params[:assessment_id]
 			@question.assessment_id = params[:assessment_id]
-		elsif params[:question][:assessment_id]
+		elsif params[:question]
 			@question.assessment_id = params[:question][:assessment_id]
 		end 
 
@@ -224,7 +223,6 @@ class QuestionsController < ApplicationController
 							end
 						end
 					end
-					p params[:question][:assessment_id]
 					format.html { render :new, status: :unprocessable_entity }
 					format.json { render json: @question.errors, status: :unprocessable_entity }
 				end

@@ -33,7 +33,7 @@ en:
   errors:
       format: "%{message}"
       messages:
-        taken: "%{attribute} has already been taken"
+        taken: "%{attribute} has already been used"
   activerecord:
     attributes:
       user:
@@ -82,3 +82,13 @@ en:
               blank: "Please choose the assessment start date and time"
             EndAt:
               blank: "Please choose the assessment end date and time"
+        submission:
+          attributes:
+            assessment_id:
+              blank: "The link you used is invaid"
+            userId:
+              blank: "Please input a student ID"
+              taken: "This Student ID has already been used for a submission attempt"
+            userEmail:
+              blank: "Please enter a valid Email address"
+              invalid: "Please enter a valid Email address"

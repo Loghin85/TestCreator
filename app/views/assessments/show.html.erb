@@ -42,7 +42,7 @@
 				<strong>Available from:</strong>
 			</div>
 			<div class="col-9">
-				<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>
+				<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> GMT
 			</div>
 		</div>
 		
@@ -51,7 +51,16 @@
 				<strong>Available until:</strong>
 			</div>
 			<div class="col-9">
-				<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>
+				<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> GMT
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-3" style="text-align: right;">
+				<strong>Submission link:</strong>
+			</div>
+			<div class="col-9">
+				<a href="<%= @path %>"><%= @path %></a>
 			</div>
 		</div>
 	</div>
@@ -59,7 +68,6 @@
 	</div>
 </div>
 <div class="row" style="width: 100%; padding: 10px;">
-
 	<div class="col-1">
 	</div>
 	<div class="col-10">
@@ -100,6 +108,51 @@
 			</tbody>
 		</table>
 		<%= button_to 'Add question', new_question_path, params: {:assessment_id => @assessment.id}, class: "btn btn-primary", method: "get", style: "margin-left: 10px; margin-top: 10px;"%>
+	</div>
+	<div class="col-1"></div>
+</div>
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-1">
+	</div>
+	<div class="col-10">
+		<h3>Submissions</h3>
+	</div>
+	<div class="col-1">
+	</div>
+	<div class="col-1"></div>
+	<div class="col-10">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Student ID</th>
+					<th scope="col">Email address</th>
+					<th scope="col">Score</th>
+					<th scope="col">Submission time</th>
+					<th scope="col">Duration</th>
+					<th scope="col" style="width: 85px"></th>
+				</tr>
+			</thead>
+			<tbody>
+			<%@submissions.each do |submission| %>
+				<tr>
+					<td><%= submission.userId%></td>
+					<td><%= submission.userEmail%></td>
+					<td><%= submission.Score%></td>
+					<td><%= submission.SubmittedAt%></td>
+					<td><%= submission.Duration%></td>
+					<td style="text-align: right">
+						<%= link_to submission do %>
+							<i class="far fa-eye"></i>
+						<% end %>
+						<%= link_to submission, method: :delete, data: { confirm: 'Are you sure?' }  do %>
+							<i class="fas fa-trash"></i>
+						<% end %>
+					</td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+		<%= button_to 'Add submission', new_submission_path, params: {:assessment_id => @assessment.id}, class: "btn btn-primary", method: "get", style: "margin-left: 10px; margin-top: 10px;"%>
 	</div>
 	<div class="col-1"></div>
 </div>

@@ -38,6 +38,19 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
 		t.timestamps
     t.index ["user_id"], name: "index_assessments_on_user_id"
   end
+	
+  create_table "submissions", force: :cascade do |t|
+    t.integer "assessment_id"
+    t.string "userId"
+    t.string "userEmail"
+    t.string "Scores"
+    t.string "Answers"
+    t.integer "Score"
+    t.integer "Duration"
+    t.string "SubmittedAt"
+		t.timestamps
+		t.index ["userId"], name: "index_submissions_on_userId", unique: true
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false

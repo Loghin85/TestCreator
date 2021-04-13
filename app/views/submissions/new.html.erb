@@ -1,0 +1,48 @@
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-12" style="padding: 20%; padding-top: 20px; padding-bottom: 20px;">
+		<div class="col-12">
+			<h1>Submission
+			<%if @assessment && @creator%>
+				for <%=@assessment.Name%>
+			</h1> 
+			<h3>created by <%=@creator%></h3>
+			<b>Description:</b><%= @assessment.Description.html_safe %>
+			<p><b>Available from:</b> <%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> GMT</p>
+			
+			<p><b>Available until:</b> <%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> GMT</p>
+			
+			<p>
+			Once you press start you will have <b><%=@assessment.Duration%> minutes</b> to finish the assessment. At the end of this time the test will be automatically submitted. You have only <b>one attempt</b>, once started you will <b>not</b> be able to start again or finish the test later. Please make sure that that your attempt has been submitted <b>before</b> closing the tab, else a 0 point attempt will be submitted.
+			</p>
+			<%end%>
+		</div>
+		<%= form_with(model: @submission) do |form| %>
+		<% if @submission.errors.any? %>
+			<% flash.now[:warning] = @submission.errors.full_messages[0] %>
+		<% end %>
+		
+		<%= form.hidden_field :assessment_id, :value => @submission.assessment_id %>
+		
+		<div class="form-group">
+				<%= form.label :userId , "Student ID"%>
+				<%= form.text_field :userId, class: "form-control", placeholder: "56743829"%>
+		</div>
+		<div class="form-group">
+				<%= form.label :userEmail , "Email address"%>
+				<%= form.text_field :userEmail, class: "form-control",  placeholder: "example@gmail.com"%>
+		</div>
+		
+		<%= form.hidden_field :Scores, :value => "Not submitted" %>
+		<%= form.hidden_field :Score, :value => 0 %>
+		<%= form.hidden_field :Duration, :value => 0 %>
+		<%= form.hidden_field :Answers, :value => "Not submitted" %>
+		<%= form.hidden_field :SubmittedAt, :value => "Not submitted" %>
+		
+		<br>
+		<div class="row justify-content-right">
+			<%= form.submit 'Start', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
+			<% end %>
+			<%= button_to 'Cancel', root_path, class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
+		</div>
+	</div>
+</div>

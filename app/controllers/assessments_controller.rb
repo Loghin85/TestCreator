@@ -10,6 +10,8 @@ class AssessmentsController < ApplicationController
   # GET /assessments/1 or /assessments/1.json
   def show
 		@questions = Question.where(assessment_id: params[:id])
+		@submissions = Submission.where(assessment_id: params[:id])
+		@path = request.base_url+"/submissions/new?assessment_id=" +params[:id]
   end
 
   # GET /assessments/new
