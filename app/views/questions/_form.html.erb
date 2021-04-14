@@ -391,9 +391,9 @@
 			<%= form.label "Expression"%>
 			<div class="input-group">
 				<%= if @question.Answer && @question.Answer != ""
-					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Cc]orrect$", value: @question.Answer[1..@question.Answer.index("〕")-1]
+					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Dd]inosaur$", value: @question.Answer[1..@question.Answer.index("〕")-1]
 				else
-					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Cc]orrect$"
+					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Dd]inosaur$"
 				end%>
 				<div class="input-group-append">
 					<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#expressionModal">
@@ -415,14 +415,14 @@
 						<div class="form-group">
 							<label>Expression</label>
 							<% if @question.Answer && @question.Answer != "" %>
-								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Cc]orrect$" value= <%= @question.Answer[1..@question.Answer.index("〕")-1] %> >
+								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Dd]inosaur$" value= <%= @question.Answer[1..@question.Answer.index("〕")-1] %> >
 							<% else %>
-								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Cc]orrect$">
+								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Dd]inosaur$">
 							<% end %>
 						</div>
 						<div class="form-group" id="TestCases">
 							<label>Test cases</label>
-							<input type="text" class="form-control" id="test_case1" placeholder="Correct">
+							<input type="text" class="form-control" id="test_case1" placeholder="Dinosaur">
 						</div>
 						<div class="form-group">
 							<button type="button" id="btAdd" class="btn btn-primary w-25">Add</button>
