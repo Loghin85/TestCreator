@@ -47,7 +47,8 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions or /submissions.json
   def create
-    @submission = Submission.new(submission_params)
+    params[:submission][:SubmittedAt]=DateTime.now
+		@submission = Submission.new(submission_params)
 		if params[:submission][:assessment_id]
 			assessment = Assessment.find(params[:submission][:assessment_id])
 			@name = assessment.Name

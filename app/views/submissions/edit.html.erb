@@ -22,7 +22,7 @@
 	</div>
 </div>
 <script> //adapred from https://www.w3schools.com/howto/howto_js_countdown.asp
-var EndTime = new Date();
+var EndTime = new Date("<%=@submission.SubmittedAt%>");
 EndTime.setMinutes(EndTime.getMinutes() + parseInt("<%=@assessment.Duration%>"));
 var countDown = EndTime.getTime();
 

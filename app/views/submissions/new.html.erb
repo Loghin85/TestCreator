@@ -36,7 +36,7 @@
 		<%= form.hidden_field :Score, :value => 0 %>
 		<%= form.hidden_field :Duration, :value => 0 %>
 		<%= form.hidden_field :Answers, :value => "Not submitted" %>
-		<%= form.hidden_field :SubmittedAt, :value => "Not submitted" %>
+		<%= form.hidden_field :SubmittedAt, :value => DateTime.now %>
 		
 		<br>
 		<div class="row justify-content-right">

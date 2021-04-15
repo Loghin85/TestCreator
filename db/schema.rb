@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
     t.string "Answers"
     t.integer "Score"
     t.integer "Duration"
-    t.string "SubmittedAt"
+    t.datetime "SubmittedAt"
 		t.timestamps
 		t.index ["userId"], name: "index_submissions_on_userId", unique: true
   end
