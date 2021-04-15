@@ -42,6 +42,8 @@ class SubmissionsController < ApplicationController
 				user = User.find(@assessment.user_id)
 				@creator = user.Fname + " " + user.Lname
 			end
+			@questions = Question.where(assessment_id: @submission.assessment_id)
+			p @questions
 		end
   end
 

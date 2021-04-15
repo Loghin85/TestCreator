@@ -13,6 +13,117 @@
 			<% flash.now[:warning] = @submission.errors.full_messages[0] %>
 		<% end %>
 		
+		
+		<%@questions.each do |question| %>
+		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
+		<div class="col-12">
+				<h2><%= question.Title%></h2>
+				<%case question.Type
+				when "MCQ"
+					positions1 = []
+					positions2 = []
+					indx= -1
+					while (indx= question.Answer.index("〔", indx+ 1))
+						positions1 << indx
+					end
+
+					indx= -1
+					while (indx= question.Answer.index("〕", indx+ 1))
+						positions2 << indx
+					end%>
+					<%= question.Text.html_safe%>
+					<div class="form-group">
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio1-<%=@questions.index(question)%>" value="A">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[0]+1..positions2[0]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio2-<%=@questions.index(question)%>" value="B">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[1]+1..positions2[1]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio3-<%=@questions.index(question)%>" value="C">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[2]+1..positions2[2]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio4-<%=@questions.index(question)%>" value="D">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[3]+1..positions2[3]-1] %></label>
+						</div>
+					</div>
+				<%when "MA"
+					positions1 = []
+					positions2 = []
+					indx= -1
+					while (indx= question.Answer.index("〔", indx+ 1))
+						positions1 << indx
+					end
+
+					indx= -1
+					while (indx= question.Answer.index("〕", indx+ 1))
+						positions2 << indx
+					end%>
+					<%= question.Text.html_safe%>
+					<div class="form-group">
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox1-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="A">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[0]+1..positions2[0]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox2-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="B">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[1]+1..positions2[1]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox3-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="C">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[2]+1..positions2[2]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox4-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="D">
+							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[3]+1..positions2[3]-1] %></label>
+						</div>
+					</div>
+				<%when "FTB"
+					if question.Text.index('[blank]')
+						textBegin = question.Text[0..question.Text.index('[blank]')-1]
+						textEnd = question.Text[question.Text.index('[blank]')+7..-1]
+						%>
+						<%=textBegin.html_safe%>
+						<input class="form-control w-25" name="FTBAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FTBAnswer-<%=@questions.index(question)%>" style="display: inline-block">
+						<%=textEnd.html_safe%>
+					<%else%>
+						<%=question.Text.html_safe%>
+						<input class="form-control w-25" name="FTBAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FTBAnswer-<%=@questions.index(question)%>" style="display: inline-block">
+					<%end%>
+				<%when "TF"%>
+					<%= question.Text.html_safe%>
+					<div class="form-group">
+						<div class="form-check" style="margin-top: 5px">
+							<input class="form-check-input" type="radio" name="TFRadio-<%=@questions.index(question)%>" id="TFRadio1-<%=@questions.index(question)%>" value="True">
+							<label class="form-check-label" for="negative">True</label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+							<input class="form-check-input" type="radio" name="TFRadio-<%=@questions.index(question)%>" id="TFRadio2-<%=@questions.index(question)%>" value="False">
+							<label class="form-check-label" for="negative">False</label>
+						</div>
+					</div>
+				<%when "REG"
+					if question.Text.index('[blank]')
+						textBegin = question.Text[0..question.Text.index('[blank]')-1]
+						textEnd = question.Text[question.Text.index('[blank]')+7..-1]
+						%>
+						<%=textBegin.html_safe%>
+						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block">
+						<%=textEnd.html_safe%>
+					<%else%>
+						<%=question.Text.html_safe%>
+						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block">
+					<%end%>
+				<%when "FRM"%>
+					//fill this out when done
+				<%end%>
+				
+		</div>
+		<% end %>
+		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
 		<br>
 		<div class="row justify-content-right">
 			<%= form.submit 'Submit', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>

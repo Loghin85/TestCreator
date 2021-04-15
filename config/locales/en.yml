@@ -48,8 +48,8 @@ en:
               blank: "Please enter a valid Email address"
               invalid: "Please enter a valid Email address"
             password:
-              blank: "The password must be at least 8 characters long and contain at least: one lowercase character, one uppercase character and one number"
-              invalid: "The password must be at least 8 characters long and contain at least: one lowercase character, one uppercase character and one number"
+              blank: "The password must be 8-20 characters long and contain at least: one lowercase character, one uppercase character and one number"
+              invalid: "The password must be 8-20 characters long and contain at least: one lowercase character, one uppercase character and one number"
             password_confirmation:
               confirmation: "Confirmed password and Password must match."
         question:

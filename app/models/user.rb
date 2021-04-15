@@ -10,7 +10,7 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
 	has_secure_password
-	VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\Z/
+	VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}\Z/
 	validates :password, presence: true, format: { with: VALID_PASSWORD_REGEX }, allow_nil: true
 
 	# Returns the hash digest of the given string.

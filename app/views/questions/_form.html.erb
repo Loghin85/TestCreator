@@ -18,6 +18,33 @@
 	<div class="form-group">
 			<%= form.label :Text , "Question Text"%>
 			<%= form.text_area :Text, class: "form-control tinymceT", placeholder: "What is..."%>
+			<% if @question.Type=="FTB" %>
+			<small id="HelpBlock" class="form-text text-muted FTB" style="margin-bottom:5px">
+				The position of the blank space is denoted by "[blank]" within the question text. No more than one blank space can be used.
+			</small>
+			<% else %>
+			<small id="HelpBlock" class="form-text text-muted FTB" style="margin-bottom:5px; display: none;">
+				The position of the blank space is denoted by "[blank]" within the question text. No more than one blank space can be used.
+			</small>
+			<% end %>
+			<% if @question.Type=="REG" %>
+			<small id="HelpBlock" class="form-text text-muted REG" style="margin-bottom:5px">
+				The position of the blank space is denoted by "[blank]" within the question text. No more than one blank space can be used.
+			</small>
+			<% else %>
+			<small id="HelpBlock" class="form-text text-muted REG" style="margin-bottom:5px; display: none;">
+				The position of the blank space is denoted by "[blank]" within the question text. No more than one blank space can be used.
+			</small>
+			<% end %>
+			<% if @question.Type=="FRM" %>
+			<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px">
+				The position of a variable is denoted by "[&lt;variable_name&gt;]" within the question text. Only the variables used in the formula can be used.
+			</small>
+			<% else %>
+			<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px; display: none;">
+				The position of a variable is denoted by "[&lt;variable_name&gt;]" within the question text. Only the variables used in the formula can be used.
+			</small>
+			<% end %>
 	</div>
 	
 	
