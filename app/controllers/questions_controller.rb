@@ -352,17 +352,34 @@ class QuestionsController < ApplicationController
 					foreignVars = true
 				end
 			end
-			p vars
-			p test2
-			p foreignVars
-			
 			if (test1.length == 0 && relations.length != 0) || !foreignVars || test.length == 0
 				answer=""
 			elsif relations.length != 0
 				answer = answer + "〚" + relations + "〛"
 			end
 			m = Cbc::Model.new
+			p relations
+			rels=[]
+			for rel in relations.split(',')
+				rel = rel.strip
+				rel.gsub! '+', ' + '
+				rel.gsub! '-', ' - '
+				rel.gsub! '*', ' * '
+				rel.gsub! '/', ' / '
+				rel.gsub! '<', ' < '
+				rel.gsub! '<=', ' <= '
+				rel.gsub! '=', ' = '
+				rel.gsub! '>', ' > '
+				rel.gsub! '>=', ' >= '
+				rel.gsub! '<  =', '<='
+				rel.gsub! '>  =', '>='
+				rels << rel
+			end
+			p rels
 			
+			for rel in rels
+			
+			end
 			#left here
 			varsILP={}
 			for var in vars
