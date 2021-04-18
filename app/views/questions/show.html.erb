@@ -65,6 +65,115 @@
 				<%= @question.Answer %>
 			</div>
 		</div>
+		<h3>Preview</h3>
+		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
+		<div class="col-12">
+				<h2><%= @question.Title%></h2>
+				<%case @question.Type
+				when "MCQ"
+					positions1 = []
+					positions2 = []
+					indx= -1
+					while (indx= @question.Answer.index("〔", indx+ 1))
+						positions1 << indx
+					end
+
+					indx= -1
+					while (indx= @question.Answer.index("〕", indx+ 1))
+						positions2 << indx
+					end%>
+					<%= @question.Text.html_safe%>
+					<div class="form-group">
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios" id="Radio1" value="A">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[0]+1..positions2[0]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios" id="Radio2" value="B">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[1]+1..positions2[1]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios" id="Radio3" value="C">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[2]+1..positions2[2]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="radio" name="MCQRadios" id="Radio4" value="D">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[3]+1..positions2[3]-1] %></label>
+						</div>
+					</div>
+				<%when "MA"
+					positions1 = []
+					positions2 = []
+					indx= -1
+					while (indx= @question.Answer.index("〔", indx+ 1))
+						positions1 << indx
+					end
+
+					indx= -1
+					while (indx= @question.Answer.index("〕", indx+ 1))
+						positions2 << indx
+					end%>
+					<%= @question.Text.html_safe%>
+					<div class="form-group">
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox1" name="MACheckboxes[]" value="A">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[0]+1..positions2[0]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox2" name="MACheckboxes[]" value="B">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[1]+1..positions2[1]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox3" name="MACheckboxes[]" value="C">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[2]+1..positions2[2]-1] %></label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+								<input class="form-check-input" type="checkbox" id="MACheckbox4" name="MACheckboxes[]" value="D">
+							  <label class="form-check-label" for="negative"><%= @question.Answer[positions1[3]+1..positions2[3]-1] %></label>
+						</div>
+					</div>
+				<%when "FTB"
+					if @question.Text.index('[blank]')
+						textBegin = @question.Text[0..@question.Text.index('[blank]')-1]
+						textEnd = @question.Text[@question.Text.index('[blank]')+7..-1]
+						%>
+						<%=textBegin.html_safe%>
+						<input class="form-control w-25" name="FTBAnswer" placeholder="Answer" id="question_FTBAnswer" style="display: inline-block">
+						<%=textEnd.html_safe%>
+					<%else%>
+						<%=@question.Text.html_safe%>
+						<input class="form-control w-25" name="FTBAnswer" placeholder="Answer" id="question_FTBAnswer" style="display: inline-block">
+					<%end%>
+				<%when "TF"%>
+					<%= @question.Text.html_safe%>
+					<div class="form-group">
+						<div class="form-check" style="margin-top: 5px">
+							<input class="form-check-input" type="radio" name="TFRadio" id="TFRadio1" value="True">
+							<label class="form-check-label" for="negative">True</label>
+						</div>
+						<div class="form-check" style="margin-top: 5px">
+							<input class="form-check-input" type="radio" name="TFRadio" id="TFRadio2" value="False">
+							<label class="form-check-label" for="negative">False</label>
+						</div>
+					</div>
+				<%when "REG"
+					if @question.Text.index('[blank]')
+						textBegin = question.Text[0..@question.Text.index('[blank]')-1]
+						textEnd = question.Text[@question.Text.index('[blank]')+7..-1]
+						%>
+						<%=textBegin.html_safe%>
+						<input class="form-control w-25" name="REGAnswer" placeholder="Answer" id="question_REGAnswer" style="display: inline-block">
+						<%=textEnd.html_safe%>
+					<%else%>
+						<%=@question.Text.html_safe%>
+						<input class="form-control w-25" name="REGAnswer-" placeholder="Answer" id="question_REGAnswer-" style="display: inline-block">
+					<%end%>
+				<%when "FRM"%>
+					//fill this out when done
+				<%end%>
+				
+		</div>
+		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
 		<br>
 		<div class="row">
 			<%= link_to 'Back to assessment', '/assessments/'+@question.assessment_id.to_s , class: "btn btn-primary", style: "margin-left: 25px; margin-top: 10px;"%>

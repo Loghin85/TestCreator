@@ -339,10 +339,24 @@ class QuestionsController < ApplicationController
 				vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 				answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 			end
-			relationsRegex= /((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)((,| ,|, | , )((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([0-9]*[\[][a-zA-Z]+[\]])|[0-9]+))*))*/
+			relationsRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)((,| ,|, | , )((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*))*/
+			formulaRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)/
 			relations = params[:FRMRelations]
-			test = relations.scan(relationsRegex)
-			if test.length == 0 && relations.length != 0
+			test = formula.scan(formulaRegex) #test formula for valid format
+			test1 = relations.scan(relationsRegex) #test relations for valid format
+			test2 = relations.scan(/([\[][a-zA-Z]+[\]])/) #test for foreign variables
+			foreignVars = false
+			for var in test2
+				tag=var[0][1..var[0].length-2].upcase
+				if vars.key?(tag)
+					foreignVars = true
+				end
+			end
+			p vars
+			p test2
+			p foreignVars
+			
+			if (test1.length == 0 && relations.length != 0) || !foreignVars || test.length == 0
 				answer=""
 			elsif relations.length != 0
 				answer = answer + "〚" + relations + "〛"

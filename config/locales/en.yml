@@ -65,7 +65,7 @@ en:
             Feedback:  
               blank: "Please enter the feedback text"
             Answer:  
-              blank: "Please enter the complete question answer."
+              blank: "Please enter the complete and valid question answer."
         assessment:
           attributes:
             user_id:
