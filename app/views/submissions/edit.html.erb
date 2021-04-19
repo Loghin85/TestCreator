@@ -117,8 +117,83 @@
 						<%=question.Text.html_safe%>
 						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block">
 					<%end%>
-				<%when "FRM"%>
-					//fill this out when done
+				<%when "FRM"
+				formula = question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
+				constraints = question.Answer[question.Answer.index("〘")..-1]
+				vars={}
+				res = formula.scan(/([\[][a-zA-Z]+[\]])/)
+				for var in res
+					tag=var[0][1..var[0].length-2].upcase
+					min=constraints[constraints.index(",")+1..constraints[constraints.index(",")+1..-1].index(",")+constraints.index(",")].to_i
+					max=constraints[constraints[constraints.index(",")+1..-1].index(",")+constraints.index(",")+2..constraints.index("〙")-1].to_i
+					vars[tag]=[min,max]
+					constraints=constraints[constraints.index("〙")+1..-1]
+				end
+				constraints = constraints[1..-2]
+				m = Cbc::Model.new
+				rels=[]
+				for rel in constraints.split(',')
+					rel = rel.strip
+					rel.gsub! '+', ' + '
+					rel.gsub! '-', ' - '
+					rel.gsub! '*', ' * '
+					rel.gsub! '/', ' / '
+					rel.gsub! '<=', ' <= '
+					rel.gsub! '>=', ' >= '
+					rel.gsub! '=', ' = '
+					rel.gsub! '< =', '<='
+					rel.gsub! '> =', '>='
+					rels << rel
+				end
+					varsILP={}
+					maximize=0
+					for var in vars
+						varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
+						sign=rand(1..2)
+						if sign == 1
+							maximize = maximize + rand(1..20) * varsILP[var[0]]
+						elsif sign == 2
+							maximize = maximize - rand(1..20) * varsILP[var[0]]
+						end
+					end
+					m.maximize(maximize)
+					for rel in rels
+						eq=0
+						blocks=rel.split()
+						if blocks[0][0]=="["
+							if blocks[2][0]=="["
+								eq= varsILP[blocks[0][1].upcase].send(blocks[1],varsILP[blocks[2][1].upcase])
+							else
+								eq= varsILP[blocks[0][1].upcase].send(blocks[1],blocks[2].to_i)
+							end
+						else
+							if blocks[2][0]=="["
+								eq= blocks[0].to_i.send(blocks[1],varsILP[blocks[2][1].upcase])
+							else
+								eq= blocks[0].to_i.send(blocks[1],blocks[2].to_i)
+							end
+						end
+						for i in (3..blocks.length-2).step(2)
+							if blocks[i+1][0]=="["
+								eq = eq.send(blocks[i],varsILP[blocks[i+1][1].upcase])
+							else
+								eq = eq.send(blocks[i],blocks[i+1].to_i)
+							end
+						end
+						m.enforce(eq)
+					end
+					p = m.to_problem
+					p.solve
+					values={}
+					for var in vars
+						values[var[0]]=p.value_of(varsILP[var[0]])
+						question.Text.gsub! '[' + var[0] + ']', values[var[0]].to_s
+						question.Text.gsub! '[' + var[0].downcase + ']', values[var[0]].to_s
+					end
+					p values
+				%>
+				<%=question.Text.html_safe%>
+				<input class="form-control w-25" name="FRMAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FRMAnswer-<%=@questions.index(question)%>" style="display: inline-block">
 				<%end%>
 				
 		</div>

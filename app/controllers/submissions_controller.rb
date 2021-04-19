@@ -43,7 +43,6 @@ class SubmissionsController < ApplicationController
 				@creator = user.Fname + " " + user.Lname
 			end
 			@questions = Question.where(assessment_id: @submission.assessment_id)
-			p @questions
 		end
   end
 
