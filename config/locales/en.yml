@@ -66,6 +66,7 @@ en:
               blank: "Please enter the feedback text"
             Answer:  
               blank: "Please enter the complete and valid question answer."
+              infeasible: "The provided formula and relation combination is yelds not variable combination"
         assessment:
           attributes:
             user_id:

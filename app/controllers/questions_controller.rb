@@ -339,11 +339,11 @@ class QuestionsController < ApplicationController
 				vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 				answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 			end
-			relationsRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)((,| ,|, | , )((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<|>|=|<=|>=)((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*))*/
+			relationsRegex= /\A((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+)((,| ,|, | , )((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+))*\Z/
 			formulaRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)/
 			relations = params[:FRMRelations]
 			test = formula.scan(formulaRegex) #test formula for valid format
-			test1 = relations.scan(relationsRegex) #test relations for valid format
+			test1 = relations.match(relationsRegex) #test relations for valid format
 			test2 = relations.scan(/([\[][a-zA-Z]+[\]])/) #test for foreign variables
 			foreignVars = false
 			for var in test2
@@ -352,7 +352,7 @@ class QuestionsController < ApplicationController
 					foreignVars = true
 				end
 			end
-			if (test1.length == 0 && relations.length != 0) || !foreignVars || test.length == 0
+			if (test1 == nil && relations.length != 0) || !foreignVars || test.length == 0
 				answer=""
 			elsif relations.length != 0
 				answer = answer + "〚" + relations + "〛"
@@ -366,60 +366,65 @@ class QuestionsController < ApplicationController
 				rel.gsub! '-', ' - '
 				rel.gsub! '*', ' * '
 				rel.gsub! '/', ' / '
-				rel.gsub! '<', ' < '
 				rel.gsub! '<=', ' <= '
-				rel.gsub! '=', ' = '
-				rel.gsub! '>', ' > '
 				rel.gsub! '>=', ' >= '
-				rel.gsub! '<  =', '<='
-				rel.gsub! '>  =', '>='
+				rel.gsub! '=', ' = '
+				rel.gsub! '< =', '<='
+				rel.gsub! '> =', '>='
 				rels << rel
 			end
-			p rels
-			
-			for rel in rels
-			
-			end
 			#left here
-			varsILP={}
-			for var in vars
-				p var
-				varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
-			end
-			p varsILP.keys[0]
-			m.maximize(5* varsILP.values[0] -5*varsILP.values[1])
+			if answer.length != 0
+				varsILP={}
+				maximize=0
+				for var in vars
+					varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
+					sign=rand(1..2)
+					if sign == 1
+						maximize = maximize + rand(1..20) * varsILP[var[0]]
+					elsif sign == 2
+						maximize = maximize - rand(1..20) * varsILP[var[0]]
+					end
+				end
+				m.maximize(maximize)
+				for rel in rels
+					eq=0
+					blocks=rel.split()
+					if blocks[0][0]=="["
+						if blocks[2][0]=="["
+							eq= varsILP[blocks[0][1].upcase].send(blocks[1],varsILP[blocks[2][1].upcase])
+						else
+							eq= varsILP[blocks[0][1].upcase].send(blocks[1],blocks[2].to_i)
+						end
+					else
+						if blocks[2][0]=="["
+							eq= blocks[0].to_i.send(blocks[1],varsILP[blocks[2][1].upcase])
+						else
+							eq= blocks[0].to_i.send(blocks[1],blocks[2].to_i)
+						end
+					end
+					for i in (3..blocks.length-2).step(2)
+						if blocks[i+1][0]=="["
+							eq = eq.send(blocks[i],varsILP[blocks[i+1][1].upcase])
+						else
+							eq = eq.send(blocks[i],blocks[i+1].to_i)
+						end
+					end
+					m.enforce(eq)
+				end
+				
+				p = m.to_problem
+				p.solve
 
-			
-			
-			
-			
-			# [x1] <= [x2]
-			t= '2'.to_i.send('*',varsILP.values[0])
-			t = t <= varsILP.values[1]
-			m.enforce(t)
-			m.enforce(2 * varsILP.values[0] + 4 * varsILP.values[1] <= 50)
-
-
-
-
-			p = m.to_problem
-
-			p.solve
-
-			if p.proven_infeasible?
-				p "infeasible"
-			else
-				puts "x1 = #{p.value_of(varsILP.values[0])}"
-				puts "x2 = #{p.value_of(varsILP.values[1])}"
+				if p.proven_infeasible?
+					p "infeasible"
+					@question.errors.add(:Answer, :infeasible)
+				end
 			end
 		end
 		
     respond_to do |format|
-      if @question.update(question_params.merge(:Options => options, :Answer => answer))
-        format.html { redirect_to @question
-										flash[:info] = 'Question was successfully updated.' }
-        format.json { render :show, status: :ok, location: @question }
-      else
+      if @question.errors.any?
 				if answer!=nil
 					@positions1 = []
 					@positions2 = []
@@ -456,10 +461,56 @@ class QuestionsController < ApplicationController
 							@values << var
 						end
 					end
-				end
-        format.html { render :edit, status: :unprocessable_entity }
+				format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @question.errors, status: :unprocessable_entity }
-      end
+				end
+			else
+				if @question.update(question_params.merge(:Options => options, :Answer => answer))
+					format.html { redirect_to @question
+											flash[:info] = 'Question was successfully updated.' }
+					format.json { render :show, status: :ok, location: @question }
+				else
+					if answer!=nil
+						@positions1 = []
+						@positions2 = []
+						@values = []
+
+						indx= -1
+						while (indx= @question.Answer.index("〔", indx+ 1))
+						@positions1 << indx
+						end
+
+						indx= -1
+						while (indx= @question.Answer.index("〕", indx+ 1))
+							@positions2 << indx
+						end
+						
+						while (@positions1.length < 4)
+							@positions1 << -1
+							@positions2 << -1
+						end
+						if @question.Type == "FRM"
+							text= @question.Answer[@question.Answer.index("〘")..-1]
+							positionsComma = []
+							positionsEB = []
+							indx= -1
+							while (indx= text.index(",", indx+ 1))
+								positionsComma << indx
+							end
+							indx= -1
+							while (indx= text.index("〙", indx+ 1))
+								positionsEB << indx
+							end
+							for i in 0..positionsComma.length/2-1
+								var = [text[positionsComma[2*i]+1..positionsComma[2*i+1]-1].to_i,text[positionsComma[2*i+1]+1..positionsEB[i]-1].to_i]
+								@values << var
+							end
+						end
+					end
+					format.html { render :edit, status: :unprocessable_entity }
+					format.json { render json: @question.errors, status: :unprocessable_entity }
+				end
+			end
     end
   end
 
