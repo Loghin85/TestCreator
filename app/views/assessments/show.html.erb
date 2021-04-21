@@ -138,7 +138,11 @@
 					<td><%= submission.userId%></td>
 					<td><%= submission.userEmail%></td>
 					<td><%= submission.Score%></td>
-					<td><%= "%02d" %  submission.SubmittedAt.day%>/<%= "%02d" %  submission.SubmittedAt.month%>/<%= "%02d" %  submission.SubmittedAt.year%> <%= "%02d" %  submission.SubmittedAt.hour%>:<%= "%02d" % submission.SubmittedAt.min%></td>
+					<%if  submission.SubmittedAt == 'Not submitted' %>
+						<td>Not submitted</td>
+					<% else %>
+						<td><%= "%02d" %  submission.SubmittedAt.day%>/<%= "%02d" %  submission.SubmittedAt.month%>/<%= "%02d" %  submission.SubmittedAt.year%> <%= "%02d" %  submission.SubmittedAt.hour%>:<%= "%02d" % submission.SubmittedAt.min%></td>
+					<% end %>
 					<td><%= submission.Duration%></td>
 					<td style="text-align: right">
 						<%= link_to submission do %>

@@ -656,13 +656,12 @@ $(document).ready(function(){
 						html = html+'</div>';
 						}
 					html+= '<label for="question_Relations">Relations</label>';
+						html+= '<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px;">The relations defined above should olny contain references to the variables defined in the formula. Only "<=", ">=" and "=" are accepted as compatison operators and to their right side only one number is accepted i.e. 2*[x]<=4 is accepted while 2*[x]<=2*[y] is not. All operations must have an operator present i.e. 2[x] is not valid and should be written as 2*[x]. There must be no space witin a relation and no parantheses are allowed.</small>';
 					<% if @question.Answer && @question.Answer != ""  && @question.Answer["〚"]  %>
 						html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2*[Y], [x]+[y]=2, [x]+[y]=3*[z]" value="<%= @question.Answer[@question.Answer.index("〚")+1..@question.Answer.index("〛")-1]%>" style="margin-left: 10px" type="text" name="FRMRelations" id="FRMRelations">';
 					<% else %>
 						html+= '<input class="form-control" for="Relations" placeholder="example: [Z]<[Y], [X]=2*[Y], [x]+[y]=2, [x]+[y]=3*[z]" style="margin-left: 10px" type="text" name="FRMRelations" id="FRMRelations">';
-					<% end %>
-						html+= '<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px;">The relations defined above should olny contain references to the variables defined in the formula. Only "<=", ">=" and "=" are accepted as compatison operators and and to their right side only one number is accepted i.e. 2*[x]<=4 is aaccepted while 2*[x]<=2*[y] is not. All operations must have an operator present i.e. 2[x] is not valid and should be written as 2*[x]. There must be no space witin a relation and no brackets are allowed.</small>';
-					}
+					<% end %>}
 				else
 					html = '';
 				document.getElementById("varsHtml").innerHTML = html;

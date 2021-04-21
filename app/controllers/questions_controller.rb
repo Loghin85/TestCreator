@@ -253,14 +253,19 @@ class QuestionsController < ApplicationController
 				p.solve
 
 				if p.proven_infeasible?
-					@question.errors.add(:Answer, :infeasible)
+					infeasible = true
+				else
+					infeasible = false
 				end
 			end
 		end
 		
 		@question = Question.new(question_params.merge(:Options => options, :Answer => answer))
 		respond_to do |format|
-      if @question.errors.any?
+		if infeasible
+			@question.errors.add(:Answer, :infeasible)
+		end
+			if @question.errors.any?
 				if answer!=nil
 					@positions1 = []
 					@positions2 = []
