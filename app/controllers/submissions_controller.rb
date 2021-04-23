@@ -190,8 +190,15 @@ class SubmissionsController < ApplicationController
 				answer = params[("FRMAnswer-"+@questions.index(question).to_s).to_sym]
 				qScore=0
 				if answer != nil
-					if answer.to_f == targetAnswer
-						qScore = question.Points
+					if question.Options.include?("RAN1")
+						range = question.Options[question.Options.index("RAN1")+5..].to_f
+						if answer.to_f >= targetAnswer-range && answer.to_f <= targetAnswer+range
+							qScore = question.Points
+						end
+					else
+						if answer.to_f == targetAnswer
+							qScore = question.Points
+						end
 					end
 				end
 				if qScore == 0 && question.Options.include?("NEG1") && answer != nil

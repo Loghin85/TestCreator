@@ -126,6 +126,23 @@
 			end%>
 			<label class="form-check-label" for="multiSpaces">Allow multiple spaces</label>
 		</div>
+		<% if @question.Type=="FRM" %>
+		<div class="form-check FRM" style="margin-top: 5px">
+		<% else %>
+		<div style="display: none;" class="form-check FRM" style="margin-top: 5px">
+		<% end %>
+			<%= if @question.Options
+				check_box 'Range', 'result', {class: "form-check-input",checked: @question.Options.include?('RAN1')}, 1, 0
+			else
+				check_box 'Range', 'result', {class: "form-check-input"}, 1, 0
+			end
+			%>
+			<label class="form-check-label" for="Range">Allow answer error</label>
+			<small id="HelpBlock" class="form-text text-muted MA" style="margin-bottom:5px;">
+				The permitted error above and below the exact result of the formula-variable combination.
+			</small>
+			<%= form.text_field :rangeValue, name: "rangeValue", class: "form-control", value: 0.5, for: "options", type: "number", step: ".01"%>
+		</div>
 	</div>
 	
 	<% if @question.Type=="MCQ" %>

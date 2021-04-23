@@ -101,6 +101,13 @@ class QuestionsController < ApplicationController
 			options+="MUL0"
 		end
 	end
+	if params[:question][:Type]=="FRM"
+		if params[:Range][:result]=="1"
+			options+="RAN1P"++params[:RangeValue]
+		else
+			options+="RAN0"
+		end
+	end
 		
 		#form the answer string
 		case params[:question][:Type]
@@ -388,6 +395,13 @@ class QuestionsController < ApplicationController
 				options+="MUL1"
 			else
 				options+="MUL0"
+			end
+		end
+		if params[:question][:Type]=="FRM"
+			if params[:Range][:result]=="1"
+				options+="RAN1P"+params[:rangeValue]
+			else
+				options+="RAN0"
 			end
 		end
 		
