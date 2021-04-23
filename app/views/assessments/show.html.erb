@@ -87,7 +87,9 @@
 				</tr>
 			</thead>
 			<tbody>
-			<%@questions.each do |question| %>
+			<%totalPoints=0
+			@questions.each do |question| 
+				totalPoints+=question.Points.to_i%>
 				<tr>
 					<td><%= question.Title%></td>
 					<td><%= question.Type%></td>
@@ -133,11 +135,22 @@
 				</tr>
 			</thead>
 			<tbody>
-			<%@submissions.each do |submission| %>
+			<%@submissions.each do |submission| 
+				marks=0
+				if submission.Scores != 'Not submitted'
+					for score in eval(submission.Scores)
+						marks+=score.to_i
+					end
+				end
+				%>
 				<tr>
 					<td><%= submission.userId%></td>
 					<td><%= submission.userEmail%></td>
-					<td><%= submission.Score%></td>
+					<%if  submission.Scores == 'Not submitted' %>
+						<td>Not submitted</td>
+					<% else %>
+						<td><%= marks %>/<%=totalPoints%></td>
+					<% end %>
 					<%if  submission.SubmittedAt == 'Not submitted' %>
 						<td>Not submitted</td>
 					<% else %>

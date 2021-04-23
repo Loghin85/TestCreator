@@ -76,7 +76,7 @@ class SubmissionsController < ApplicationController
 		date=DateTime.now
 		# put if for expired case
 		parms = {"Duration"=>((date.to_time-@submission.SubmittedAt.to_time)).to_i}
-		score = 0
+		scores = []
 		answers = []
 		@questions = Question.where(assessment_id: @submission.assessment_id)
 		for question in @questions
@@ -92,12 +92,11 @@ class SubmissionsController < ApplicationController
 				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
 					qScore -= question.Options[5..].to_i
 				end
-				score+=qScore
+				scores << qScore
 				answers << answer
 			when "MA"
 				p "MA"
 				answer = params[("MACheckboxes-"+@questions.index(question).to_s).to_sym]
-				p answer
 				qScore=0
 				wrong = false
 				if answer != nil
@@ -120,7 +119,7 @@ class SubmissionsController < ApplicationController
 					qScore -= question.Options[5..question.Options.index("P")-1].to_i
 				end
 				answers << answer
-				score+=qScore
+				scores << qScore
 			when "FTB"
 				p "FTB"
 				answer = params[("FTBAnswer-"+@questions.index(question).to_s).to_sym]
@@ -147,7 +146,7 @@ class SubmissionsController < ApplicationController
 				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
 					qScore -= question.Options[5..].to_i
 				end
-				score+=qScore
+				scores << qScore
 				answers << answer
 			when "TF"
 				p "TF"
@@ -161,7 +160,7 @@ class SubmissionsController < ApplicationController
 				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
 					qScore -= question.Options[5..].to_i
 				end
-				score+=qScore
+				scores << qScore
 				answers << answer
 			when "REG"
 				p "REG"
@@ -176,16 +175,35 @@ class SubmissionsController < ApplicationController
 				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
 					qScore -= question.Options[5..].to_i
 				end
-				score+=qScore
+				scores << qScore
 				answers << answer
 			when "FRM"
 				p "FRM"
-				
-				
-				
+				values = eval(params[("FRMvalues-"+@questions.index(question).to_s).to_sym])
+				formula = question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
+				for val in values
+					key, value = val
+					formula = formula.gsub("[" + key.upcase + "]",value.to_s)
+					formula = formula.gsub("[" + key.downcase + "]",value.to_s)
+				end
+				targetAnswer = eval(formula+".to_f").round(2)
+				answer = params[("FRMAnswer-"+@questions.index(question).to_s).to_sym]
+				qScore=0
+				if answer != nil
+					if answer.to_f == targetAnswer
+						qScore = question.Points
+					end
+				end
+				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+					qScore -= question.Options[5..].to_i
+				end
+				scores << qScore
+				answers << answer
 			end
-			p score
+			p scores
 			p answers
+			parms["Scores"] = scores
+			parms["Answers"] = answers
 		end
 		respond_to do |format|
       if @submission.update(parms)

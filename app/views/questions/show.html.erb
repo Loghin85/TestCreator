@@ -244,7 +244,10 @@
 					p values
 				%>
 				<%=@question.Text.html_safe%>
-				<input class="form-control w-25" name="FRMAnswer" placeholder="Answer" id="question_FRMAnswer" style="display: inline-block">
+				<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px;">
+					The answer should be rounded to 2 decimals.
+				</small>
+				<input class="form-control w-25" name="FRMAnswer" placeholder="Answer" id="question_FRMAnswer" style="display: inline-block" type="number" step=".01">
 				<%end%>
 				
 		</div>
