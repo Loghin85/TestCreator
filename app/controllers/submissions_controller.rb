@@ -123,10 +123,32 @@ class SubmissionsController < ApplicationController
 				score+=qScore
 			when "FTB"
 				p "FTB"
-				
-				
-				
-				
+				answer = params[("FTBAnswer-"+@questions.index(question).to_s).to_sym]
+				targetAnswer = question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
+				qScore=0
+				if answer != nil
+					if question.Options.include?("CAS0")
+						targetAnswer = targetAnswer.upcase
+						answer = answer.upcase
+					end
+					if question.Options.include?("MUL1")
+						answer = answer.squeeze().strip
+					end
+					if question.Options.include?("CON1")
+						if answer.include?(targetAnswer)
+							qScore = question.Points
+						end
+					else
+						if answer == targetAnswer
+							qScore = question.Points
+						end
+					end
+				end
+				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+					qScore -= question.Options[5..].to_i
+				end
+				score+=qScore
+				answers << answer
 			when "TF"
 				p "TF"
 				answer = params[("TFRadio-"+@questions.index(question).to_s).to_sym]

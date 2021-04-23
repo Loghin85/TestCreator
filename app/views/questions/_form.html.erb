@@ -56,7 +56,10 @@
 			else
 			check_box 'Negative', 'result', {class: "form-check-input"}, 1, 0
 			end%>
-			<label class="form-check-label" for="options">Negative marking: (Applicable when only no correct answer was chosen)</label>
+			<label class="form-check-label" for="options">Negative marking:</label>
+			<small id="HelpBlock" class="form-text text-muted MA" style="margin-bottom:5px;">
+				Negative marking will apply when 0 points would have been awarded for the chosen answer. Not choosing an answer will not result in negative marking.
+			</small>
 			<%= if @question.Options
 				if @question.Options.include?('NEG1')
 					if @question.Type=="MA"
