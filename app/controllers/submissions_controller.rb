@@ -72,8 +72,101 @@ class SubmissionsController < ApplicationController
 
   # PATCH/PUT /submissions/1 or /submissions/1.json
   def update
-    respond_to do |format|
-      if @submission.update(submission_params)
+    p @submission.SubmittedAt.to_time
+		date=DateTime.now
+		# put if for expired case
+		parms = {"Duration"=>((date.to_time-@submission.SubmittedAt.to_time)).to_i}
+		score = 0
+		answers = []
+		@questions = Question.where(assessment_id: @submission.assessment_id)
+		for question in @questions
+			case question.Type
+			when "MCQ"
+				p "MCQ"
+				answer = params[("MCQRadios-"+@questions.index(question).to_s).to_sym]
+				qScore=0
+				if answer != nil
+					value = question.Answer[question.Answer.index(answer)+answer.length+1..question.Answer.index(answer)+question.Answer[question.Answer.index(answer)..].index("%")-1].to_i
+					qScore=question.Points*value/100
+				end
+				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+					qScore -= question.Options[5..].to_i
+				end
+				score+=qScore
+				answers << answer
+			when "MA"
+				p "MA"
+				answer = params[("MACheckboxes-"+@questions.index(question).to_s).to_sym]
+				p answer
+				qScore=0
+				wrong = false
+				if answer != nil
+					for check in answer
+						if wrong == false
+							value = question.Answer[question.Answer.index(check)+check.length+1..question.Answer.index(check)+question.Answer[question.Answer.index(check)..].index("%")-1].to_i
+							if value == 0
+								wrong = true
+								qScore = 0
+							end
+							qScore+=question.Points*value/100
+						end
+					end
+					qScore /= question.Answer.scan(/(?=100)/).count
+				end
+				if question.Options.include?("PAR0") && qScore != question.Points
+					qScore = 0
+				end
+				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+					qScore -= question.Options[5..question.Options.index("P")-1].to_i
+				end
+				answers << answer
+				score+=qScore
+			when "FTB"
+				p "FTB"
+				
+				
+				
+				
+			when "TF"
+				p "TF"
+				answer = params[("TFRadio-"+@questions.index(question).to_s).to_sym]
+				qScore=0
+				if answer != nil
+					if question.Answer.include?(answer)
+						qScore = question.Points
+					end
+				end
+				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+					qScore -= question.Options[5..].to_i
+				end
+				score+=qScore
+				answers << answer
+			when "REG"
+				p "REG"
+				answer = params[("REGAnswer-"+@questions.index(question).to_s).to_sym]
+				regex = Regexp.new question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
+				qScore=0
+				if answer != nil
+					if !(answer =~ regex).nil?
+						qScore = question.Points
+					end
+				end
+				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+					qScore -= question.Options[5..].to_i
+				end
+				score+=qScore
+				answers << answer
+			when "FRM"
+				p "FRM"
+				
+				
+				
+			end
+			p score
+			p answers
+		end
+		respond_to do |format|
+      if @submission.update(parms)
         format.html { redirect_to @submission, notice: "Submission was successfully updated." }
         format.json { render :show, status: :ok, location: @submission }
       else

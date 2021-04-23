@@ -34,19 +34,19 @@
 					<%= question.Text.html_safe%>
 					<div class="form-group">
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio1-<%=@questions.index(question)%>" value="A">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio1-<%=@questions.index(question)%>" value="<%= question.Answer[positions1[0]+1..positions2[0]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[0]+1..positions2[0]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio2-<%=@questions.index(question)%>" value="B">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio2-<%=@questions.index(question)%>" value="<%= question.Answer[positions1[1]+1..positions2[1]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[1]+1..positions2[1]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio3-<%=@questions.index(question)%>" value="C">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio3-<%=@questions.index(question)%>" value="<%= question.Answer[positions1[2]+1..positions2[2]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[2]+1..positions2[2]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio4-<%=@questions.index(question)%>" value="D">
+								<input class="form-check-input" type="radio" name="MCQRadios-<%=@questions.index(question)%>" id="Radio4-<%=@questions.index(question)%>" value="<%= question.Answer[positions1[3]+1..positions2[3]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[3]+1..positions2[3]-1] %></label>
 						</div>
 					</div>
@@ -65,19 +65,19 @@
 					<%= question.Text.html_safe%>
 					<div class="form-group">
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="checkbox" id="MACheckbox1-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="A">
+								<input class="form-check-input" type="checkbox" id="MACheckbox1-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[0]+1..positions2[0]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[0]+1..positions2[0]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="checkbox" id="MACheckbox2-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="B">
+								<input class="form-check-input" type="checkbox" id="MACheckbox2-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[1]+1..positions2[1]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[1]+1..positions2[1]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="checkbox" id="MACheckbox3-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="C">
+								<input class="form-check-input" type="checkbox" id="MACheckbox3-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[2]+1..positions2[2]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[2]+1..positions2[2]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
-								<input class="form-check-input" type="checkbox" id="MACheckbox4-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="D">
+								<input class="form-check-input" type="checkbox" id="MACheckbox4-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[3]+1..positions2[3]-1] %>">
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[3]+1..positions2[3]-1] %></label>
 						</div>
 					</div>
@@ -146,17 +146,29 @@
 					rels << rel
 				end
 					varsILP={}
-					maximize=0
+					ilpFunction=0
+					sum=@submission.userId.sum
 					for var in vars
 						varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
-						sign=rand(1..2)
-						if sign == 1
-							maximize = maximize + rand(1..20) * varsILP[var[0]]
-						elsif sign == 2
-							maximize = maximize - rand(1..20) * varsILP[var[0]]
+						if (var[0].sum+sum) % 3 == 1
+							if (var[0].sum+sum) % 2 == 1
+								ilpFunction = ilpFunction + @submission.userId.ord*sum/var[0].sum * varsILP[var[0]]
+							else
+								ilpFunction = ilpFunction - @submission.userId.ord/var[0].sum * varsILP[var[0]]
+							end
+						else
+							if (var[0].sum+sum) % 2 == 1
+								ilpFunction = ilpFunction - @submission.userId.ord*sum/var[0].sum * varsILP[var[0]]
+							else
+								ilpFunction = ilpFunction + @submission.userId.ord/var[0].sum * varsILP[var[0]]
+							end
 						end
 					end
-					m.maximize(maximize)
+					if sum % 3 == 0 
+						m.maximize(ilpFunction)
+					else
+						m.minimize(ilpFunction)
+					end
 					for rel in rels
 						eq=0
 						blocks=rel.split()

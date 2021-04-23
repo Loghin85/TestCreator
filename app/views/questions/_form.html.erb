@@ -712,7 +712,6 @@ $(document).ready(function(){
 				$('#btCheck').click(function() {
 						values = '';
 						let regex = new RegExp($('#expression').val());
-						console.log(regex);
 						for (i=1;i<=len;i++)
 							if (regex.test($('#test_case' + i).val()))
 								{if ( document.getElementById("test_case"+i).classList.contains('border-danger') )

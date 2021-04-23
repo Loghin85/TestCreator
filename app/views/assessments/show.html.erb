@@ -141,9 +141,9 @@
 					<%if  submission.SubmittedAt == 'Not submitted' %>
 						<td>Not submitted</td>
 					<% else %>
-						<td><%= "%02d" %  submission.SubmittedAt.day%>/<%= "%02d" %  submission.SubmittedAt.month%>/<%= "%02d" %  submission.SubmittedAt.year%> <%= "%02d" %  submission.SubmittedAt.hour%>:<%= "%02d" % submission.SubmittedAt.min%></td>
+						<td><%= "%02d" %  submission.SubmittedAt.day%>/<%= "%02d" %  submission.SubmittedAt.month%>/<%= "%02d" %  submission.SubmittedAt.year%> <%= "%02d" %  submission.SubmittedAt.hour%>:<%= "%02d" % submission.SubmittedAt.min%> GMT</td>
 					<% end %>
-					<td><%= submission.Duration%></td>
+					<td><%= submission.Duration/60%> min <%= submission.Duration%60%> s</td>
 					<td style="text-align: right">
 						<%= link_to submission do %>
 							<i class="far fa-eye"></i>
