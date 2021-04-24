@@ -10,6 +10,19 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/1 or /submissions/1.json
   def show
+		if params[:assessment_id]
+			@submission.assessment_id = params[:assessment_id]
+		elsif params[:submission]
+			@submission.assessment_id = params[:submission][:assessment_id]
+		end
+		if @submission.assessment_id
+			@assessment = Assessment.find(@submission.assessment_id)
+			@questions = Question.where(assessment_id: @submission.assessment_id)
+			if @assessment
+				user = User.find(@assessment.user_id)
+				@creator = user.Fname + " " + user.Lname
+			end
+		end
   end
 
   # GET /submissions/new
@@ -123,27 +136,28 @@ class SubmissionsController < ApplicationController
 			when "FTB"
 				p "FTB"
 				answer = params[("FTBAnswer-"+@questions.index(question).to_s).to_sym]
+				answerCopy = answer
 				targetAnswer = question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
 				qScore=0
 				if answer != nil
 					if question.Options.include?("CAS0")
 						targetAnswer = targetAnswer.upcase
-						answer = answer.upcase
+						answerCopy = answerCopy.upcase
 					end
 					if question.Options.include?("MUL1")
-						answer = answer.squeeze().strip
+						answerCopy = answer.squeeze().strip
 					end
 					if question.Options.include?("CON1")
-						if answer.include?(targetAnswer)
+						if answerCopy.include?(targetAnswer)
 							qScore = question.Points
 						end
 					else
-						if answer == targetAnswer
+						if answerCopy == targetAnswer
 							qScore = question.Points
 						end
 					end
 				end
-				if qScore == 0 && question.Options.include?("NEG1") && answer != nil
+				if qScore == 0 && question.Options.include?("NEG1") && answerCopy != nil
 					qScore -= question.Options[5..].to_i
 				end
 				scores << qScore
