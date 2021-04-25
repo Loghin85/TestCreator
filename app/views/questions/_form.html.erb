@@ -1,6 +1,6 @@
 <%= form_with(model: question) do |form| %>
   <% if question.errors.any? %>
-    <% flash.now[:warning] = question.errors.full_messages[0] %>
+    <% flash.now[:danger] = question.errors.full_messages[0] %>
   <% end %>
 
 	<%= form.hidden_field :assessment_id, :value => @question.assessment_id %>

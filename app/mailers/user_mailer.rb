@@ -19,4 +19,5 @@ class UserMailer < ApplicationMailer
     @user = user
     mail to: user.Email, subject: "Password reset"
   end
+	
 end

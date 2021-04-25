@@ -1,6 +1,6 @@
 <%= form_with(model: assessment) do |form| %>
   <% if assessment.errors.any? %>
-    <% flash.now[:warning] = assessment.errors.full_messages[0] %>
+    <% flash.now[:danger] = assessment.errors.full_messages[0] %>
   <% end %>
 	
 	<%= form.hidden_field :user_id, :value => current_user.id %>
@@ -29,10 +29,16 @@
 		<div style="padding-left: 15px">
 			<div class="form-group">
 				<%= form.label :BeginAt , "Start date and time GMT"%>
-				<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-					<% if @assessment.BeginAt %>
-						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>"/>
+					<% if @assessment.BeginAt
+						if @assessment.BeginAt > DateTime.now()%>
+						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>"/>
+						<%else%>
+						<div class="input-group date" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>" readonly/>
+						<%end%>
 					<% else %>
+					<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
 						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt"/>
 					<% end %>
 					<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
@@ -43,10 +49,17 @@
 			
 			<div class="form-group">
 				<%= form.label :EndAt , "End date and time GMT"%>
-				<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-					<% if @assessment.EndAt %>
-						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>"/>
+					<% if @assessment.EndAt 
+						if @assessment.EndAt > DateTime.now()%>
+						<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>"/>
+						<%else%>
+						<div class="input-group date" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>" readonly/>
+							
+						<%end%>
 					<% else %>
+					<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
 						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt"/>
 					<% end %>
 					<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">

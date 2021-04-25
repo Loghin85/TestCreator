@@ -102,19 +102,6 @@ class AssessmentsController < ApplicationController
 				end
 			end
 		end
-    respond_to do |format|
-      if @assessment.update(assessment_params) && endAt > beginAt
-        format.html { redirect_to @assessment 
-										flash[:info] = "Assessment was successfully updated." }
-        format.json { render :show, status: :ok, location: @assessment }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @assessment.errors, status: :unprocessable_entity }
-				if endAt <= beginAt
-					flash[:warning] = "Please choose an end date and time at least 1 minute later than the start date and time."
-				end
-      end
-    end
   end
 
   # DELETE /assessments/1 or /assessments/1.json

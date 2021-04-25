@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get 'password_resets/new'
   get 'password_resets/edit'
+  get 'submissions/received'
+  get 'submissions/duplicate'
   get 'sessions/new'
   resources :users
   resources :questions, only: [:new, :create, :edit, :update, :destroy, :show]

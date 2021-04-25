@@ -10,7 +10,7 @@
 		</div>
 		<%= form_with(model: @submission) do |form| %>
 		<% if @submission.errors.any? %>
-			<% flash.now[:warning] = @submission.errors.full_messages[0] %>
+			<% flash.now[:danger] = @submission.errors.full_messages[0] %>
 		<% end %>
 		
 		
