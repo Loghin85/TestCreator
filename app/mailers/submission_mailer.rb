@@ -8,4 +8,12 @@ class SubmissionMailer < ApplicationMailer
     mail to: submission.userEmail, subject: "Assessment results"
   end
 	
+  def assessment_feedback( submission, text, creator, assessment)
+		@text = text
+		@submission = submission
+		@creator = creator
+		@assessment = assessment
+    mail to: submission.userEmail, subject: "Assessment feedback"
+  end
+	
 end

@@ -7,9 +7,14 @@ class Submission < ApplicationRecord
 												format: { with: VALID_EMAIL_REGEX }
 	validates :Score, :Scores, :Answers, :SubmittedAt, :Duration, presence: true
 	
-  # Sends activation email.
+  # Sends results email.
   def send_submission_results(assessment, questions, creator)
     SubmissionMailer.assessment_results(self, assessment, questions, creator).deliver_now
+  end
+	
+  # Sends feedback email.
+  def send_feedback(text, creator, assessment)
+    SubmissionMailer.assessment_feedback(self, text, creator, assessment).deliver_now
   end
 	
 end

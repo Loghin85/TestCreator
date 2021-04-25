@@ -326,7 +326,6 @@
 						question.Text.gsub! '[' + var[0] + ']', values[var[0]].to_s
 						question.Text.gsub! '[' + var[0].downcase + ']', values[var[0]].to_s
 					end
-					p values
 				%>
 				<%=question.Text.html_safe%>
 				<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px;">
@@ -338,14 +337,14 @@
 				<p><b>Score: <%= eval(@submission.Scores)[@questions.index(question)]%>/<%=question.Points%></b></p>
 		</div>
 		<% end %>
+		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
+		<%= form_with url: feedback_path, method: :post do |form|%>
+		<h3>Further feedback to learner</h3><br>
+			<%= form.text_area :Feedback, class: "form-control tinymceT", placeholder: "On Question 1..."%>
+			<%= form.hidden_field :submission, :value => @submission.id %>
 	</div>
-	<div class="col-1">
-	</div>
+	<div class="col-1"></div>	
 </div>
-
-
-
-
 
 <div class="row" style="width: 100%; padding: 10px;">
 	<div class="col-1"></div>
@@ -353,7 +352,13 @@
 		<br>
 		<div class="row">
 			<%= link_to 'Back to assessment', '/assessments/'+@submission.assessment_id.to_s , class: "btn btn-primary", style: "margin-left: 25px; margin-top: 10px;"%>
+			<%= form.submit 'Send feedback', class: "btn btn-primary", style: "margin-left: 25px; margin-top: 10px;"%>
+			<% end %>
 		</div>
 	</div>
 	<div class="col-1"></div>
 </div>
+<br>
+<br>
+
+

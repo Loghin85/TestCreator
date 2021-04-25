@@ -1,0 +1,20 @@
+<h1>Further feedback on your submission for <%=@assessment.Name%> from by <%=@creator%></h1>
+
+<div class="row" style="width: 100%; padding: 10px;">
+	<div class="col-1">
+	</div>
+	<div class="col-10">
+		<h3>Further feedback</h3>
+	</div>
+	<div class="col-1">
+	</div>
+	<div class="col-1"></div>
+	<div class="col-10">
+		<p>The following feedback related to your submission was sent to you by <%=@creator%>:</p>
+		<%= @text.html_safe %>
+	<div class="col-1">
+	</div>
+	<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
+	<p>If there is any concern please do not reply to this email and contact the assessment creator directly.<br>
+	Thank you for using Test Creator.</p>
+</div>

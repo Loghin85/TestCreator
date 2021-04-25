@@ -24,6 +24,18 @@ class SubmissionsController < ApplicationController
 			end
 		end
   end
+	
+	def feedback
+		@submission = Submission.find(params[:submission])
+		@assessment = Assessment.find(@submission.assessment_id)
+		if @assessment
+			user = User.find(@assessment.user_id)
+			@creator = user.Fname + " " + user.Lname
+		end
+		@submission.send_feedback(params[:Feedback], @creator, @assessment)
+		redirect_to '/submissions/'+params[:submission]
+		flash[:info] = 'Feedback was successfully sent.'
+	end
 
   # GET /submissions/new
   def new
