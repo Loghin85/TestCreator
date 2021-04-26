@@ -39,7 +39,6 @@ gem "recaptcha"
 gem 'faker'
 gem 'geocoder'
 gem 'ruby-cbc'
-gem 'cbc-wrapper', "2.9.9.3"
 gem 'rexml'
 
 group :development, :test do
