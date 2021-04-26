@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'submissions/received'
   get 'submissions/duplicate'
   get 'sessions/new'
+  get 'contact' => "test#contact"
+  get 'documentation' => "test#documentation"
 	post '/feedback' => 'submissions#feedback'
   resources :users
   resources :questions, only: [:new, :create, :edit, :update, :destroy, :show]

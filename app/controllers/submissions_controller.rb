@@ -17,7 +17,7 @@ class SubmissionsController < ApplicationController
 		end
 		if @submission.assessment_id
 			@assessment = Assessment.find(@submission.assessment_id)
-			@questions = Question.where(assessment_id: @submission.assessment_id)
+			@questions = Question.where(assessment_id: @submission.assessment_id).order(:id)
 			if @assessment
 				user = User.find(@assessment.user_id)
 				@creator = user.Fname + " " + user.Lname
@@ -67,7 +67,7 @@ class SubmissionsController < ApplicationController
 				user = User.find(@assessment.user_id)
 				@creator = user.Fname + " " + user.Lname
 			end
-			@questions = Question.where(assessment_id: @submission.assessment_id)
+			@questions = Question.where(assessment_id: @submission.assessment_id).order(:id)
 		end
   end
 

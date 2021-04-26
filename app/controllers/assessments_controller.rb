@@ -4,13 +4,13 @@ class AssessmentsController < ApplicationController
 
   # GET /assessments or /assessments.json
   def index
-    @assessments = Assessment.all
+    @assessments = Assessment.all.order(:id)
   end
 
   # GET /assessments/1 or /assessments/1.json
   def show
-		@questions = Question.where(assessment_id: params[:id])
-		@submissions = Submission.where(assessment_id: params[:id])
+		@questions = Question.where(assessment_id: params[:id]).order(:id)
+		@submissions = Submission.where(assessment_id: params[:id]).order(:id)
 		@path = request.base_url+"/submissions/new?assessment_id=" +params[:id]
   end
 
@@ -25,6 +25,13 @@ class AssessmentsController < ApplicationController
 
   # POST /assessments or /assessments.json
   def create
+		assessments = Assessment.where(user_id: params[:assessment][:user_id])
+		duplicateTitle = false
+		for assessment in assessments
+			if assessment.Name == params[:assessment][:Name]
+				duplicateTitle = true
+			end
+		end
     @assessment = Assessment.new(assessment_params)
 		respond_to do |format|
 			yearB = params[:assessment][:BeginAt][6..9]
@@ -40,7 +47,7 @@ class AssessmentsController < ApplicationController
 			if params[:assessment][:BeginAt] != '' && params[:assessment][:EndAt] != ''
 				beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
 				endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
-				if @assessment.save && endAt > beginAt
+				if @assessment.save && endAt > beginAt && !duplicateTitle
 					format.html { redirect_to @assessment
 											flash[:info] = "Assessment was successfully created." }
 					format.json { render :show, status: :created, location: @assessment }
@@ -48,7 +55,10 @@ class AssessmentsController < ApplicationController
 					format.html { render :new, status: :unprocessable_entity }
 					format.json { render json: @assessment.errors, status: :unprocessable_entity }
 					if endAt <= beginAt
-						flash[:warning] = "Please choose an end date and time at least 1 minute later than the start date and time."
+						flash[:danger] = "Please choose an end date and time at least 1 minute later than the start date and time."
+					end
+					if duplicateTitle
+						flash[:danger] = "An assessment with this title already exists."
 					end
 				end
 			else
@@ -66,6 +76,13 @@ class AssessmentsController < ApplicationController
 
   # PATCH/PUT /assessments/1 or /assessments/1.json
   def update
+		assessments = Assessment.where(user_id: params[:assessment][:user_id])
+		duplicateTitle = false
+		for assessment in assessments
+			if assessment.Name == params[:assessment][:Name]
+				duplicateTitle = true
+			end
+		end
 		respond_to do |format|
 			yearB = params[:assessment][:BeginAt][6..9]
 			monthB = params[:assessment][:BeginAt][3..4]
@@ -80,7 +97,7 @@ class AssessmentsController < ApplicationController
 			if params[:assessment][:BeginAt] != '' && params[:assessment][:EndAt] != ''
 				beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
 				endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
-				if @assessment.update(assessment_params) && endAt > beginAt
+				if @assessment.update(assessment_params) && endAt > beginAt && !duplicateTitle
 					format.html { redirect_to @assessment 
 											flash[:info] = "Assessment was successfully updated." }
 					format.json { render :show, status: :ok, location: @assessment }
@@ -88,7 +105,10 @@ class AssessmentsController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @assessment.errors, status: :unprocessable_entity }
 					if endAt <= beginAt
-						flash[:warning] = "Please choose an end date and time at least 1 minute later than the start date and time."
+						flash[:danger] = "Please choose an end date and time at least 1 minute later than the start date and time."
+					end
+					if duplicateTitle
+						flash[:danger] = "An assessment with this title already exists."
 					end
 				end
 			else

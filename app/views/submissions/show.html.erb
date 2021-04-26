@@ -97,8 +97,13 @@
 	</div>
 	<div class="col-1"></div>
 	<div class="col-10">
-		<% @questions.each do |question| 
-			answers = eval(@submission.Answers)%>
+		<% answers = []
+		@questions.each do |question| 
+			if @submission.Answers != 'Not submitted'
+				answers = eval(@submission.Answers)
+			else
+				answers << "〔"
+			end%>
 		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
 		<div class="col-12">
 				<h2><%= question.Title%></h2>
@@ -203,11 +208,11 @@
 						textEnd = question.Text[question.Text.index('[blank]')+7..-1]
 						%>
 						<%=textBegin.html_safe%>
-						<input class="form-control w-25" name="FTBAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FTBAnswer-<%=@questions.index(question)%>" style="display: inline-block" value="<%= answers[@questions.index(question)] %>" disabled>
+						<input class="form-control w-25" name="FTBAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FTBAnswer-<%=@questions.index(question)%>" style="display: inline-block" <%if answers[@questions.index(question)] != "〔" %>value="<%= answers[@questions.index(question)] %>" <% end %> disabled>
 						<%=textEnd.html_safe%>
 					<%else%>
 						<%=question.Text.html_safe%>
-						<input class="form-control w-25" name="FTBAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FTBAnswer-<%=@questions.index(question)%>" style="display: inline-block" value="<%= answers[@questions.index(question)] %>" disabled>
+						<input class="form-control w-25" name="FTBAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FTBAnswer-<%=@questions.index(question)%>" style="display: inline-block" <%if answers[@questions.index(question)] != "〔" %>value="<%= answers[@questions.index(question)] %>" <% end %> disabled>
 					<%end%>
 				<%when "TF"%>
 					<%= question.Text.html_safe%>
@@ -235,11 +240,11 @@
 						textEnd = question.Text[question.Text.index('[blank]')+7..-1]
 						%>
 						<%=textBegin.html_safe%>
-						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block" value="<%= answers[@questions.index(question)] %>" disabled>
+						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block" <%if answers[@questions.index(question)] != "〔" %>value="<%= answers[@questions.index(question)] %>" <% end %> disabled>
 						<%=textEnd.html_safe%>
 					<%else%>
 						<%=question.Text.html_safe%>
-						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block" value="<%= answers[@questions.index(question)] %>" disabled>
+						<input class="form-control w-25" name="REGAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_REGAnswer-<%=@questions.index(question)%>" style="display: inline-block" <%if answers[@questions.index(question)] != "〔" %>value="<%= answers[@questions.index(question)] %>" <% end %> disabled>
 					<%end%>
 				<%when "FRM"
 				formula = question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
@@ -256,18 +261,20 @@
 				constraints = constraints[1..-2]
 				m = Cbc::Model.new
 				rels=[]
-				for rel in constraints.split(',')
-					rel = rel.strip
-					rel.gsub! '+', ' + '
-					rel.gsub! '-', ' - '
-					rel.gsub! '*', ' * '
-					rel.gsub! '/', ' / '
-					rel.gsub! '<=', ' <= '
-					rel.gsub! '>=', ' >= '
-					rel.gsub! '=', ' = '
-					rel.gsub! '< =', '<='
-					rel.gsub! '> =', '>='
-					rels << rel
+				if constraints
+					for rel in constraints.split(',')
+						rel = rel.strip
+						rel.gsub! '+', ' + '
+						rel.gsub! '-', ' - '
+						rel.gsub! '*', ' * '
+						rel.gsub! '/', ' / '
+						rel.gsub! '<=', ' <= '
+						rel.gsub! '>=', ' >= '
+						rel.gsub! '=', ' = '
+						rel.gsub! '< =', '<='
+						rel.gsub! '> =', '>='
+						rels << rel
+					end
 				end
 					varsILP={}
 					ilpFunction=0
@@ -334,7 +341,7 @@
 				<input class="form-control w-25" name="FRMAnswer-<%=@questions.index(question)%>" placeholder="Answer" id="question_FRMAnswer-<%=@questions.index(question)%>" style="display: inline-block" type="number" step=".01"  value="<%= answers[@questions.index(question)] %>" disabled>
 				<input type="hidden" id="question_FRMvalues-<%=@questions.index(question)%>" name="FRMvalues-<%=@questions.index(question)%>" value="<%=values%>">
 				<%end%>
-				<p><b>Score: <%= eval(@submission.Scores)[@questions.index(question)]%>/<%=question.Points%></b></p>
+				<p><b>Score: <% if @submission.Scores != 'Not submitted'%> <%=eval(@submission.Scores)[@questions.index(question)]%> <%else%> 0 <%end%>/<%=question.Points%></b></p>
 		</div>
 		<% end %>
 		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>

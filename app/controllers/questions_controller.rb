@@ -68,8 +68,16 @@ class QuestionsController < ApplicationController
 
   # POST /questions or /questions.json
   def create
-    options=""
+  options=""
 	answer=""
+	questions = Question.where(assessment_id: params[:question][:assessment_id])
+	duplicateTitle = false
+	
+	for question in questions
+		if question.Title == params[:question][:Title]
+			duplicateTitle = true
+		end
+	end
 		
 	#form the options string
 	if params[:Negative][:result]=="1"
@@ -192,12 +200,16 @@ class QuestionsController < ApplicationController
 			foreignVars = false
 			for var in test2
 				tag=var[0][1..var[0].length-2].upcase
-				if vars.key?(tag)
+				if !vars.key?(tag)
 					foreignVars = true
 				end
 			end
-			if (test1 == nil && relations.length != 0) || !foreignVars || test.length == 0
+			p (test1 == nil && relations.length != 0)
+			p !foreignVars
+			p test.length == 0
+			if (test1 == nil && relations.length != 0) || foreignVars || test.length == 0
 				answer=""
+				p 'here'
 			elsif relations.length != 0
 				answer = answer + "〚" + relations + "〛"
 			end
@@ -269,6 +281,9 @@ class QuestionsController < ApplicationController
 		
 		@question = Question.new(question_params.merge(:Options => options, :Answer => answer))
 		respond_to do |format|
+		if duplicateTitle
+			@question.errors.add(:Title, :duplicate)
+		end
 		if infeasible
 			@question.errors.add(:Answer, :infeasible)
 		end
@@ -366,6 +381,14 @@ class QuestionsController < ApplicationController
   def update
 		options=""
 		answer=""
+		questions = Question.where(assessment_id: params[:question][:assessment_id])
+		duplicateTitle = false
+		
+		for question in questions
+			if question.Title == params[:question][:Title]
+				duplicateTitle = true
+			end
+		end
 		
 		#form the options string
 		if params[:Negative][:result]=="1"
@@ -481,18 +504,22 @@ class QuestionsController < ApplicationController
 			end
 			relationsRegex= /\A((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+)((,| ,|, | , )((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+))*\Z/
 			formulaRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)/
-			relations = params[:FRMRelations]
+			if params[:FRMRelations]
+				relations = params[:FRMRelations]
+			else	
+				relations = ""
+			end
 			test = formula.scan(formulaRegex) #test formula for valid format
 			test1 = relations.match(relationsRegex) #test relations for valid format
 			test2 = relations.scan(/([\[][a-zA-Z]+[\]])/) #test for foreign variables
 			foreignVars = false
 			for var in test2
 				tag=var[0][1..var[0].length-2].upcase
-				if vars.key?(tag)
+				if !vars.key?(tag)
 					foreignVars = true
 				end
 			end
-			if (test1 == nil && relations.length != 0) || !foreignVars || test.length == 0
+			if (test1 == nil && relations.length != 0) || foreignVars || test.length == 0
 				answer=""
 			elsif relations.length != 0
 				answer = answer + "〚" + relations + "〛"
@@ -561,6 +588,10 @@ class QuestionsController < ApplicationController
 					@question.errors.add(:Answer, :infeasible)
 				end
 			end
+		end
+		
+		if duplicateTitle
+			@question.errors.add(:Title, :duplicate)
 		end
 		
     respond_to do |format|

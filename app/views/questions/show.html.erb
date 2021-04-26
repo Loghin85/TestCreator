@@ -183,18 +183,20 @@
 				constraints = constraints[1..-2]
 				m = Cbc::Model.new
 				rels=[]
-				for rel in constraints.split(',')
-					rel = rel.strip
-					rel.gsub! '+', ' + '
-					rel.gsub! '-', ' - '
-					rel.gsub! '*', ' * '
-					rel.gsub! '/', ' / '
-					rel.gsub! '<=', ' <= '
-					rel.gsub! '>=', ' >= '
-					rel.gsub! '=', ' = '
-					rel.gsub! '< =', '<='
-					rel.gsub! '> =', '>='
-					rels << rel
+				if constraints
+					for rel in constraints.split(',')
+						rel = rel.strip
+						rel.gsub! '+', ' + '
+						rel.gsub! '-', ' - '
+						rel.gsub! '*', ' * '
+						rel.gsub! '/', ' / '
+						rel.gsub! '<=', ' <= '
+						rel.gsub! '>=', ' >= '
+						rel.gsub! '=', ' = '
+						rel.gsub! '< =', '<='
+						rel.gsub! '> =', '>='
+						rels << rel
+					end
 				end
 					varsILP={}
 					maximize=0
