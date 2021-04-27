@@ -385,7 +385,7 @@ class QuestionsController < ApplicationController
 		duplicateTitle = false
 		
 		for question in questions
-			if question.Title == params[:question][:Title]
+			if question.Title == params[:question][:Title] && question.id != params[:id].to_i
 				duplicateTitle = true
 			end
 		end

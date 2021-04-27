@@ -79,7 +79,7 @@ class AssessmentsController < ApplicationController
 		assessments = Assessment.where(user_id: params[:assessment][:user_id])
 		duplicateTitle = false
 		for assessment in assessments
-			if assessment.Name == params[:assessment][:Name]
+			if assessment.Name == params[:assessment][:Name]  && assessment.id != params[:id].to_i
 				duplicateTitle = true
 			end
 		end

@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %>	</div>
-		</div>
 <div class="row" style="width: 100%; padding: 10px;">
 	<div class="col-1">
 	</div>
@@ -38,7 +36,8 @@
 				<strong>Type:</strong>
 			</div>
 			<div class="col-9">
-				<%= @question.Type %>
+				<% types= { "MCQ" => "Multiple choice", "MA" => "Multiple answer", "FTB" => "Fill in the blank", "FRM" => "Formula with random variable(s)", "TF" => "True / False" , "REG" => "Regular expression" }%>
+				<%= types[@question.Type] %>
 			</div>
 		</div>
 		<div class="row">
@@ -54,7 +53,64 @@
 				<strong>Options:</strong>
 			</div>
 			<div class="col-9">
-				<%= @question.Options %>
+				<%case @question.Type
+				when "MCQ"
+					if @question.Options.include?("NEG1")
+						options = "Negative marking of "+ @question.Options[5..] +" points"
+					else
+						options = "No negative marking"
+					end
+				when "MA"
+					if @question.Options.include?("NEG1")
+						options = "Negative marking of "+ @question.Options[5..] +" points"
+					else
+						options = "No negative marking"
+					end
+					if @question.Options.include?("PAR1")
+						options += ", partial credit"
+					else
+						options += ", no partial credit"
+					end
+				when "FTB"
+					if @question.Options.include?("NEG1")
+						options = "Negative marking of "+ @question.Options[5..] +" points"
+					else
+						options = "No negative marking"
+					end
+					if @question.Options.include?("CON1")
+						options += ", allow answers that contain the correct answer"
+					else
+						options += ", do not allow answers that contain the correct answer"
+					end
+					if @question.Options.include?("CAS1")
+						options += ", case sensitive"
+					else
+						options += ", not case sensitive"
+					end
+					if @question.Options.include?("MUL1")
+						options += ", allow multiple spaces"
+					else
+						options += ", do not allow multiple spaces"
+					end
+				when "REG"
+					if @question.Options.include?("NEG1")
+						options = "Negative marking of "+ @question.Options[5..] +" points"
+					else
+						options = "No negative marking"
+					end
+				when "FRM"
+					if @question.Options.include?("NEG1")
+						options = "Negative marking of "+ @question.Options[5..] +" points"
+					else
+						options = "No negative marking"
+					end
+					if @question.Options.include?("RAN1")
+						options += ", allow answer error of +/- " + @question.Options[@question.Options.index("RAN1")+5..]
+					else
+						options += ", do not allow answer error"
+					end
+				end %>
+				<%= options %>
 			</div>
 		</div>
 		<div class="row">
@@ -62,7 +118,76 @@
 				<strong>Answer:</strong>
 			</div>
 			<div class="col-9">
-				<%= @question.Answer %>
+				<%case @question.Type
+				when "MCQ"
+					positions1 = []
+					positions2 = []
+					indx= -1
+					while (indx= @question.Answer.index("〔", indx+ 1))
+						positions1 << indx
+					end
+					indx= -1
+					while (indx= @question.Answer.index("〕", indx+ 1))
+						positions2 << indx
+					end
+					for position in positions2
+						if @question.Answer[position+1]=="1"
+							answer=@question.Answer[positions1[positions2.index(position)]+1..position-1]
+						end
+					end
+				when "MA"
+					positions1 = []
+					positions2 = []
+					positions3 = []
+					indx= -1
+					while (indx= @question.Answer.index("〔", indx+ 1))
+						positions1 << indx
+					end
+					indx= -1
+					while (indx= @question.Answer.index("〕", indx+ 1))
+						positions2 << indx
+					end
+					indx= -1
+					while (indx= @question.Answer.index("%", indx+ 1))
+						positions3 << indx
+					end
+					answer = ""
+					for position in positions2
+						if @question.Answer[position+1]!="0"
+							if  @question.Options.include?("PAR1")
+								answer = answer + @question.Answer[positions1[positions2.index(position)]+1..position-1] + " " + @question.Answer[position+1..positions3[positions2.index(position)]] + ", "
+							else
+								answer = answer + @question.Answer[positions1[positions2.index(position)]+1..position-1] + ", "
+							end
+						end
+					end
+					answer = answer[..-3]
+				when "FTB"
+					answer=@question.Answer[1..-6]
+				when "REG"
+					answer=@question.Answer[1..-6]
+				when "FRM"
+					p @question.Answer
+					answer = @question.Answer[@question.Answer.index("〔")+1..@question.Answer.index("〕")-1] + " with: "
+					constraints = @question.Answer[@question.Answer.index("〘")..-1]
+					res = answer.scan(/([\[][a-zA-Z]+[\]])/)
+					for var in res
+						answer += var[0][..var[0].length-1]
+						answer += " having a value from " 
+						answer += constraints[constraints.index(",")+1..constraints[constraints.index(",")+1..-1].index(",")+constraints.index(",")]
+						answer += " to "
+						answer +=constraints[constraints[constraints.index(",")+1..-1].index(",")+constraints.index(",")+2..constraints.index("〙")-1]
+						answer += ", "
+						constraints=constraints[constraints.index("〙")+1..-1]
+					end
+					constraints = constraints[1..-2] 
+					if constraints
+						answer = answer + "obeying the following constraints: " + constraints
+					else
+						answer = answer[..-3]
+					end
+				end %>
+				<%= answer %>
 			</div>
 		</div>
 		<h3>Preview</h3>

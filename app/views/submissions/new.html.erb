@@ -1,5 +1,7 @@
 <div class="row" style="width: 100%; padding: 10px;">
 	<div class="col-12" style="padding: 20%; padding-top: 20px; padding-bottom: 20px;">
+	<% now=DateTime.now
+	if now<@assessment.EndAt && now>@assessment.BeginAt%>
 		<div class="col-12">
 			<h1>Submission
 			<%if @assessment && @creator%>
@@ -36,7 +38,7 @@
 		<%= form.hidden_field :Score, :value => 0 %>
 		<%= form.hidden_field :Duration, :value => 0 %>
 		<%= form.hidden_field :Answers, :value => "Not submitted" %>
-		<%= form.hidden_field :SubmittedAt, :value => DateTime.now %>
+		<%= form.hidden_field :SubmittedAt, :value => now %>
 		
 		<br>
 		<div class="row justify-content-right">
@@ -44,5 +46,14 @@
 			<% end %>
 			<%= button_to 'Cancel', root_path, class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
 		</div>
+	<% else %>
+		<div class="col-12"  style="text-align: center">
+			<h1>Assessment Unavailable</h1>
+			<br>
+			<p>We are sorry but <%=@assessment.Name%> created by <%=@creator%> is not available at this time.</p>
+			<p>The availability window for this assessment is: <b><%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> GMT to <%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> GMT</b></p>
+			<p>Sorry for the inconvenience</p>
+		</div>
+	<% end %>
 	</div>
 </div>

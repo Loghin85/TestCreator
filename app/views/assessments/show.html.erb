@@ -92,7 +92,8 @@
 				totalPoints+=question.Points.to_i%>
 				<tr>
 					<td><%= question.Title%></td>
-					<td><%= question.Type%></td>
+					<td><% types= { "MCQ" => "Multiple choice", "MA" => "Multiple answer", "FTB" => "Fill in the blank", "FRM" => "Formula with random variable(s)", "TF" => "True / False" , "REG" => "Regular expression" }%>
+							<%= types[question.Type] %></td>
 					<td><%= question.Points%></td>
 					<td style="text-align: right">
 						<%= link_to edit_question_path(question, :assessment_id => @assessment.id) do %>
@@ -169,7 +170,6 @@
 			<% end %>
 			</tbody>
 		</table>
-		<%= button_to 'Add submission', new_submission_path, params: {:assessment_id => @assessment.id}, class: "btn btn-primary", method: "get", style: "margin-left: 10px; margin-top: 10px;"%>
 	</div>
 	<div class="col-1"></div>
 </div>

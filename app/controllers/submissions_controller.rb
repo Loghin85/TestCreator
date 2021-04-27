@@ -104,7 +104,7 @@ class SubmissionsController < ApplicationController
 			parms = {"Duration"=>((date.to_time-@submission.SubmittedAt.to_time)).to_i}
 			scores = []
 			answers = []
-			@questions = Question.where(assessment_id: @submission.assessment_id)
+			@questions = Question.where(assessment_id: @submission.assessment_id).order(:id)
 			@assessment = Assessment.find(@submission.assessment_id)
 			if @assessment
 				user = User.find(@assessment.user_id)
@@ -211,6 +211,7 @@ class SubmissionsController < ApplicationController
 					answers << answer
 				when "FRM"
 					p "FRM"
+					p "FRMvalues-"+@questions.index(question).to_s
 					values = eval(params[("FRMvalues-"+@questions.index(question).to_s).to_sym])
 					formula = question.Answer[question.Answer.index("〔")+1..question.Answer.index("〕")-1]
 					for val in values
