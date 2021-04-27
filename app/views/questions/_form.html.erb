@@ -227,7 +227,8 @@
 					form.text_field :MACheckbox1, class: "form-control", name: "MACheckbox1", placeholder: "Answer 1", for: "checkbox1"
 				end%>
 				<% if @question.Options
-					if @question.Options.include?('PAR1') && @question.Answer[@positions2[0]+1] != "0" %>
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[0]+1] != "0" 
+					%>
 						<div id="partialValue1">
 					<% else %>
 						<div id="partialValue1" style="display: none;">
@@ -263,7 +264,8 @@
 					form.text_field :MACheckbox2, class: "form-control", name: "MACheckbox2", placeholder: "Answer 2", for: "checkbox2"
 				end%>
 				<% if @question.Options
-					if @question.Options.include?('PAR1') && @question.Answer[@positions2[1]+1] != "0"  && @question.Answer[@positions2[1]+1] != "〔"%>
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[1]+1] != "0"  && @question.Answer[@positions2[1]+1] != "〔"
+					%>
 						<div id="partialValue2">
 					<% else %>
 						<div id="partialValue2" style="display: none;">
@@ -299,7 +301,8 @@
 					form.text_field :MACheckbox3, class: "form-control", name: "MACheckbox3", placeholder: "Answer 3", for: "checkbox3"
 				end%>
 				<% if @question.Options
-					if @question.Options.include?('PAR1') && @question.Answer[@positions2[2]+1] != "0"  && @question.Answer[@positions2[2]+1] != "〔"%>
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[2]+1] != "0"  && @question.Answer[@positions2[2]+1] != "〔"
+					%>
 						<div id="partialValue3">
 					<% else %>
 						<div id="partialValue3" style="display: none;">
@@ -335,7 +338,8 @@
 					form.text_field :MACheckbox4, class: "form-control", name: "MACheckbox4", placeholder: "Answer 4", for: "checkbox4"
 				end%>
 				<% if @question.Options
-					if @question.Options.include?('PAR1') && @question.Answer[@positions2[3]+1] != "0" && @question.Answer[@positions2[3]+1] != "〔"%>
+					if @question.Options.include?('PAR1') && @question.Answer[@positions2[3]+1] != "0" && @question.Answer[@positions2[3]+1] != "〔"
+					%>
 						<div id="partialValue4">
 					<% else %>
 						<div id="partialValue4" style="display: none;">
@@ -388,10 +392,12 @@
 			<div class="form-check" style="margin-top: 5px">
 				<input class="form-check-input" type="radio" name="TFRadio" id="TFRadio1" value="True" 
 				<% if @question.Answer && @question.Answer != "" 
-					if @question.Answer.include?('True') %> 
+					if @question.Answer.include?('True') 
+					%> 
 						checked
 					<% else
-						if !@question.Answer.include?('False') %>
+						if !@question.Answer.include?('False') 
+						%>
 						checked
 						<% end 
 					end
@@ -403,7 +409,8 @@
 			<div class="form-check" style="margin-top: 5px">
 				<input class="form-check-input" type="radio" name="TFRadio" id="TFRadio2" value="False" 
 				<% if @question.Answer && @question.Answer != "" 
-					if @question.Answer.include?('False') %> 
+					if @question.Answer.include?('False') 
+					%> 
 						checked
 					<% end 
 				end %> >
@@ -450,7 +457,7 @@
 			</div>
 		</div>
 		<div class="modal fade" id="expressionModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="ModalLabel">Expression checker</h5>
@@ -458,22 +465,85 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<label>Expression</label>
-							<% if @question.Answer && @question.Answer != "" %>
-								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Dd]inosaur$" value= <%= @question.Answer[1..@question.Answer.index("〕")-1] %> >
-							<% else %>
-								<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Dd]inosaur$">
-							<% end %>
+					<div class="modal-body row">
+						<div class="col-3">
+							<h6>Cheat-Sheet</h6>
+							<small>
+							<div class="row">
+								<div class="col-4">
+									.
+								</div>
+								<div class="col-8">
+									any character except newline
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									[abc]
+								</div>
+								<div class="col-8">
+									any of a, b, or c
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									[^abc]
+								</div>
+								<div class="col-8">
+									not a, b, or c
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									[a-g]
+								</div>
+								<div class="col-8">
+									character between a &amp; g
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									^abc$
+								</div>
+								<div class="col-8">
+									start / end of the string
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									a*, a+, a?
+								</div>
+								<div class="col-8">
+									0 or more, 1 or more, 0 or 1
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									ab|cd
+								</div>
+								<div class="col-8">
+									match ab or cd
+								</div>
+							</div>
+							</small>
 						</div>
-						<div class="form-group" id="TestCases">
-							<label>Test cases</label>
-							<input type="text" class="form-control" id="test_case1" placeholder="Dinosaur">
-						</div>
-						<div class="form-group">
-							<button type="button" id="btAdd" class="btn btn-primary w-25">Add</button>
-							<button type="button" id="btRemove" class="btn btn-primary w-25">Remove</button>
+						<div class="col-9">
+							<div class="form-group">
+								<label>Expression</label>
+								<% if @question.Answer && @question.Answer != "" %>
+									<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Dd]inosaur$" value= <%= @question.Answer[1..@question.Answer.index("〕")-1] %> >
+								<% else %>
+									<input type="text" class="form-control" id="expression" placeholder="Expression, ex: ^[Dd]inosaur$">
+								<% end %>
+							</div>
+							<div class="form-group" id="TestCases">
+								<label>Test cases</label>
+								<input type="text" class="form-control" id="test_case1" placeholder="Dinosaur">
+							</div>
+							<div class="form-group">
+								<button type="button" id="btAdd" class="btn btn-primary w-25">Add</button>
+								<button type="button" id="btRemove" class="btn btn-primary w-25">Remove</button>
+							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -503,7 +573,8 @@
 	<div class="row justify-content-right">
 		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
 		<% end %>
-		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
+		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" 
+		%>
 	</div>
 		
 <script>
@@ -714,7 +785,7 @@ $(document).ready(function(){
             len = len + 1;
 
             // ADD TEXTBOX.
-            $("#TestCases").append('<input type="text" class="form-control" id="test_case' + len + '" placeholder="Correct' + (len-1) + '" style="margin-top: 5px;"/>');
+            $("#TestCases").append('<input type="text" class="form-control" id="test_case' + len + '" placeholder="Dinosaur' + (len-1) + '" style="margin-top: 5px;"/>');
 								
             // AFTER REACHING THE SPECIFIED LIMIT, DISABLE THE "ADD" BUTTON.
             if(len==10) {
