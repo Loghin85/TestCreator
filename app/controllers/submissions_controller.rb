@@ -1,6 +1,7 @@
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: %i[ show edit update destroy ]
-	before_action :logged_in_user, only: [:destroy, :show, :index]
+	before_action :logged_in_user, only: [:destroy, :show, :index, :feedback]
+	before_action :set_user, only: [:show, :destroy, :index, :feedback]
 	skip_before_action :admin_user
 	
   # GET /submissions or /submissions.json
@@ -10,31 +11,39 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/1 or /submissions/1.json
   def show
-		if params[:assessment_id]
-			@submission.assessment_id = params[:assessment_id]
-		elsif params[:submission]
-			@submission.assessment_id = params[:submission][:assessment_id]
-		end
-		if @submission.assessment_id
-			@assessment = Assessment.find(@submission.assessment_id)
-			@questions = Question.where(assessment_id: @submission.assessment_id).order(:id)
-			if @assessment
-				user = User.find(@assessment.user_id)
-				@creator = user.Fname + " " + user.Lname
+		if !logged_in? || (!admin? && !(current_user == @user))
+		naughty_user
+		else
+			if params[:assessment_id]
+				@submission.assessment_id = params[:assessment_id]
+			elsif params[:submission]
+				@submission.assessment_id = params[:submission][:assessment_id]
+			end
+			if @submission.assessment_id
+				@assessment = Assessment.find(@submission.assessment_id)
+				@questions = Question.where(assessment_id: @submission.assessment_id).order(:id)
+				if @assessment
+					user = User.find(@assessment.user_id)
+					@creator = user.Fname + " " + user.Lname
+				end
 			end
 		end
   end
 	
 	def feedback
-		@submission = Submission.find(params[:submission])
-		@assessment = Assessment.find(@submission.assessment_id)
-		if @assessment
-			user = User.find(@assessment.user_id)
-			@creator = user.Fname + " " + user.Lname
+		if !logged_in? || (!admin? && !(current_user == @user))
+		naughty_user
+		else
+			@submission = Submission.find(params[:submission])
+			@assessment = Assessment.find(@submission.assessment_id)
+			if @assessment
+				user = User.find(@assessment.user_id)
+				@creator = user.Fname + " " + user.Lname
+			end
+			@submission.send_feedback(params[:Feedback], @creator, @assessment)
+			redirect_to '/submissions/'+params[:submission]
+			flash[:info] = 'Feedback was successfully sent.'
 		end
-		@submission.send_feedback(params[:Feedback], @creator, @assessment)
-		redirect_to '/submissions/'+params[:submission]
-		flash[:info] = 'Feedback was successfully sent.'
 	end
 
   # GET /submissions/new
@@ -260,15 +269,25 @@ class SubmissionsController < ApplicationController
 
   # DELETE /submissions/1 or /submissions/1.json
   def destroy
-    @submission.destroy
-    respond_to do |format|
-      format.html { redirect_back(fallback_location: assessments_url)
-									flash[:info] = "Submission was successfully destroyed." }
-      format.json { head :no_content }
-    end
+		if !logged_in? || (!admin? && !(current_user == @user))
+		naughty_user
+		else
+			@submission.destroy
+			respond_to do |format|
+				format.html { redirect_back(fallback_location: assessments_url)
+										flash[:info] = "Submission was successfully destroyed." }
+				format.json { head :no_content }
+			end
+		end
   end
 
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      assessment = Assessment.find(@submission.assessment_id)
+			@user = User.find(assessment.user_id)
+    end
+		
     # Use callbacks to share common setup or constraints between actions.
     def set_submission
       @submission = Submission.find(params[:id])
