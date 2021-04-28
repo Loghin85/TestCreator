@@ -111,7 +111,7 @@ class QuestionsController < ApplicationController
 	end
 	if params[:question][:Type]=="FRM"
 		if params[:Range][:result]=="1"
-			options+="RAN1P"++params[:RangeValue]
+			options+="RAN1P"+params[:rangeValue]
 		else
 			options+="RAN0"
 		end

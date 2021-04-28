@@ -283,8 +283,8 @@
 					</div>
 				<%when "REG"
 					if @question.Text.index('[blank]')
-						textBegin = question.Text[0..@question.Text.index('[blank]')-1]
-						textEnd = question.Text[@question.Text.index('[blank]')+7..-1]
+						textBegin = @question.Text[0..@question.Text.index('[blank]')-1]
+						textEnd = @question.Text[@question.Text.index('[blank]')+7..-1]
 						%>
 						<%=textBegin.html_safe%>
 						<input class="form-control w-25" name="REGAnswer" placeholder="Answer" id="question_REGAnswer" style="display: inline-block">
