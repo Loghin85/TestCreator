@@ -4,7 +4,7 @@ class AssessmentsController < ApplicationController
 
   # GET /assessments or /assessments.json
   def index
-    @assessments = Assessment.all.order(:id)
+    @assessments = Assessment.where(user_id: current_user.id).order(:id)
   end
 
   # GET /assessments/1 or /assessments/1.json
