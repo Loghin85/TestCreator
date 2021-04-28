@@ -11,9 +11,9 @@
 			</h1> 
 			<h3>created by <%=@creator%></h3>
 			<b>Description:</b><%= @assessment.Description.html_safe %>
-			<p><b>Available from:</b> <%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> GMT</p>
+			<p><b>Available from:</b> <%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> UTC</p>
 			
-			<p><b>Available until:</b> <%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> GMT</p>
+			<p><b>Available until:</b> <%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> UTC</p>
 			
 			<p>
 			Once you press start you will have <b><%=@assessment.Duration%> minutes</b> to finish the assessment. At the end of this time the test will be automatically submitted. You have only <b>one attempt</b>, once started you will <b>not</b> be able to start again or finish the test later. Please make sure that that your attempt has been submitted <b>before</b> closing the tab, else a 0 point attempt will be submitted.
@@ -53,7 +53,7 @@
 			<h1>Assessment Unavailable</h1>
 			<br>
 			<p>We are sorry but <%=@assessment.Name%> created by <%=@creator%> is not available at this time.</p>
-			<p>The availability window for this assessment is: <b><%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> GMT to <%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> GMT</b></p>
+			<p>The availability window for this assessment is: <b><%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %> UTC to <%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %> UTC</b></p>
 			<p>Sorry for the inconvenience</p>
 		</div>
 	<% end %>

@@ -28,7 +28,7 @@
 		<label>Availability window</label>
 		<div style="padding-left: 15px">
 			<div class="form-group">
-				<%= form.label :BeginAt , "Start date and time GMT"%>
+				<%= form.label :BeginAt , "Start date and time UTC"%>
 					<% if @assessment.BeginAt
 						if @assessment.BeginAt > DateTime.now()%>
 						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
@@ -48,7 +48,7 @@
 			</div>
 			
 			<div class="form-group">
-				<%= form.label :EndAt , "End date and time GMT"%>
+				<%= form.label :EndAt , "End date and time UTC"%>
 					<% if @assessment.EndAt 
 						if @assessment.EndAt > DateTime.now()%>
 						<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
@@ -78,14 +78,22 @@
 	</div>
 	<script type="text/javascript">
     $(function () {
-      Ndate = new Date()
+      date = new Date()
+			Ndate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
+ date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+			console.log(date)
+			console.log(Ndate)
 			Ndate2 = new Date ( Ndate );
 			Ndate2.setMinutes ( Ndate.getMinutes() + 1 );
+			console.log(Ndate2)
 			 $('#datetimepicker1').datetimepicker({
-                    minDate: Ndate,
-										locale: 'en-gb'
+                    date: Ndate,
+										minDate: Ndate,
+										locale: 'en-gb',
+										useCurrent: false
                 });
        $('#datetimepicker2').datetimepicker({
+                    date: Ndate2,
                     minDate: Ndate2,
 										locale: 'en-gb',
 										useCurrent: false

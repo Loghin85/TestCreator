@@ -45,7 +45,7 @@
 				<%if @submission.SubmittedAt == "Not submitted" %>
 					Not submitted
 				<% else %>
-					<%= "%02d" % @submission.SubmittedAt.day%>/<%= "%02d" % @submission.SubmittedAt.month%>/<%= "%02d" % @submission.SubmittedAt.year%> <%= "%02d" % @submission.SubmittedAt.hour%>:<%= "%02d" %@submission.SubmittedAt.min%> GMT
+					<%= "%02d" % @submission.SubmittedAt.day%>/<%= "%02d" % @submission.SubmittedAt.month%>/<%= "%02d" % @submission.SubmittedAt.year%> <%= "%02d" % @submission.SubmittedAt.hour%>:<%= "%02d" %@submission.SubmittedAt.min%> UTC
 				<% end %>
 			</div>
 		</div>
