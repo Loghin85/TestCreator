@@ -5,6 +5,9 @@ class AssessmentsController < ApplicationController
 
   # GET /assessments or /assessments.json
   def index
+		if !logged_in?
+		naughty_user
+		end
     @assessments = Assessment.where(user_id: current_user.id).order(:id)
   end
 
@@ -20,6 +23,9 @@ class AssessmentsController < ApplicationController
 
   # GET /assessments/new
   def new
+		if !logged_in?
+		naughty_user
+		end
     @assessment = Assessment.new
   end
 
