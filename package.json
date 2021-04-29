@@ -13,6 +13,7 @@
     "webpack-dev-server": "^3.11.2"
   }
 	"scripts": {
-  "heroku-prebuild": "echo This runs before Heroku installs dependencies."
+  "heroku-prebuild": "export LD_LIBRARY_PATH=$(pwd)/vendor/lib:$(pwd)/vendor/lib/atlas-base:$(pwd)/vendor/lib/atlas-base/atlas"
+											
 	}
 }
