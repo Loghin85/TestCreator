@@ -1,7 +1,7 @@
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: %i[ show edit update destroy ]
 	before_action :logged_in_user, only: [:destroy, :show, :index, :feedback]
-	before_action :set_user, only: [:show, :destroy, :index, :feedback]
+	before_action :set_user, only: [:show, :destroy, :index]
 	skip_before_action :admin_user
 	
   # GET /submissions or /submissions.json
@@ -31,19 +31,15 @@ class SubmissionsController < ApplicationController
   end
 	
 	def feedback
-		if !logged_in? || (!admin? && !(current_user == @user))
-		naughty_user
-		else
-			@submission = Submission.find(params[:submission])
-			@assessment = Assessment.find(@submission.assessment_id)
-			if @assessment
-				user = User.find(@assessment.user_id)
-				@creator = user.Fname + " " + user.Lname
-			end
-			@submission.send_feedback(params[:Feedback], @creator, @assessment)
-			redirect_to '/submissions/'+params[:submission]
-			flash[:info] = 'Feedback was successfully sent.'
+		@submission = Submission.find(params[:submission])
+		@assessment = Assessment.find(@submission.assessment_id)
+		if @assessment
+			user = User.find(@assessment.user_id)
+			@creator = user.Fname + " " + user.Lname
 		end
+		@submission.send_feedback(params[:Feedback], @creator, @assessment)
+		redirect_to '/submissions/'+params[:submission]
+		flash[:info] = 'Feedback was successfully sent.'
 	end
 
   # GET /submissions/new
