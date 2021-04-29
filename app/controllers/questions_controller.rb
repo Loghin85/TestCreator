@@ -82,7 +82,7 @@ class QuestionsController < ApplicationController
 
   # POST /questions or /questions.json
   def create
-		assessment = Assessment.find(params[:assessment_id])
+		assessment = Assessment.find(params[:question][:assessment_id])
 		user = User.find(assessment.user_id)
 		if !logged_in? || (!admin? && !(current_user == user))
 		naughty_user
