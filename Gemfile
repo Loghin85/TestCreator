@@ -38,7 +38,7 @@ gem 'activerecord-session_store'
 gem "recaptcha"
 gem 'faker'
 gem 'geocoder'
-# gem 'ruby-cbc'
+gem 'ruby-cbc'
 gem 'rexml'
 
 group :development, :test do

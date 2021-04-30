@@ -49,8 +49,9 @@
 			
 			<div class="form-group">
 				<%= form.label :EndAt , "End date and time UTC"%>
-					<% if @assessment.EndAt 
-						if @assessment.EndAt > DateTime.now()%>
+					<% if @assessment.EndAt
+						if @assessment.EndAt > DateTime.now()
+						p 'here'%>
 						<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
 							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>"/>
 						<%else%>
@@ -72,7 +73,7 @@
 	
 	<br>
 	<div class="row justify-content-right">
-		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
+		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;"%>
 		<% end %>
 		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
 	</div>
@@ -87,16 +88,14 @@
 			Ndate2.setMinutes ( Ndate.getMinutes() + 1 );
 			console.log(Ndate2)
 			 $('#datetimepicker1').datetimepicker({
-                    date: Ndate,
-										minDate: Ndate,
-										locale: 'en-gb',
-										useCurrent: false
+					minDate: Ndate,
+					locale: 'en-gb',
+					useCurrent: false
                 });
        $('#datetimepicker2').datetimepicker({
-                    date: Ndate2,
                     minDate: Ndate2,
-										locale: 'en-gb',
-										useCurrent: false
+					locale: 'en-gb',
+					useCurrent: false
                 });
        $("#datetimepicker1").on("change.datetimepicker", function (e) {
 					$('#datetimepicker2').datetimepicker('minDate', e.date);

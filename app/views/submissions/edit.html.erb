@@ -219,7 +219,7 @@
 		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
 		<br>
 		<div class="row justify-content-right">
-			<%= form.submit 'Submit', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
+			<%= form.submit 'Submit', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;", id: "submitButton" , disabled: true%>
 			<% end %>
 		</div>
 	</div>
@@ -255,11 +255,15 @@ var x = setInterval(function() {
   if (seconds!=0)
 		time = time + seconds + "s ";
 	document.getElementById("timer").innerHTML = "Time left: <b>" + time + "</b>";
+	document.getElementById("submitButton").disabled = false;
 	
   // If the count down is finished, write some text
+  if (Math.floor(distance/1000) == 0)
+	document.getElementById("submitButton").click();
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("timer").innerHTML = "EXPIRED";
+	document.getElementById("submitButton").disabled = true;
   }
 }, 1000);
 </script>
