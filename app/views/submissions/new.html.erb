@@ -1,9 +1,7 @@
 <div class="row" style="width: 100%; padding: 10px;">
 	<div class="col-12" style="padding: 20%; padding-top: 20px; padding-bottom: 20px;">
 	<% now=DateTime.now
-	p now 
-	p @assessment.BeginAt
-	if now<@assessment.EndAt && now>@assessment.BeginAt%>
+		if now<@assessment.EndAt && now>@assessment.BeginAt%>
 		<div class="col-12">
 			<h1>Submission
 			<%if @assessment && @creator%>

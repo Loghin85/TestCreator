@@ -50,7 +50,9 @@ class SubmissionsController < ApplicationController
 		elsif params[:submission]
 			@submission.assessment_id = params[:submission][:assessment_id]
 		end
+		p "here1"
 		if @submission.assessment_id
+		p "here2"
 			@assessment = Assessment.find(@submission.assessment_id)
 			if @assessment
 				user = User.find(@assessment.user_id)
@@ -81,10 +83,10 @@ class SubmissionsController < ApplicationController
     params[:submission][:SubmittedAt]=DateTime.now
 		@submission = Submission.new(submission_params)
 		if params[:submission][:assessment_id]
-			assessment = Assessment.find(params[:submission][:assessment_id])
-			@name = assessment.Name
-			if assessment
-				user = User.find(assessment.user_id)
+			@assessment = Assessment.find(params[:submission][:assessment_id])
+			@name = @assessment.Name
+			if @assessment
+				user = User.find(@assessment.user_id)
 				@creator = user.Fname + " " + user.Lname
 			end
 		end
@@ -93,8 +95,7 @@ class SubmissionsController < ApplicationController
         format.html { redirect_to edit_submission_path(@submission, :assessment_id => params[:submission][:assessment_id]) }
         format.json { render :show, status: :created, location: @submission }
       else
-        
-				format.html { render :new, status: :unprocessable_entity }
+        format.html {render :new, :locals => { :assessment => @assessment }, status: :unprocessable_entity}
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
