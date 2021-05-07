@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 2021_03_09_140547) do
     t.integer "Duration"
     t.datetime "SubmittedAt"
 		t.timestamps
-		t.index ["userId"], name: "index_submissions_on_userId", unique: true
-  end
+		t.index ["userId", "assessment_id"], name: "index_submissions_on_userId_and_assessment_id", unique: true
+	end
 
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false

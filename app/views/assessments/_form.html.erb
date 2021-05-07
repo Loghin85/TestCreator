@@ -11,7 +11,7 @@
   </div>
 
 	<div class="form-group">
-			<%= form.label :Description , "Assessment Desctiption"%>
+			<%= form.label :Description , "Assessment Description"%>
 			<%= form.text_area :Description, class: "form-control tinymceT", placeholder: "This assessment is..."%>
 	</div>
 	
@@ -32,10 +32,10 @@
 					<% if @assessment.BeginAt
 						if @assessment.BeginAt > DateTime.now()%>
 						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>"/>
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.year %> <%="%02d" % @assessment.BeginAt.hour %>:<%="%02d" % @assessment.BeginAt.min %>"/>
 						<%else%>
 						<div class="input-group date" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%=@assessment.BeginAt.day %>/<%=@assessment.BeginAt.month %>/<%=@assessment.BeginAt.year %> <%=@assessment.BeginAt.hour %>:<%=@assessment.BeginAt.min %>" readonly/>
+							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.year %> <%="%02d" % @assessment.BeginAt.hour %>:<%="%02d" % @assessment.BeginAt.min %>" readonly/>
 						<%end%>
 					<% else %>
 					<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
@@ -53,10 +53,10 @@
 						if @assessment.EndAt > DateTime.now()
 						p 'here'%>
 						<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>"/>
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.hour %>:<%="%02d" % @assessment.EndAt.min %>"/>
 						<%else%>
 						<div class="input-group date" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" name="assessment[EndAt]" id="assessment_EndAt" value="<%=@assessment.EndAt.day %>/<%=@assessment.EndAt.month %>/<%=@assessment.EndAt.year %> <%=@assessment.EndAt.hour %>:<%=@assessment.EndAt.min %>" readonly/>
+							<input type="text" class="form-control datetimepicker-input" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.hour %>:<%="%02d" % @assessment.EndAt.min %>" readonly/>
 							
 						<%end%>
 					<% else %>

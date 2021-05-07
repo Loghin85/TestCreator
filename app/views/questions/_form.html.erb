@@ -58,7 +58,7 @@
 			end%>
 			<label class="form-check-label" for="options">Negative marking:</label>
 			<small id="HelpBlock" class="form-text text-muted MA" style="margin-bottom:5px;">
-				Negative marking will apply when 0 points would have been awarded for the chosen answer. Not choosing an answer will not result in negative marking.
+				Negative marking will apply when 0 points would have been awarded for the chosen answer. Not choosing an answer will not result in negative marking being applied.
 			</small>
 			<%= if @question.Options
 				if @question.Options.include?('NEG1')
@@ -152,6 +152,9 @@
 	<% end %>
 		<div class="form-group">
 			<%= form.label "Answers"%>
+			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+				Please check the correct answer.
+			</small>
 			<div class="form-check" style="margin-top: 5px">
 				<% if @question.Answer && @question.Answer != ""
 					if @question.Answer[@positions2[0]+1] != "0" %>
@@ -215,6 +218,9 @@
 	<% end %>
 		<div class="form-group">
 			<%= form.label "Answers"%>
+			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+				Please check all the correct answers
+			</small>
 			<div class="form-check" style="margin-top: 5px">
 				<% if @question.Answer && @question.Answer != "" && @question.Answer[@positions2[0]+1] != "0" %>
 					<input class="form-check-input" type="checkbox" id="MACheckbox1" name="MACheckboxes[]" value="A" style="top: 7px" checked>
@@ -236,7 +242,10 @@
 				else %>
 						<div id="partialValue1" style="display: none;">
 				<%end%>
-					<%= form.label "Partial credit %"%>
+					<%= form.label "Partial credit"%>
+					<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+							This represents percentage from the full question marks this answer is worth.
+					</small>
 					<%= if @question.Answer && @question.Answer != "" 
 						if @question.Answer[@positions2[0]+1..@positions1[1]-2] != "100"
 							form.text_field :MACheckbox1Credit, class: "form-control", name: "MACheckbox1Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[0]+1..@positions1[1]-2], step:".01", min: "0", max: "100"
@@ -273,7 +282,10 @@
 				else %>
 						<div id="partialValue2" style="display: none;">
 				<%end%>
-					<%= form.label "Partial credit %"%>
+					<%= form.label "Partial credit"%>
+					<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+							This represents percentage from the full question marks this answer is worth.
+					</small>
 					<%= if @question.Answer && @question.Answer != "" 
 						if @question.Answer[@positions2[1]+1..@positions1[2]-2] != "100"
 							form.text_field :MACheckbox2Credit, class: "form-control", name: "MACheckbox2Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[1]+1..@positions1[2]-2], step:".01", min: "0", max: "100"
@@ -310,7 +322,10 @@
 				else %>
 						<div id="partialValue3" style="display: none;">
 				<%end%>
-					<%= form.label "Partial credit %"%>
+					<%= form.label "Partial credit"%>
+					<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+							This represents percentage from the full question marks this answer is worth.
+					</small>
 					<%= if @question.Answer && @question.Answer != "" 
 						if @question.Answer[@positions2[2]+1..@positions1[3]-2] != "100"
 							form.text_field :MACheckbox3Credit, class: "form-control", name: "MACheckbox3Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[2]+1..@positions1[3]-2], step:".01", min: "0", max: "100"
@@ -347,7 +362,10 @@
 				else %>
 						<div id="partialValue4" style="display: none;">
 				<%end%>
-					<%= form.label "Partial credit %"%>
+					<%= form.label "Partial credit"%>
+					<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+							This represents percentage from the full question marks this answer is worth.
+					</small>
 					<%= if @question.Answer && @question.Answer != "" 
 						if @question.Answer[@positions2[3]+1..@question.Answer.length-2] != "100"
 							form.text_field :MACheckbox4Credit, class: "form-control", name: "MACheckbox4Credit", for: "checkboxes", type: "number", value:  @question.Answer[@positions2[3]+1..@question.Answer.length-2], step:".01", min: "0", max: "100"
@@ -389,6 +407,9 @@
 	<% end %>
 		<div class="form-group">
 			<%= form.label "Answer"%>
+			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+				Please check the correct answer.
+			</small>
 			<div class="form-check" style="margin-top: 5px">
 				<input class="form-check-input" type="radio" name="TFRadio" id="TFRadio1" value="True" 
 				<% if @question.Answer && @question.Answer != "" 
@@ -442,7 +463,7 @@
 	<div class="REG" style="display: none;">
 	<% end %>
 		<div class="form-group">
-			<%= form.label "Expression"%>
+			<%= form.label "Regular Expression"%>
 			<div class="input-group">
 				<%= if @question.Answer && @question.Answer != ""
 					form.text_field :REGAnswer, class: "form-control", name: "REGAnswer", placeholder: "Expression, ex: ^[Dd]inosaur$", value: @question.Answer[1..@question.Answer.index("〕")-1]
@@ -555,7 +576,10 @@
 	</div>
 	
 	<div class="form-group">
-			<%= form.label :Points , "Points"%>
+			<%= form.label :Points , "Marks"%>
+			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+				Marks awarded for a complete and correct answer for the question.
+			</small>
 			<%= if @question.Points
 			form.text_field :Points, class: "form-control", value: @question.Points, for: "options", type: "number"
 			else

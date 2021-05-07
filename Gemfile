@@ -32,7 +32,7 @@ gem 'bcrypt', platforms: :ruby
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
-gem 'bootstrap'
+gem 'bootstrap', '< 5.0'
 gem 'bootstrap-sass'
 gem 'activerecord-session_store'
 gem "recaptcha"
