@@ -106,7 +106,7 @@
 			});
        $("#datetimepicker2").on("change.datetimepicker", function (e) {
 					if($('#datetimepicker1').datetimepicker('date').isSameOrAfter($('#datetimepicker2').datetimepicker('date')))
-						$('#datetimepicker2').datetimepicker('date', $('#datetimepicker1').date.add(1, 'minutes'));
+						$('#datetimepicker2').datetimepicker('date',  e.date.add(1, 'minutes'));
 			});
     });
   </script>

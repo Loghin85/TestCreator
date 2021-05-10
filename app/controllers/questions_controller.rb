@@ -100,7 +100,8 @@ class QuestionsController < ApplicationController
 				
 			#form the options string
 			if params[:Negative][:result]=="1"
-				options=options+"NEG1P"+params[:negValue]
+				p params[:negValue]
+				options=options+"NEG1P"+params[:negValue].to_i.abs().to_s
 			else
 				options=options+"NEG0"
 			end
@@ -204,18 +205,21 @@ class QuestionsController < ApplicationController
 				formula = params[:FRMAnswer]
 				answer = "〔" + params[:FRMAnswer] + "〕100%"
 				vars={}
-				res = formula.scan(/([\[][a-zA-Z]+[\]])/)
+				res = formula.scan(/([\[][A-Z]+[\]])/)
 				for var in res
 					tag=var[0][1..var[0].length-2].upcase
 					vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 					answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 				end
-				relationsRegex= /\A((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+)((,| ,|, | , )((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+))*\Z/
-				formulaRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)/
+				relationsRegex= /\A((([\[][A-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][A-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+)((,| ,|, | , )((([\[][A-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][A-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+))*\Z/
+				formulaRegex= /((([\[][A-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][A-Z]+[\]])|[0-9]+))*)/
 				relations = params[:FRMRelations]
+				if relations == nil
+				 relations = ""
+				end
 				test = formula.scan(formulaRegex) #test formula for valid format
 				test1 = relations.match(relationsRegex) #test relations for valid format
-				test2 = relations.scan(/([\[][a-zA-Z]+[\]])/) #test for foreign variables
+				test2 = relations.scan(/([\[][A-Z]+[\]])/) #test for foreign variables
 				foreignVars = false
 				for var in test2
 					tag=var[0][1..var[0].length-2].upcase
@@ -415,7 +419,8 @@ class QuestionsController < ApplicationController
 			
 			#form the options string
 			if params[:Negative][:result]=="1"
-				options=options+"NEG1P"+params[:negValue]
+				p params[:negValue].to_i.abs().to_s
+				options=options+"NEG1P"+params[:negValue].to_i.abs().to_s
 			else
 				options=options+"NEG0"
 			end
@@ -519,14 +524,14 @@ class QuestionsController < ApplicationController
 				formula = params[:FRMAnswer]
 				answer = "〔" + params[:FRMAnswer] + "〕100%"
 				vars={}
-				res = formula.scan(/([\[][a-zA-Z]+[\]])/)
+				res = formula.scan(/([\[][A-Z]+[\]])/)
 				for var in res
 					tag=var[0][1..var[0].length-2].upcase
 					vars[tag]=[params[(tag+"Min").intern].to_i,params[(tag+"Max").intern].to_i]
 					answer = answer + "〘" + tag + "," + vars[tag][0].to_s + "," + vars[tag][1].to_s + "〙"
 				end
-				relationsRegex= /\A((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+)((,| ,|, | , )((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+))*\Z/
-				formulaRegex= /((([\[][a-zA-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][a-zA-Z]+[\]])|[0-9]+))*)/
+				relationsRegex= /\A((([\[][A-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][A-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+)((,| ,|, | , )((([\[][A-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][A-Z]+[\]])|[0-9]+))*)(<=|>=|=)([0-9]+))*\Z/
+				formulaRegex= /((([\[][A-Z]+[\]])|[0-9]+)((\+|\-|\/|\*)(([\[][A-Z]+[\]])|[0-9]+))*)/
 				if params[:FRMRelations]
 					relations = params[:FRMRelations]
 				else	
@@ -534,7 +539,7 @@ class QuestionsController < ApplicationController
 				end
 				test = formula.scan(formulaRegex) #test formula for valid format
 				test1 = relations.match(relationsRegex) #test relations for valid format
-				test2 = relations.scan(/([\[][a-zA-Z]+[\]])/) #test for foreign variables
+				test2 = relations.scan(/([\[][A-Z]+[\]])/) #test for foreign variables
 				foreignVars = false
 				for var in test2
 					tag=var[0][1..var[0].length-2].upcase

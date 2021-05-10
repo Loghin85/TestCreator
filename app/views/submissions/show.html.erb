@@ -344,7 +344,6 @@
 					for var in vars
 						values[var[0]]=p.value_of(varsILP[var[0]])
 						question.Text.gsub! '[' + var[0] + ']', values[var[0]].to_s
-						question.Text.gsub! '[' + var[0].downcase + ']', values[var[0]].to_s
 					end
 				%>
 				<%=question.Text.html_safe%>

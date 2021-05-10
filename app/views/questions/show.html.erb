@@ -56,13 +56,13 @@
 				<%case @question.Type
 				when "MCQ"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of "+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..] +" points"
 					else
 						options = "No negative marking"
 					end
 				when "MA"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of "+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..] +" points"
 					else
 						options = "No negative marking"
 					end
@@ -73,13 +73,13 @@
 					end
 				when "TF"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of "+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..] +" points"
 					else
 						options = "No negative marking"
 					end
 				when "FTB"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of "+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..] +" points"
 					else
 						options = "No negative marking"
 					end
@@ -100,13 +100,13 @@
 					end
 				when "REG"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of "+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..] +" points"
 					else
 						options = "No negative marking"
 					end
 				when "FRM"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of "+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..] +" points"
 					else
 						options = "No negative marking"
 					end
@@ -374,7 +374,6 @@
 					for var in vars
 						values[var[0]]=p.value_of(varsILP[var[0]])
 						@question.Text.gsub! '[' + var[0] + ']', values[var[0]].to_s
-						@question.Text.gsub! '[' + var[0].downcase + ']', values[var[0]].to_s
 					end
 					p values
 				%>
