@@ -250,15 +250,19 @@
 						varsILP[var[0]]=m.int_var(var[1][0]..var[1][1])
 						if (var[0].sum+sum) % 3 == 1
 							if (var[0].sum+sum) % 2 == 1
-								ilpFunction = ilpFunction + @submission.userId.ord*sum/var[0].sum * varsILP[var[0]]
+								ilpFunction = ilpFunction + (@submission.userId.ord*sum/var[0].sum)%100 * varsILP[var[0]]
+								m.enforce(varsILP[var[0]] >= var[1][1]%(var[0].sum%10))
 							else
-								ilpFunction = ilpFunction - @submission.userId.ord/var[0].sum * varsILP[var[0]]
+								ilpFunction = ilpFunction - (@submission.userId.ord%var[0].sum)%100 * varsILP[var[0]]
+								m.enforce(varsILP[var[0]] >= var[1][1]%(var[0].sum%10))
 							end
 						else
 							if (var[0].sum+sum) % 2 == 1
-								ilpFunction = ilpFunction - @submission.userId.ord*sum/var[0].sum * varsILP[var[0]]
+								ilpFunction = ilpFunction - (@submission.userId.ord*sum/var[0].sum)%100 * varsILP[var[0]]
+								m.enforce(varsILP[var[0]] <= var[1][1]%(var[0].sum%10))
 							else
-								ilpFunction = ilpFunction + @submission.userId.ord/var[0].sum * varsILP[var[0]]
+								ilpFunction = ilpFunction + (@submission.userId.ord%var[0].sum)%100 * varsILP[var[0]]
+								m.enforce(varsILP[var[0]] <= var[1][1]%(var[0].sum%10))
 							end
 						end
 					end
@@ -290,6 +294,7 @@
 								eq = eq.send(blocks[i],blocks[i+1].to_i)
 							end
 						end
+						p "here 2"
 						m.enforce(eq)
 					end
 					p = m.to_problem
@@ -300,7 +305,6 @@
 						question.Text.gsub! '[' + var[0] + ']', values[var[0]].to_s
 						question.Text.gsub! '[' + var[0].downcase + ']', values[var[0]].to_s
 					end
-					p values
 				%>
 				<%=question.Text.html_safe%>
 				<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px;">
@@ -311,7 +315,7 @@
 				<input type="hidden" id="question_FRMvalues-<%=@questions.index(question)%>" name="FRMvalues-<%=@questions.index(question)%>" value="<%=values%>">
 				<%end%>
 				<p><b>Score: <%= eval(@submission.Scores)[@questions.index(question)]%>/<%=question.Points%></b></p>
-				<% if eval(@submission.Scores)[@questions.index(question)] != question.Points %>
+				<% if eval(@submission.Scores)[@questions.index(question)] <=0 %>
 				<h3>Feedback</h3>
 				<%= question.Feedback.html_safe %>
 				<% end %>

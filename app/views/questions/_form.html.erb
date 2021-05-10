@@ -219,7 +219,7 @@
 		<div class="form-group">
 			<%= form.label "Answers"%>
 			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
-				Please check all the correct answers
+				Please check all the correct answers. A minimum of one correct answer is required.
 			</small>
 			<div class="form-check" style="margin-top: 5px">
 				<% if @question.Answer && @question.Answer != "" && @question.Answer[@positions2[0]+1] != "0" %>
@@ -578,7 +578,7 @@
 	<div class="form-group">
 			<%= form.label :Points , "Marks"%>
 			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
-				Marks awarded for a complete and correct answer for the question.
+				Marks awarded for a complete and correct answer.
 			</small>
 			<%= if @question.Points
 			form.text_field :Points, class: "form-control", value: @question.Points, for: "options", type: "number"
@@ -589,6 +589,9 @@
 	
 	<div class="form-group">
 			<%= form.label :Feedback , "Feedback to learner"%>
+			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+				Shown when no correct answer was chosen.
+			</small>
 			<%= form.text_area :Feedback, class: "form-control tinymceF", placeholder: "For this question..."%>
 	</div>
 
