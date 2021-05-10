@@ -90,12 +90,14 @@
 			 $('#datetimepicker1').datetimepicker({
 					minDate: Ndate,
 					locale: 'en-gb',
-					useCurrent: false
+					sideBySide: true,
+					defaultDate: Ndate
                 });
        $('#datetimepicker2').datetimepicker({
-                    minDate: Ndate2,
+          minDate: Ndate2,
 					locale: 'en-gb',
-					useCurrent: false
+					sideBySide: true,
+					defaultDate: Ndate2
                 });
        $("#datetimepicker1").on("change.datetimepicker", function (e) {
 					$('#datetimepicker2').datetimepicker('minDate', e.date);
