@@ -147,7 +147,9 @@ class SubmissionsController < ApplicationController
 								qScore+=question.Points*value/100
 							end
 						end
-						qScore /= question.Answer.scan(/(?=100)/).count
+						if question.Answer.scan(/(?=100)/).count != 0
+							qScore /= question.Answer.scan(/(?=100)/).count
+						end
 					end
 					if question.Options.include?("PAR0") && qScore != question.Points
 						qScore = 0
@@ -260,7 +262,7 @@ class SubmissionsController < ApplicationController
 				end
 			end
 		else
-			redirect_to "/submissions/duplicate", :notice => 'Failed to record the submission.'
+			redirect_to "/submissions/duplicate", :error => 'Failed to record the submission.'
 		end
   end
 
