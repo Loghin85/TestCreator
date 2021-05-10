@@ -28,14 +28,14 @@
 		<label>Availability window</label>
 		<div style="padding-left: 15px">
 			<div class="form-group">
-				<%= form.label :BeginAt , "Start date and time UTC"%>
-					<% if @assessment.BeginAt
+				<%= form.label :BeginAt , "Start date and time"%>
+					<% if @assessment.BeginAt && @assessment.created_at
 						if @assessment.BeginAt > DateTime.now()%>
 						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.year %> <%="%02d" % @assessment.BeginAt.hour %>:<%="%02d" % @assessment.BeginAt.min %>"/>
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.localtime.year %> <%="%02d" % @assessment.BeginAt.localtime.hour %>:<%="%02d" % @assessment.BeginAt.min %>"/>
 						<%else%>
 						<div class="input-group date" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.year %> <%="%02d" % @assessment.BeginAt.hour %>:<%="%02d" % @assessment.BeginAt.min %>" readonly/>
+							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.year %> <%="%02d" % @assessment.BeginAt.localtime.hour %>:<%="%02d" % @assessment.BeginAt.min %>" readonly/>
 						<%end%>
 					<% else %>
 					<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
@@ -48,16 +48,14 @@
 			</div>
 			
 			<div class="form-group">
-				<%= form.label :EndAt , "End date and time UTC"%>
+				<%= form.label :EndAt , "End date and time"%>
 					<% if @assessment.EndAt
-						if @assessment.EndAt > DateTime.now()
-						p 'here'%>
+						if @assessment.EndAt > DateTime.now()%>
 						<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.hour %>:<%="%02d" % @assessment.EndAt.min %>"/>
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.localtime.hour %>:<%="%02d" % @assessment.EndAt.min %>"/>
 						<%else%>
 						<div class="input-group date" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.hour %>:<%="%02d" % @assessment.EndAt.min %>" readonly/>
-							
+							<input type="text" class="form-control datetimepicker-input" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.localtime.hour %>:<%="%02d" % @assessment.EndAt.min %>" readonly/>			
 						<%end%>
 					<% else %>
 					<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
@@ -71,6 +69,10 @@
 		</div>
 	</div>
 	
+	<div class="field">
+		<%= form.hidden_field :offset, name: "offset", for: "offset"%>
+	</div>
+	
 	<br>
 	<div class="row justify-content-right">
 		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;"%>
@@ -78,26 +80,24 @@
 		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
 	</div>
 	<script type="text/javascript">
+		document.getElementById('assessment_offset').value = (new Date().getTimezoneOffset())/60;
+	</script>
+	<script type="text/javascript">
     $(function () {
-      date = new Date()
-			Ndate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
- date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-			console.log(date)
-			console.log(Ndate)
+			Ndate = new Date()
 			Ndate2 = new Date ( Ndate );
 			Ndate2.setMinutes ( Ndate.getMinutes() + 1 );
-			console.log(Ndate2)
 			 $('#datetimepicker1').datetimepicker({
 					minDate: Ndate,
 					locale: 'en-gb',
 					sideBySide: true,
-					defaultDate: Ndate
+					useCurrent: false
                 });
        $('#datetimepicker2').datetimepicker({
           minDate: Ndate2,
 					locale: 'en-gb',
 					sideBySide: true,
-					defaultDate: Ndate2
+					useCurrent: false
                 });
        $("#datetimepicker1").on("change.datetimepicker", function (e) {
 					$('#datetimepicker2').datetimepicker('minDate', e.date);

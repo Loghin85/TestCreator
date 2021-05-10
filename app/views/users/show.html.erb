@@ -48,7 +48,7 @@
 				<strong>Member since:</strong>
 			</div>
 			<div class="col-6">
-				<%= "%02d" % @user.created_at.day %>/<%= "%02d" % @user.created_at.month %>/<%= "%02d" % @user.created_at.year %> <%= "%02d" % @user.created_at.hour %>:<%= "%02d" % @user.created_at.min %> UTC
+				<%= "%02d" % @user.created_at.day %>/<%= "%02d" % @user.created_at.month %>/<%= "%02d" % @user.created_at.year %> <%= "%02d" % @user.created_at.localtime.hour %>:<%= "%02d" % @user.created_at.min %>
 			</div>
 		</div>
 		<br>

@@ -50,9 +50,7 @@ class SubmissionsController < ApplicationController
 		elsif params[:submission]
 			@submission.assessment_id = params[:submission][:assessment_id]
 		end
-		p "here1"
 		if @submission.assessment_id
-		p "here2"
 			@assessment = Assessment.find(@submission.assessment_id)
 			if @assessment
 				user = User.find(@assessment.user_id)
