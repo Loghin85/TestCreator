@@ -57,8 +57,12 @@ class AssessmentsController < ApplicationController
 			dayE = params[:assessment][:EndAt][0..1]
 			hourE = params[:assessment][:EndAt][11..12]
 			minuteE = params[:assessment][:EndAt][14..15]
-			@assessment.BeginAt = @assessment.BeginAt + params[:offset].to_i.hours
-			@assessment.EndAt = @assessment.EndAt + params[:offset].to_i.hours
+			if @assessment.BeginAt
+				@assessment.BeginAt = @assessment.BeginAt + params[:offset].to_i.hours
+			end
+			if @assessment.EndAt
+				@assessment.EndAt = @assessment.EndAt + params[:offset].to_i.hours
+			end
 			if params[:assessment][:BeginAt] != '' && params[:assessment][:EndAt] != ''
 				beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
 				endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
