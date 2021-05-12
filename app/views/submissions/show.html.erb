@@ -45,7 +45,7 @@
 				<%if @submission.SubmittedAt == "Not submitted" %>
 					Not submitted
 				<% else %>
-					<%= "%02d" % @submission.SubmittedAt.day%>/<%= "%02d" % @submission.SubmittedAt.month%>/<%= "%02d" % @submission.SubmittedAt.year%> <%= "%02d" % @submission.SubmittedAt.hour%>:<%= "%02d" %@submission.SubmittedAt.min%> UTC
+					<a id="date1"></a>
 				<% end %>
 			</div>
 		</div>
@@ -380,4 +380,10 @@
 <br>
 <br>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+     date1 = new Date("<%= @submission.SubmittedAt %>")
+		 document.getElementById("date1").innerHTML = ("0"+date1.getDate()).slice(-2)+"/"+("0"+(date1.getMonth()+1)).slice(-2)+"/"+date1.getFullYear()+" "+("0"+date1.getHours()).slice(-2)+":"+("0"+date1.getMinutes()).slice(-2);
+  });
+</script>
 

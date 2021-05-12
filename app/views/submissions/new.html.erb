@@ -9,9 +9,9 @@
 			</h1> 
 			<h3>created by <%=@creator%></h3>
 			<b>Description:</b><%= @assessment.Description.html_safe %>
-			<p><b>Available from:</b> <%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.localtime.hour %>:<%= "%02d" % @assessment.BeginAt.min %></p>
+			<p><b>Available from:</b> <a id="date1"></a></p>
 			
-			<p><b>Available until:</b> <%= "%02d" % @assessment.EndAt.day %>/<%= "%02d" % @assessment.EndAt.month %>/<%= "%02d" % @assessment.EndAt.year %> <%= "%02d" % @assessment.EndAt.localtime.hour %>:<%= "%02d" % @assessment.EndAt.min %></p>
+			<p><b>Available until:</b> <a id="date2"></a></p>
 			
 			<p>
 			Once you press start you will have <b><%=@assessment.Duration%> minutes</b> to finish the assessment. At the end of this time the test will be automatically submitted. You have only <b>one attempt</b>, once started you will <b>not</b> be able to start again or finish the test later. Please make sure that that your attempt has been submitted <b>before</b> closing the tab, else a 0 mark attempt will be submitted.
@@ -51,9 +51,18 @@
 			<h1>Assessment Unavailable</h1>
 			<br>
 			<p>We are sorry but <%=@assessment.Name%> created by <%=@creator%> is not available at this time.</p>
-			<p>The availability window for this assessment is: <b><%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.localtime.hour %>:<%= "%02d" % @assessment.BeginAt.min %> to <%= "%02d" % @assessment.EndAt.day %>/<%= "%02d" % @assessment.EndAt.month %>/<%= "%02d" % @assessment.EndAt.year %> <%= "%02d" % @assessment.EndAt.localtime.hour %>:<%= "%02d" % @assessment.EndAt.min %></b></p>
+			<p>The availability window for this assessment is: <b><a id="date1"><%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.localtime.hour %></a>:<a id="date1"><%= "%02d" % @assessment.BeginAt.min %> to <%= "%02d" % @assessment.EndAt.day %>/<%= "%02d" % @assessment.EndAt.month %>/<%= "%02d" % @assessment.EndAt.year %> <%= "%02d" % @assessment.EndAt.localtime.hour %>:<%= "%02d" % @assessment.EndAt.min %></a></b></p>
 			<p>Sorry for the inconvenience</p>
 		</div>
 	<% end %>
 	</div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     date1 = new Date("<%= @assessment.BeginAt %>")
+		 document.getElementById("date1").innerHTML = ("0"+date1.getDate()).slice(-2)+"/"+("0"+(date1.getMonth()+1)).slice(-2)+"/"+date1.getFullYear()+" "+("0"+date1.getHours()).slice(-2)+":"+("0"+date1.getMinutes()).slice(-2);
+     date2 = new Date("<%= @assessment.EndAt %>")
+		 document.getElementById("date2").innerHTML = ("0"+date2.getDate()).slice(-2)+"/"+("0"+(date2.getMonth()+1)).slice(-2)+"/"+date2.getFullYear()+" "+("0"+date2.getHours()).slice(-2)+":"+("0"+date2.getMinutes()).slice(-2);
+	});
+</script>

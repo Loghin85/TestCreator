@@ -32,14 +32,14 @@
 					<% if @assessment.BeginAt && @assessment.created_at
 						if @assessment.BeginAt > DateTime.now()%>
 						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.localtime.year %> <%="%02d" % @assessment.BeginAt.localtime.hour %>:<%="%02d" % @assessment.BeginAt.min %>"/>
+							<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt" />
 						<%else%>
 						<div class="input-group date" data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" value="<%="%02d" % @assessment.BeginAt.day %>/<%="%02d" % @assessment.BeginAt.month %>/<%="%02d" % @assessment.BeginAt.year %> <%="%02d" % @assessment.BeginAt.localtime.hour %>:<%="%02d" % @assessment.BeginAt.min %>" readonly/>
+							<input type="text" class="form-control datetimepicker-input" name="assessment[BeginAt]" id="assessment_BeginAt" readonly/>
 						<%end%>
 					<% else %>
 					<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAt"/>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="assessment[BeginAt]" id="assessment_BeginAtE"/>
 					<% end %>
 					<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
 						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -51,10 +51,10 @@
 				<%= form.label :EndAt , "End date and time"%>
 					<% if @assessment.EndAt%>
 					<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt" value="<%="%02d" % @assessment.EndAt.day %>/<%="%02d" % @assessment.EndAt.month %>/<%="%02d" % @assessment.EndAt.year %> <%="%02d" % @assessment.EndAt.localtime.hour %>:<%="%02d" % @assessment.EndAt.min %>"/>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt"/>
 					<% else %>
 					<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAt"/>
+						<input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="assessment[EndAt]" id="assessment_EndAtE"/>
 					<% end %>
 					<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
 						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -72,12 +72,12 @@
 	<div class="row justify-content-right">
 		<%= form.submit class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;"%>
 		<% end %>
-		<%= button_to 'Cancel', url_for(:back), class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
+		<%= button_to 'Cancel', assessments_path, class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
 	</div>
-	<script type="text/javascript">
-		document.getElementById('assessment_offset').value = (new Date().getTimezoneOffset())/60;
-	</script>
-	<script type="text/javascript">
+<script type="text/javascript">
+	document.getElementById('assessment_offset').value = (new Date().getTimezoneOffset())/60;
+</script>
+<script type="text/javascript">
     $(function () {
 			Ndate = new Date()
 			Ndate2 = new Date ( Ndate );
@@ -104,4 +104,13 @@
 						$('#datetimepicker2').datetimepicker('date',  e.date.add(1, 'minutes'));
 			});
     });
-  </script>
+ </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     date1 = new Date("<%= @assessment.BeginAt %>")
+		 document.getElementById("assessment_BeginAt").value = ("0"+date1.getDate()).slice(-2)+"/"+("0"+(date1.getMonth()+1)).slice(-2)+"/"+date1.getFullYear()+" "+("0"+date1.getHours()).slice(-2)+":"+("0"+date1.getMinutes()).slice(-2);
+     date2 = new Date("<%= @assessment.EndAt %>")
+		 document.getElementById("assessment_EndAt").value = ("0"+date2.getDate()).slice(-2)+"/"+("0"+(date2.getMonth()+1)).slice(-2)+"/"+date2.getFullYear()+" "+("0"+date2.getHours()).slice(-2)+":"+("0"+date2.getMinutes()).slice(-2);
+	});
+</script>

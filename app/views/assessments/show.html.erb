@@ -41,8 +41,8 @@
 			<div class="col-3" style="text-align: right;">
 				<strong>Available from:</strong>
 			</div>
-			<div class="col-9">
-				<%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.localtime.hour %>:<%= "%02d" % @assessment.BeginAt.min %>
+			<div class="col-9"  id="date1">
+				<%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.hour %>:<%= "%02d" % @assessment.BeginAt.min %>
 			</div>
 		</div>
 		
@@ -50,7 +50,7 @@
 			<div class="col-3" style="text-align: right;">
 				<strong>Available until:</strong>
 			</div>
-			<div class="col-9">
+			<div class="col-9"  id="date2">
 				<%= "%02d" % @assessment.EndAt.day %>/<%= "%02d" % @assessment.EndAt.month %>/<%= "%02d" % @assessment.EndAt.year %> <%= "%02d" % @assessment.EndAt.hour %>:<%= "%02d" % @assessment.EndAt.min %>
 			</div>
 		</div>
@@ -155,7 +155,7 @@
 					<%if  submission.SubmittedAt == 'Not submitted' %>
 						<td>Not submitted</td>
 					<% else %>
-						<td><%= "%02d" %  submission.SubmittedAt.day%>/<%= "%02d" %  submission.SubmittedAt.month%>/<%= "%02d" %  submission.SubmittedAt.year%> <%= "%02d" %  submission.SubmittedAt.localtime.hour%>:<%= "%02d" % submission.SubmittedAt.min%></td>
+						<td id="dateS<%= submission.id%>"></td>
 					<% end %>
 					<td><%= submission.Duration/60%> min <%= submission.Duration%60%> s</td>
 					<td style="text-align: right">
@@ -184,3 +184,16 @@
 	</div>
 	<div class="col-1"></div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     date1 = new Date("<%= @assessment.BeginAt %>")
+		 document.getElementById("date1").innerHTML = ("0"+date1.getDate()).slice(-2)+"/"+("0"+(date1.getMonth()+1)).slice(-2)+"/"+date1.getFullYear()+" "+("0"+date1.getHours()).slice(-2)+":"+("0"+date1.getMinutes()).slice(-2);
+     date2 = new Date("<%= @assessment.EndAt %>")
+		 document.getElementById("date2").innerHTML = ("0"+date2.getDate()).slice(-2)+"/"+("0"+(date2.getMonth()+1)).slice(-2)+"/"+date2.getFullYear()+" "+("0"+date2.getHours()).slice(-2)+":"+("0"+date2.getMinutes()).slice(-2);
+		<%@submissions.each do |submission| %>
+		dateS<%= submission.id%> = new Date("<%= submission.SubmittedAt %>")
+		 document.getElementById("dateS<%= submission.id%>").innerHTML = ("0"+dateS<%= submission.id%>.getDate()).slice(-2)+"/"+("0"+(dateS<%= submission.id%>.getMonth()+1)).slice(-2)+"/"+dateS<%= submission.id%>.getFullYear()+" "+("0"+dateS<%= submission.id%>.getHours()).slice(-2)+":"+("0"+dateS<%= submission.id%>.getMinutes()).slice(-2);
+		<% end %>
+	});
+</script>

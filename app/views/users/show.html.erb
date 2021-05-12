@@ -47,8 +47,8 @@
 			<div class="col-6" style="text-align: right;">
 				<strong>Member since:</strong>
 			</div>
-			<div class="col-6">
-				<%= "%02d" % @user.created_at.day %>/<%= "%02d" % @user.created_at.month %>/<%= "%02d" % @user.created_at.year %> <%= "%02d" % @user.created_at.localtime.hour %>:<%= "%02d" % @user.created_at.min %>
+			<div class="col-6" id="date1">
+				
 			</div>
 		</div>
 		<br>
@@ -61,3 +61,11 @@
 		<div id="container" class=" " style="width: 100%; height: 400px; float: right; margin: 0 auto"></div>
 	</div>
 </div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     date1 = new Date("<%= @user.created_at %>")
+		 document.getElementById("date1").innerHTML = ("0"+date1.getDate()).slice(-2)+"/"+("0"+(date1.getMonth()+1)).slice(-2)+"/"+date1.getFullYear()+" "+("0"+date1.getHours()).slice(-2)+":"+("0"+date1.getMinutes()).slice(-2);
+  });
+</script>

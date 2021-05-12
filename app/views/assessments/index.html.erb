@@ -28,8 +28,8 @@
 			<%@assessments.each do |assessment| %>
 				<tr>
 					<td><%= assessment.Name %></td>
-					<td><%= "%02d" % assessment.BeginAt.day %>/<%= "%02d" % assessment.BeginAt.month %>/<%= "%02d" % assessment.BeginAt.year %> <%= "%02d" % assessment.BeginAt.localtime.hour %>:<%= "%02d" % assessment.BeginAt.min %></td>
-					<td><%= "%02d" % assessment.EndAt.day %>/<%= "%02d" % assessment.EndAt.month %>/<%= "%02d" % assessment.EndAt.year %> <%= "%02d" % assessment.EndAt.localtime.hour %>:<%= "%02d" % assessment.EndAt.min %></td>
+					<td id="date<%= assessment.id %>1"></td>
+					<td id="date<%= assessment.id %>2"></td>
 					<td><%= assessment.Duration %> minutes</td>
 					<td style="text-align: right">
 						<%= link_to edit_assessment_path(assessment) do %>
@@ -51,3 +51,15 @@
 	</div>
 	<div class="col-1"></div>
 </div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     <%@assessments.each do |assessment| %>
+			 date<%= assessment.id %>1 = new Date("<%= assessment.BeginAt %>")
+			 document.getElementById("date<%= assessment.id %>1").innerHTML = ("0"+date<%= assessment.id %>1.getDate()).slice(-2)+"/"+("0"+(date<%= assessment.id %>1.getMonth()+1)).slice(-2)+"/"+date<%= assessment.id %>1.getFullYear()+" "+("0"+date<%= assessment.id %>1.getHours()).slice(-2)+":"+("0"+date<%= assessment.id %>1.getMinutes()).slice(-2);
+			 date<%= assessment.id %>2 = new Date("<%= assessment.EndAt %>")
+			 document.getElementById("date<%= assessment.id %>2").innerHTML = ("0"+date<%= assessment.id %>2.getDate()).slice(-2)+"/"+("0"+(date<%= assessment.id %>2.getMonth()+1)).slice(-2)+"/"+date<%= assessment.id %>2.getFullYear()+" "+("0"+date<%= assessment.id %>2.getHours()).slice(-2)+":"+("0"+date<%= assessment.id %>2.getMinutes()).slice(-2);
+		<% end %>
+	});
+</script>
