@@ -122,15 +122,19 @@ class AssessmentsController < ApplicationController
 				hourE = params[:assessment][:EndAt][11..12]
 				minuteE = params[:assessment][:EndAt][14..15]
 				if params[:assessment][:BeginAt] != '' && params[:assessment][:EndAt] != ''
-					params[:assessment][:BeginAt][11..12] = "%02d" % (params[:assessment][:BeginAt][11..12].to_i+params[:offset].to_i).to_s
-					params[:assessment][:EndAt][11..12] = "%02d" % (params[:assessment][:EndAt][11..12].to_i+params[:offset].to_i).to_s
 					beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
 					endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
+					paramEndAt = endAt + params[:offset].to_i.hours
+					paramBeginAt = beginAt + params[:offset].to_i.hours
+					params[:assessment][:BeginAt] = paramBeginAt.strftime('%d/%m/%Y %H:%M')
+					params[:assessment][:EndAt] = paramEndAt.strftime('%d/%m/%Y %H:%M')
 					if @assessment.update(assessment_params) && endAt > beginAt && !duplicateTitle
 						format.html { redirect_to @assessment 
 												flash[:info] = "Assessment was successfully updated." }
 						format.json { render :show, status: :ok, location: @assessment }
 					else
+					params[:assessment][:BeginAt] = beginAt.strftime('%d/%m/%Y %H:%M')
+					params[:assessment][:EndAt] = endAt.strftime('%d/%m/%Y %H:%M')
 					format.html { render :edit, status: :unprocessable_entity }
 					format.json { render json: @assessment.errors, status: :unprocessable_entity }
 						if endAt <= beginAt
