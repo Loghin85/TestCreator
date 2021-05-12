@@ -121,11 +121,9 @@ class AssessmentsController < ApplicationController
 				dayE = params[:assessment][:EndAt][0..1]
 				hourE = params[:assessment][:EndAt][11..12]
 				minuteE = params[:assessment][:EndAt][14..15]
-				params[:assessment][:BeginAt][11..12] = "%02d" % (params[:assessment][:BeginAt][11..12].to_i+params[:offset].to_i).to_s
-				params[:assessment][:EndAt][11..12] = "%02d" % (params[:assessment][:EndAt][11..12].to_i+params[:offset].to_i).to_s
-				@assessment.BeginAt = @assessment.BeginAt + params[:offset].to_i.hours
-				@assessment.EndAt = @assessment.EndAt + params[:offset].to_i.hours
 				if params[:assessment][:BeginAt] != '' && params[:assessment][:EndAt] != ''
+					params[:assessment][:BeginAt][11..12] = "%02d" % (params[:assessment][:BeginAt][11..12].to_i+params[:offset].to_i).to_s
+					params[:assessment][:EndAt][11..12] = "%02d" % (params[:assessment][:EndAt][11..12].to_i+params[:offset].to_i).to_s
 					beginAt = DateTime.new(yearB.to_i,monthB.to_i,dayB.to_i,hourB.to_i,minuteB.to_i)
 					endAt = DateTime.new(yearE.to_i,monthE.to_i,dayE.to_i,hourE.to_i,minuteE.to_i)
 					if @assessment.update(assessment_params) && endAt > beginAt && !duplicateTitle
