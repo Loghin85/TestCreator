@@ -100,7 +100,6 @@ class QuestionsController < ApplicationController
 				
 			#form the options string
 			if params[:Negative][:result]=="1"
-				p params[:negValue]
 				options=options+"NEG1P"+params[:negValue].to_i.abs().to_s
 			else
 				options=options+"NEG0"

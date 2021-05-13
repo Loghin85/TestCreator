@@ -62,7 +62,7 @@
 					end
 				when "MA"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of -"+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..@question.Options.index("PAR")-1] +" points"
 					else
 						options = "No negative marking"
 					end
@@ -79,7 +79,7 @@
 					end
 				when "FTB"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of -"+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..@question.Options.index("CON")-1] +" points"
 					else
 						options = "No negative marking"
 					end
@@ -106,7 +106,7 @@
 					end
 				when "FRM"
 					if @question.Options.include?("NEG1")
-						options = "Negative marking of -"+ @question.Options[5..] +" points"
+						options = "Negative marking of -"+ @question.Options[5..@question.Options.index("RAN")-1] +" points"
 					else
 						options = "No negative marking"
 					end

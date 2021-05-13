@@ -1,15 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  AssessmentId: 1
-  Title: MyString
-  Text: MyString
-  Feedback: MyString
-  Type: MyString
+  assessment_id: 1
+  Title: Question3
+  Text: <p>[blank] is the capital of France.</p>
+  Feedback: <p>The capital of France is Paris.</p>
+  Type: FTB
+  Points: 5
+  Options: NEG0CON0CAS1MUL0
+  Answer: 〔Paris〕100%
 
-two:
-  AssessmentId: 1
-  Title: MyString
-  Text: MyString
-  Feedback: MyString
-  Type: MyString

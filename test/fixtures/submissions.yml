@@ -1,17 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  assessment_id: 1
-  userId: 1
-  userEmail: MyString
-  Scores: MyString
-  Answers: MyString
-  SubmittedAt: 
-
-two:
-  assessment_id: 1
-  userId: 1
-  userEmail: MyString
-  Scores: MyString
-  Answers: MyString
-  SubmittedAt: 
+   assessment_id: 1
+   userId: 123
+   userEmail: tesc@g.com
+   Scores: Not submitted
+   Answers: [["three"], "tt"]
+   Score: 0
+   Duration: 5
+   SubmittedAt: 2024-05-10 16:41:39.686961

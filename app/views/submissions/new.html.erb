@@ -1,63 +1,66 @@
 <div class="row" style="width: 100%; padding: 10px;">
 	<div class="col-12" style="padding: 20%; padding-top: 20px; padding-bottom: 20px;">
 	<% now=DateTime.now
-		if now<@assessment.EndAt && now>@assessment.BeginAt%>
-		<div class="col-12">
-			<h1>Submission
-			<%if @assessment && @creator%>
-				for <%=@assessment.Name%>
-			</h1> 
-			<h3>created by <%=@creator%></h3>
-			<b>Description:</b><%= @assessment.Description.html_safe %>
-			<p><b>Available from:</b> <a id="date1"></a></p>
-			
-			<p><b>Available until:</b> <a id="date2"></a></p>
-			
-			<p>
-			Once you press start you will have <b><%=@assessment.Duration%> minutes</b> to finish the assessment. At the end of this time the test will be automatically submitted. You have only <b>one attempt</b>, once started you will <b>not</b> be able to start again or finish the test later. Please make sure that that your attempt has been submitted <b>before</b> closing the tab, else a 0 mark attempt will be submitted.
-			</p>
-			<%end%>
-		</div>
-		<%= form_with(model: @submission) do |form| %>
-		<% if @submission.errors.any? %>
-			<% flash.now[:danger] = @submission.errors.full_messages[0] %>
-		<% end %>
-		
-		<%= form.hidden_field :assessment_id, :value => @submission.assessment_id %>
-		
-		<div class="form-group">
-				<%= form.label :userId , "Student ID"%>
-				<%= form.text_field :userId, class: "form-control", placeholder: "56743829"%>
-		</div>
-		<div class="form-group">
-				<%= form.label :userEmail , "Email address"%>
-				<%= form.text_field :userEmail, class: "form-control",  placeholder: "example@gmail.com"%>
-		</div>
-		
-		<%= form.hidden_field :Scores, :value => "Not submitted" %>
-		<%= form.hidden_field :Score, :value => 0 %>
-		<%= form.hidden_field :Duration, :value => 0 %>
-		<%= form.hidden_field :Answers, :value => "Not submitted" %>
-		<%= form.hidden_field :SubmittedAt, :value => now %>
-		
-		<br>
-		<div class="row justify-content-right">
-			<%= form.submit 'Start', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
+		if @assessment
+			if now<@assessment.EndAt && now>@assessment.BeginAt%>
+			<div class="col-12">
+				<h1>Submission
+				<%if @assessment && @creator%>
+					for <%=@assessment.Name%>
+				</h1> 
+				<h3>created by <%=@creator%></h3>
+				<b>Description:</b><%= @assessment.Description.html_safe %>
+				<p><b>Available from:</b> <a id="date1"></a></p>
+				
+				<p><b>Available until:</b> <a id="date2"></a></p>
+				
+				<p>
+				Once you press start you will have <b><%=@assessment.Duration%> minutes</b> to finish the assessment. At the end of this time the test will be automatically submitted. You have only <b>one attempt</b>, once started you will <b>not</b> be able to start again or finish the test later. Please make sure that that your attempt has been submitted <b>before</b> closing the tab, else a 0 mark attempt will be submitted.
+				</p>
+				<%end%>
+			</div>
+			<%= form_with(model: @submission) do |form| %>
+			<% if @submission.errors.any? %>
+				<% flash.now[:danger] = @submission.errors.full_messages[0] %>
 			<% end %>
-			<%= button_to 'Cancel', root_path, class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
-		</div>
-	<% else %>
-		<div class="col-12"  style="text-align: center">
-			<h1>Assessment Unavailable</h1>
+			
+			<%= form.hidden_field :assessment_id, :value => @submission.assessment_id %>
+			
+			<div class="form-group">
+					<%= form.label :userId , "Student ID"%>
+					<%= form.text_field :userId, class: "form-control", placeholder: "56743829"%>
+			</div>
+			<div class="form-group">
+					<%= form.label :userEmail , "Email address"%>
+					<%= form.text_field :userEmail, class: "form-control",  placeholder: "example@gmail.com"%>
+			</div>
+			
+			<%= form.hidden_field :Scores, :value => "Not submitted" %>
+			<%= form.hidden_field :Score, :value => 0 %>
+			<%= form.hidden_field :Duration, :value => 0 %>
+			<%= form.hidden_field :Answers, :value => "Not submitted" %>
+			<%= form.hidden_field :SubmittedAt, :value => now %>
+			
 			<br>
-			<p>We are sorry but <%=@assessment.Name%> created by <%=@creator%> is not available at this time.</p>
-			<p>The availability window for this assessment is: <b><a id="date1"><%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.localtime.hour %></a>:<a id="date1"><%= "%02d" % @assessment.BeginAt.min %> to <%= "%02d" % @assessment.EndAt.day %>/<%= "%02d" % @assessment.EndAt.month %>/<%= "%02d" % @assessment.EndAt.year %> <%= "%02d" % @assessment.EndAt.localtime.hour %>:<%= "%02d" % @assessment.EndAt.min %></a></b></p>
-			<p>Sorry for the inconvenience</p>
-		</div>
-	<% end %>
+			<div class="row justify-content-right">
+				<%= form.submit 'Start', class: "btn btn-primary" , style: "margin-left: 10px; margin-top: 10px;" %>
+				<% end %>
+				<%= button_to 'Cancel', root_path, class: "btn btn-primary", method: "get" , style: "margin-left: 10px; margin-top: 10px;" %>
+			</div>
+		<% else %>
+			<div class="col-12"  style="text-align: center">
+				<h1>Assessment Unavailable</h1>
+				<br>
+				<p>We are sorry but <%=@assessment.Name%> created by <%=@creator%> is not available at this time.</p>
+				<p>The availability window for this assessment is: <b><a id="date1"><%= "%02d" % @assessment.BeginAt.day %>/<%= "%02d" % @assessment.BeginAt.month %>/<%= "%02d" % @assessment.BeginAt.year %> <%= "%02d" % @assessment.BeginAt.localtime.hour %></a>:<a id="date1"><%= "%02d" % @assessment.BeginAt.min %> to <%= "%02d" % @assessment.EndAt.day %>/<%= "%02d" % @assessment.EndAt.month %>/<%= "%02d" % @assessment.EndAt.year %> <%= "%02d" % @assessment.EndAt.localtime.hour %>:<%= "%02d" % @assessment.EndAt.min %></a></b></p>
+				<p>Sorry for the inconvenience</p>
+			</div>
+	<% end
+	end %>
 	</div>
 </div>
 
+<% if @assessment %>
 <script type="text/javascript">
   $(document).ready(function(){
      date1 = new Date("<%= @assessment.BeginAt %>")
@@ -66,3 +69,4 @@
 		 document.getElementById("date2").innerHTML = ("0"+date2.getDate()).slice(-2)+"/"+("0"+(date2.getMonth()+1)).slice(-2)+"/"+date2.getFullYear()+" "+("0"+date2.getHours()).slice(-2)+":"+("0"+date2.getMinutes()).slice(-2);
 	});
 </script>
+<% end %>

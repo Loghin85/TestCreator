@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+user:
+    Fname: "User"
+    Lname: "1"
+    Email: "user@abdn.ac.uk"
+    Privilege: "User"
+    activated: true
+    activated_at: <%= Time.zone.now =>
+    password_digest: $2a$12$zXCHirsLPmfhf.JaEzwAnO7maD1KoMty0IAr20iq9nKT8w8V2E.32
+
+admin:
+    Fname: "Admin"
+    Lname: "1"
+    Email: "admin@abdn.ac.uk"
+    Privilege: "Admin"
+    activated: true
+    activated_at: <%= Time.zone.now =>
+    password_digest: $2a$12$zXCHirsLPmfhf.JaEzwAnO7maD1KoMty0IAr20iq9nKT8w8V2E.32
