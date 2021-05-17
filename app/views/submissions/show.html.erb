@@ -357,10 +357,10 @@
 		</div>
 		<% end %>
 		<hr style="border-top: 5px solid rgba(0, 0, 0, 0.1)"/>
-		<%= form_with url: feedback_path, method: :post do |form|%>
+		<%= form_for(:submissionFeedback, url: feedback_path) do |form|%>
 		<h3>Further feedback to learner</h3><br>
 			<%= form.text_area :Feedback, class: "form-control tinymceT", placeholder: "On Question 1..."%>
-			<%= form.hidden_field :submission, :value => @submission.id %>
+			<%= form.hidden_field :id, :value => @submission.id %>
 	</div>
 	<div class="col-1"></div>	
 </div>

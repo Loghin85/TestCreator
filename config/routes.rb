@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'sessions/new'
   get 'contact' => "test#contact"
   get 'faq' => "test#faq"
-	post '/feedback' => 'submissions#feedback'
+	post '/feedback' => "submissions#feedback"
   resources :users
   resources :questions, only: [:new, :create, :edit, :update, :destroy, :show]
   resources :assessments

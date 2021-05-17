@@ -226,12 +226,8 @@ class QuestionsController < ApplicationController
 						foreignVars = true
 					end
 				end
-				p (test1 == nil && relations.length != 0)
-				p !foreignVars
-				p test.length == 0
 				if (test1 == nil && relations.length != 0) || foreignVars || test.length == 0
 					answer=""
-					p 'here'
 				elsif relations.length != 0
 					answer = answer + "〚" + relations + "〛"
 				end

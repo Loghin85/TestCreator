@@ -31,14 +31,15 @@ class SubmissionsController < ApplicationController
   end
 	
 	def feedback
-		@submission = Submission.find(params[:submission])
+		p params[:submissionFeedback]
+		@submission = Submission.find(params[:submissionFeedback][:id])
 		@assessment = Assessment.find(@submission.assessment_id)
 		if @assessment
 			user = User.find(@assessment.user_id)
 			@creator = user.Fname + " " + user.Lname
 		end
-		@submission.send_feedback(params[:Feedback], @creator, @assessment)
-		redirect_to '/submissions/'+params[:submission]
+		@submission.send_feedback(params[:submissionFeedback][:Feedback], @creator, @assessment)
+		redirect_to '/submissions/'+params[:submissionFeedback][:id]
 		flash[:info] = 'Feedback was successfully sent.'
 	end
 
