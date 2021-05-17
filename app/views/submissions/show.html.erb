@@ -173,19 +173,19 @@
 								<% if answers[@questions.index(question)] %>
 									<% if answers[@questions.index(question)].include?(question.Answer[positions1[0]+1..positions2[0]-1])%>
 										<input class="form-check-input" type="checkbox" id="MACheckbox1-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[0]+1..positions2[0]-1] %>" checked>
-									<% end %>
-								<% else %>
-									<input class="form-check-input" type="checkbox" id="MACheckbox1-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[0]+1..positions2[0]-1] %>" disabled>
-								<% end %>	
+									<% else %>
+										<input class="form-check-input" type="checkbox" id="MACheckbox1-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[0]+1..positions2[0]-1] %>" disabled>
+									<% end %>	
+								<% end %>
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[0]+1..positions2[0]-1] %></label>
 						</div>
 						<div class="form-check" style="margin-top: 5px">
 								<% if answers[@questions.index(question)] %>
 									<% if answers[@questions.index(question)].include?(question.Answer[positions1[1]+1..positions2[1]-1])%>
 										<input class="form-check-input" type="checkbox" id="MACheckbox2-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[1]+1..positions2[1]-1] %>" checked>
+									<% else %>
+										<input class="form-check-input" type="checkbox" id="MACheckbox2-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[1]+1..positions2[1]-1] %>" disabled>
 									<% end %>
-								<% else %>
-									<input class="form-check-input" type="checkbox" id="MACheckbox2-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[1]+1..positions2[1]-1] %>" disabled>
 								<% end %>	
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[1]+1..positions2[1]-1] %></label>
 						</div>
@@ -193,9 +193,9 @@
 								<% if answers[@questions.index(question)] %>
 									<% if answers[@questions.index(question)].include?(question.Answer[positions1[2]+1..positions2[2]-1])%>
 										<input class="form-check-input" type="checkbox" id="MACheckbox3-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[2]+1..positions2[2]-1] %>" checked>
+									<% else %>
+										<input class="form-check-input" type="checkbox" id="MACheckbox3-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[2]+1..positions2[2]-1] %>" disabled>
 									<% end %>
-								<% else %>
-									<input class="form-check-input" type="checkbox" id="MACheckbox3-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[2]+1..positions2[2]-1] %>" disabled>
 								<% end %>	
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[2]+1..positions2[2]-1] %></label>
 						</div>
@@ -203,9 +203,9 @@
 								<% if answers[@questions.index(question)] %>
 									<% if answers[@questions.index(question)].include?(question.Answer[positions1[3]+1..positions2[3]-1])%>
 										<input class="form-check-input" type="checkbox" id="MACheckbox4-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[3]+1..positions2[3]-1] %>" checked>
+									<% else %>
+										<input class="form-check-input" type="checkbox" id="MACheckbox4-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[3]+1..positions2[3]-1] %>" disabled>
 									<% end %>
-								<% else %>
-									<input class="form-check-input" type="checkbox" id="MACheckbox4-<%=@questions.index(question)%>" name="MACheckboxes-<%=@questions.index(question)%>[]" value="<%= question.Answer[positions1[3]+1..positions2[3]-1] %>" disabled>
 								<% end %>	
 							  <label class="form-check-label" for="negative"><%= question.Answer[positions1[3]+1..positions2[3]-1] %></label>
 						</div>
