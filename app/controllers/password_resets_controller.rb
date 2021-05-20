@@ -6,9 +6,11 @@ class PasswordResetsController < ApplicationController
   before_action :check_expiration, only: [:edit, :update]
 	VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,}\Z/
   
+	# load data for the request new password form
   def new
   end
   
+	# method called on submit of the request new password form
   def create
     @user = User.find_by(Email: params[:password_reset][:email].downcase)
     if @user
@@ -21,10 +23,12 @@ class PasswordResetsController < ApplicationController
       render 'new'
     end
   end
-
+	
+	# load data for the reset password form
   def edit
   end
   
+	# method called on submit of the reset password form
   def update
 		p !!!params[:user][:password_confirmation].match(params[:user][:password])
 		if params[:user][:password].empty?             
@@ -50,7 +54,8 @@ class PasswordResetsController < ApplicationController
 	def user_params
       params.require(:user).permit(:password, :password_confirmation)
     end
-  
+		
+		# load the user with email
     def get_user
       @user = User.find_by(Email: params[:email])
     end

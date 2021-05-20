@@ -89,6 +89,9 @@
 				check_box 'Partial', 'result', {class: "form-check-input"}, 1, 0
 			end%>
 			<label class="form-check-label" for="partial">Allow partial credit</label>
+			<small id="HelpBlock" class="form-text text-muted" style="margin-bottom:5px;">
+				Partial credit will apply when some of the correct answers have been chosen and no incorrect answer was chosen.
+			</small>
 		</div>
 		<% if @question.Type=="FTB" %>
 		<div class="form-check FTB" style="margin-top: 5px">
@@ -787,11 +790,11 @@ $(document).ready(function(){
 					html+= '<label for="question_Relations">Relations</label>';
 							html+= '<small id="HelpBlock" class="form-text text-muted FRM" style="margin-bottom:5px;">';
 							html+= '<ul>';
-							html+= '	<li>The relations defined above should olny contain references to the variables defined in the formula. ';
-							html+= '	<li>Only "<=", ">=" and "=" are accepted as compatison operators and to their right side only one number is accepted i.e. 2*[X]<=4 is accepted while 2*[X]<=2*[Y] is not. ';
+							html+= '	<li>The relations defined above should only contain references to the variables defined in the formula. ';
+							html+= '	<li>Only "<=", ">=" and "=" are accepted as comparison operators and to their right side only one number is accepted i.e. 2*[X]<=4 is accepted while 2*[X]<=2*[Y] is not. ';
 							html+= '	<li>All operations must have an operator present i.e. 2[X] is not valid and should be written as 2*[X]. ';
-							html+= '	<li>There must be no space witin a relation and no parantheses are allowed.';
-							html+= '	<li>Relations are separatad by comma ",".';
+							html+= '	<li>There must be no space within a relation and no parentheses are allowed.';
+							html+= '	<li>Relations are separated by comma ",".';
 							html+= '</ul>	';
 							html+= '</small>';
 					<% if @question.Answer && @question.Answer != ""  && @question.Answer["〚"]  %>
